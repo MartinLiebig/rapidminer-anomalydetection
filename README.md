@@ -1,20 +1,46 @@
-RapidMiner Extension Template
-=============================
+![http://madm.dfki.de/_media/rapidminer/ad-logo.png](http://madm.dfki.de/_media/rapidminer/ad-logo.png)
 
-A template project for creating a RapidMiner Studio extension. 
+RapidMiner Anomaly Detection Extension
+======================================
 
-### Prerequisite
-* Requires Gradle 4.10.2+ (get it [here](http://gradle.org/installation) or use the Gradle wrapper shipped with this template)
+The Anomaly Detection Extension for RapidMiner comprises the most well know unsupervised anomaly detection algorithms, assigning individual anomaly scores to data rows of example sets. It allows you to find data, which is significantly different from the normal, without the need for the data being labeled.
 
-### Getting started
-1. Clone the extension template
+Some of the algorithms are:
 
-2. Change the extension settings in _build.gradle_ (e.g. replace 'Template' by the desired extension name)
+* Local Outlier Factor (LOF)
+* k-NN Global Anomaly Score
+* Connectivity-based Outlier Factor (COF)
+* Local Correlation Integral (LOCI)
+* Local Outlier Probability (LoOP)
+* Cluster-based Local Outlier Factor (CBLOF)
 
-3. Initialize the extension project by executing the _initializeExtensionProject_ Gradle task (e.g. via 'gradlew --no-daemon initializeExtensionProject')
+More information and usage examples can be found on the <a target="_blank" href="https://www.goldiges.de/rapidminer-anomalydetection">author's homepage</a>
 
-4. Add an extension icon by placing an image named "icon.png" in  _src/main/resources/META-INF/_. 
+Installation
+------------
 
-5. Build and install your extension by executing the _installExtension_ Gradle task 
+* In RapidMiner, go to Help->Updates and Extensions (Marketplace) and search for “anomaly detection” and click on “Install”, or
+* Copy the <a target="_blank" href="https://github.com/Markus-Go/rapidminer-anomalydetection/releases/latest">jar file</a> to the “lib/plugins” directory of RapidMiner
 
-6. Start RapidMiner Studio and check whether your extension has been loaded
+Copyright/ License/ Credits
+---------------------------
+
+Copyright 2008-2013 Deutsches Forschungszentrum fuer Kuenstliche Intelligenz  
+Copyright 2008-2015 Markus Goldstein
+
+This is free software. Licensed under the [GNU AGPL, Version 3](licenses/LICENSE).  
+There is NO WARRANTY, to the extent permitted by law.
+
+Authors
+-------
+
+Markus Goldstein  
+Mennatallah Amer  
+Johann Gebhardt  
+Patrick Kalka  
+Ahmed Elsawy
+
+This Software is supported by ...  
+[![http://madm.dfki.de/lib/tpl/dfki/images/logo.jpg](http://madm.dfki.de/lib/tpl/dfki/images/logo.jpg)](http://www.madm.eu/)
+[![http://www.kyushu-u.ac.jp/img/common/header_logo.png](http://www.kyushu-u.ac.jp/img/common/header_logo.png)](http://www.kyushu-u.ac.jp/english/)
+[![https://www.goldiges.de/assets/images/logo-full.png](https://www.goldiges.de/assets/images/logo-full.png)](https://www.goldiges.de/)
