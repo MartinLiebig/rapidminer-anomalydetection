@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU Affero General Public License along with this program.
  * If not, see http://www.gnu.org/licenses/.
  */
-package com.rapidminer.extension.anomaly_detection;
+package com.rapidminer.extension.anomalydetection;
 
 import com.rapidminer.gui.MainFrame;
 

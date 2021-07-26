@@ -1,4 +1,4 @@
-package com.rapidminer.extension.anomaly_detection.model;
+package com.rapidminer.extension.anomalydetection.model;
 
 import java.io.Serializable;
 

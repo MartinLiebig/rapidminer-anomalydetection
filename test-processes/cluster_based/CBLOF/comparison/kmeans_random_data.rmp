@@ -52,7 +52,7 @@
       </operator>
       <operator activated="true" class="multiply" compatibility="9.9.002" expanded="true" height="103" name="Multiply" width="90" x="447" y="34"/>
       <operator activated="true" class="multiply" compatibility="9.9.002" expanded="true" height="103" name="Multiply (2)" width="90" x="447" y="187"/>
-      <operator activated="true" class="anomaly_detection:Cluster-Based Local Outlier Factor (CBLOF)" compatibility="3.0.000" expanded="true" height="103" name="Cluster-Based Local Outlier Factor (CBLOF)" width="90" x="648" y="238">
+      <operator activated="true" class="anomalydetection:Cluster-Based Local Outlier Factor (CBLOF)" compatibility="3.0.000" expanded="true" height="103" name="Cluster-Based Local Outlier Factor (CBLOF)" width="90" x="648" y="238">
         <parameter key="measure_types" value="NumericalMeasures"/>
         <parameter key="mixed_measure" value="MixedEuclideanDistance"/>
         <parameter key="nominal_measure" value="NominalDistance"/>
@@ -71,7 +71,7 @@
         <parameter key="beta" value="5.0"/>
         <parameter key="use cluster size as weighting factor" value="true"/>
       </operator>
-      <operator activated="true" class="anomaly_detection:cluster_based_anomaly" compatibility="3.0.000" expanded="true" height="103" name="cluster_based_anomaly" width="90" x="648" y="34">
+      <operator activated="true" class="anomalydetection:cluster_based_anomaly" compatibility="3.0.000" expanded="true" height="103" name="cluster_based_anomaly" width="90" x="648" y="34">
         <parameter key="algorithm" value="CBLOF"/>
         <parameter key="alpha" value="90.0"/>
         <parameter key="beta" value="5.0"/>

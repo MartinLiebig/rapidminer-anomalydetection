@@ -1,7 +1,7 @@
-package com.rapidminer.extension.anomaly_detection.model.clustering;
+package com.rapidminer.extension.anomalydetection.model.clustering;
 
 import com.rapidminer.example.ExampleSet;
-import com.rapidminer.extension.anomaly_detection.utility.AnomalyUtilities;
+import com.rapidminer.extension.anomalydetection.utility.AnomalyUtilities;
 import com.rapidminer.operator.OperatorException;
 import com.rapidminer.operator.clustering.ClusterModel;
 import com.rapidminer.tools.math.similarity.DistanceMeasure;

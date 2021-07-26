@@ -1,16 +1,14 @@
-package com.rapidminer.extension.anomaly_detection.operator.statistical;
+package com.rapidminer.extension.anomalydetection.operator.statistical;
 
 import com.rapidminer.example.ExampleSet;
-import com.rapidminer.extension.anomaly_detection.model.statistical.RPCAModel;
-import com.rapidminer.extension.anomaly_detection.operator.AbstractAnomalyOperator;
+import com.rapidminer.extension.anomalydetection.model.statistical.RPCAModel;
+import com.rapidminer.extension.anomalydetection.operator.AbstractAnomalyOperator;
 import com.rapidminer.operator.*;
-import com.rapidminer.operator.learner.CapabilityProvider;
 import com.rapidminer.parameter.ParameterType;
 import com.rapidminer.parameter.ParameterTypeCategory;
 import com.rapidminer.parameter.ParameterTypeDouble;
 import com.rapidminer.parameter.ParameterTypeInt;
 import com.rapidminer.parameter.conditions.EqualTypeCondition;
-import com.rapidminer.tools.OperatorService;
 
 import java.util.List;
 

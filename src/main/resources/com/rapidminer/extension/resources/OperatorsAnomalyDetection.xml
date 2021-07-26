@@ -5,12 +5,12 @@
         <icon>magnifying_glass.png</icon>
         <operator>
             <key>cluster_based_anomaly</key>
-            <class>com.rapidminer.extension.anomaly_detection.operator.clustering.ClusterBasedAnomalyDetectionOperator
+            <class>com.rapidminer.extension.anomalydetection.operator.clustering.ClusterBasedAnomalyDetectionOperator
             </class>
         </operator>
         <operator>
             <key>rpca_based_anomaly</key>
-            <class>com.rapidminer.extension.anomaly_detection.operator.statistical.RPCAAnomalyDetectionOperator
+            <class>com.rapidminer.extension.anomalydetection.operator.statistical.RPCAAnomalyDetectionOperator
             </class>
         </operator>
 

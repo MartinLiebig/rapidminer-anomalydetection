@@ -65,7 +65,7 @@
         <parameter key="data_management" value="auto"/>
       </operator>
       <operator activated="true" class="multiply" compatibility="9.9.002" expanded="true" height="103" name="Multiply (2)" width="90" x="447" y="136"/>
-      <operator activated="true" class="anomaly_detection:cluster_based_anomaly" compatibility="3.0.000" expanded="true" height="103" name="cluster_based_anomaly" width="90" x="581" y="34">
+      <operator activated="true" class="anomalydetection:cluster_based_anomaly" compatibility="3.0.000" expanded="true" height="103" name="cluster_based_anomaly" width="90" x="581" y="34">
         <parameter key="algorithm" value="CBLOF"/>
         <parameter key="alpha" value="90.0"/>
         <parameter key="beta" value="5.0"/>

@@ -1,11 +1,10 @@
-package com.rapidminer.extension.anomaly_detection.utility;
+package com.rapidminer.extension.anomalydetection.utility;
 
 import org.w3c.dom.Element;
 
 import com.rapidminer.io.process.XMLTools;
 import com.rapidminer.parameter.ParameterHandler;
 import com.rapidminer.parameter.UndefinedParameterError;
-import com.rapidminer.parameter.conditions.EqualStringCondition;
 import com.rapidminer.parameter.conditions.ParameterCondition;
 import com.rapidminer.tools.XMLException;
 

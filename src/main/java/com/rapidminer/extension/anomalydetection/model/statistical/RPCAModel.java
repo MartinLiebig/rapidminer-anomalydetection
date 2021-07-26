@@ -1,4 +1,4 @@
-package com.rapidminer.extension.anomaly_detection.model.statistical;
+package com.rapidminer.extension.anomalydetection.model.statistical;
 
 import Jama.EigenvalueDecomposition;
 import Jama.Matrix;
@@ -8,11 +8,8 @@ import com.rapidminer.example.Example;
 import com.rapidminer.example.ExampleSet;
 import com.rapidminer.example.Tools;
 import com.rapidminer.example.set.MappedExampleSet;
-import com.rapidminer.example.set.RemappedExampleSet;
-import com.rapidminer.extension.anomaly_detection.model.AnomalyDetectionModel;
-import com.rapidminer.operator.Operator;
+import com.rapidminer.extension.anomalydetection.model.AnomalyDetectionModel;
 import com.rapidminer.operator.OperatorException;
-import com.rapidminer.operator.UserError;
 import com.rapidminer.operator.features.transformation.PCAModel;
 import com.rapidminer.tools.math.matrix.CovarianceMatrix;
 

@@ -1,18 +1,13 @@
-package com.rapidminer.extension.anomaly_detection.model.clustering;
+package com.rapidminer.extension.anomalydetection.model.clustering;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import com.rapidminer.example.Attribute;
 import com.rapidminer.example.Example;
 import com.rapidminer.example.ExampleSet;
 import com.rapidminer.example.table.NominalMapping;
-import com.rapidminer.extension.anomaly_detection.model.AnomalyDetectionModel;
+import com.rapidminer.extension.anomalydetection.model.AnomalyDetectionModel;
 import com.rapidminer.operator.OperatorException;
-import com.rapidminer.operator.clustering.Centroid;
-import com.rapidminer.operator.clustering.CentroidClusterModel;
-import com.rapidminer.operator.clustering.Cluster;
 import com.rapidminer.operator.clustering.ClusterModel;
 import com.rapidminer.tools.math.similarity.DistanceMeasure;
 

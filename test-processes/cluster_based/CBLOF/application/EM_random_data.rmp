@@ -73,7 +73,7 @@
         <parameter key="kernel_b" value="0.0"/>
         <parameter key="correlated_attributes" value="true"/>
       </operator>
-      <operator activated="true" class="anomaly_detection:cluster_based_anomaly" compatibility="3.0.000" expanded="true" height="103" name="cluster_based_anomaly" width="90" x="715" y="34">
+      <operator activated="true" class="anomalydetection:cluster_based_anomaly" compatibility="3.0.000" expanded="true" height="103" name="cluster_based_anomaly" width="90" x="715" y="34">
         <parameter key="algorithm" value="CBLOF"/>
         <parameter key="alpha" value="90.0"/>
         <parameter key="beta" value="5.0"/>

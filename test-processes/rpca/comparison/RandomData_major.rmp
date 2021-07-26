@@ -29,7 +29,7 @@
         <parameter key="data_management" value="auto"/>
       </operator>
       <operator activated="true" class="multiply" compatibility="9.9.002" expanded="true" height="124" name="Multiply" width="90" x="179" y="136"/>
-      <operator activated="true" class="anomaly_detection:rpca_based_anomaly" compatibility="3.0.000" expanded="true" height="82" name="rpca_based_anomaly" width="90" x="380" y="34">
+      <operator activated="true" class="anomalydetection:rpca_based_anomaly" compatibility="3.0.000" expanded="true" height="82" name="rpca_based_anomaly" width="90" x="380" y="34">
         <parameter key="probability_for_normal_class" value="0.975"/>
         <parameter key="component_usage" value="only use major components"/>
         <parameter key="major_components" value="use variance threshold"/>
@@ -43,7 +43,7 @@
         <list key="application_parameters"/>
         <parameter key="create_view" value="false"/>
       </operator>
-      <operator activated="true" class="anomaly_detection:Robust Principal Component Analysis Anomaly Score (rPCA)" compatibility="3.0.000" expanded="true" height="68" name="Robust Principal Component Analysis Anomaly Score (rPCA)" width="90" x="380" y="238">
+      <operator activated="true" class="anomalydetection:Robust Principal Component Analysis Anomaly Score (rPCA)" compatibility="3.0.000" expanded="true" height="68" name="Robust Principal Component Analysis Anomaly Score (rPCA)" width="90" x="380" y="238">
         <parameter key="probability_for_normal_class" value="0.975"/>
         <parameter key="component_usage" value="only use major components"/>
         <parameter key="major_components" value="use variance threshold"/>

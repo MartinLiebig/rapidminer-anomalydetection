@@ -36,7 +36,7 @@
         <parameter key="keep_all" value="true"/>
         <description align="center" color="transparent" colored="false" width="126">add a random att and make sure you get the same results</description>
       </operator>
-      <operator activated="true" class="anomaly_detection:rpca_based_anomaly" compatibility="3.0.000" expanded="true" height="82" name="rpca_based_anomaly" width="90" x="380" y="34">
+      <operator activated="true" class="anomalydetection:rpca_based_anomaly" compatibility="3.0.000" expanded="true" height="82" name="rpca_based_anomaly" width="90" x="380" y="34">
         <parameter key="probability_for_normal_class" value="0.975"/>
         <parameter key="component_usage" value="only use major components"/>
         <parameter key="major_components" value="use variance threshold"/>

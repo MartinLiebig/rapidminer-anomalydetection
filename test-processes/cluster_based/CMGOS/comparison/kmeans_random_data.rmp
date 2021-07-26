@@ -69,7 +69,7 @@
             <parameter key="value" value="0.6"/>
           </operator>
           <operator activated="true" class="multiply" compatibility="9.8.001" expanded="true" height="103" name="Multiply (2)" width="90" x="313" y="233"/>
-          <operator activated="true" class="anomaly_detection:cluster_based_anomaly" compatibility="3.0.000" expanded="true" height="103" name="cluster_based_anomaly" width="90" x="447" y="85">
+          <operator activated="true" class="anomalydetection:cluster_based_anomaly" compatibility="3.0.000" expanded="true" height="103" name="cluster_based_anomaly" width="90" x="447" y="85">
             <parameter key="algorithm" value="CMGOS"/>
             <parameter key="measure_types" value="MixedMeasures"/>
             <parameter key="mixed_measure" value="MixedEuclideanDistance"/>
@@ -108,7 +108,7 @@
             <parameter key="use_local_random_seed" value="false"/>
             <parameter key="local_random_seed" value="1992"/>
           </operator>
-          <operator activated="true" class="anomaly_detection:Clustering-based Multivariate Gaussian Outlier Score (CMGOS)" compatibility="3.0.000" expanded="true" height="103" name="Clustering-based Multivariate Gaussian Outlier Score (CMGOS)" width="90" x="447" y="289">
+          <operator activated="true" class="anomalydetection:Clustering-based Multivariate Gaussian Outlier Score (CMGOS)" compatibility="3.0.000" expanded="true" height="103" name="Clustering-based Multivariate Gaussian Outlier Score (CMGOS)" width="90" x="447" y="289">
             <parameter key="probability for normal class" value="%{prob}"/>
             <parameter key="gamma" value="0.1"/>
             <parameter key="covariance estimation" value="Reduction"/>

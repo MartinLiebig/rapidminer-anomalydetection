@@ -1,4 +1,4 @@
-package com.rapidminer.extension.anomaly_detection.utility;
+package com.rapidminer.extension.anomalydetection.utility;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -14,7 +14,6 @@ import com.rapidminer.example.Attributes;
 import com.rapidminer.example.Example;
 import com.rapidminer.example.ExampleSet;
 import com.rapidminer.operator.OperatorException;
-import com.rapidminer.tools.Tools;
 
 
 public class AnomalyUtilities {
