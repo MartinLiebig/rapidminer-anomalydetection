@@ -20,11 +20,12 @@
 
 package de.dfki.madm.anomalydetection.evaluator.cluster_based;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 
 import Jama.Matrix;
 
-public class CovarianceMatrix {
+public class CovarianceMatrix implements Serializable {
 	private double[][] data;
 	private double[][] CovMat;
 	private int dim = 0;

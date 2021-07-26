@@ -20,8 +20,10 @@
 
 package de.dfki.madm.anomalydetection.evaluator;
 
+import java.io.Serializable;
+
 import com.rapidminer.operator.OperatorException;
 
-public interface Evaluator{
+public interface Evaluator extends Serializable {
 	public double[] evaluate() throws OperatorException;
 }

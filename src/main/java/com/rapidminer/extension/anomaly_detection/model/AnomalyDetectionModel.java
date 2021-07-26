@@ -1,5 +1,7 @@
 package com.rapidminer.extension.anomaly_detection.model;
 
+import java.io.Serializable;
+
 import com.rapidminer.example.Attribute;
 import com.rapidminer.example.Attributes;
 import com.rapidminer.example.Example;
@@ -11,7 +13,7 @@ import com.rapidminer.operator.OperatorException;
 import com.rapidminer.tools.Ontology;
 
 
-public abstract class AnomalyDetectionModel extends AbstractModel {
+public abstract class AnomalyDetectionModel extends AbstractModel implements Serializable {
 
 	protected AnomalyDetectionModel(ExampleSet exampleSet) {
 		super(exampleSet);

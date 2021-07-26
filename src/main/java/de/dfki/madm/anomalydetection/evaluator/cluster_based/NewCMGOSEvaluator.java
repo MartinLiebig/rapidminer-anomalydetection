@@ -43,7 +43,7 @@ import de.dfki.madm.anomalydetection.evaluator.Evaluator;
  * @author Patrick Kalka
  * @author Markus Goldstein
  */
-public class NewCMGOSEvaluator implements Evaluator {
+public class NewCMGOSEvaluator implements Evaluator   {
 
 	public static final int METHOD_COV_REDUCTION = 0;
 	public static final int METHOD_COV_REGULARIZE = 1;
