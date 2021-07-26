@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?><process version="9.9.002">
+  <context>
+    <input/>
+    <output/>
+    <macros/>
+  </context>
+  <operator activated="true" class="process" compatibility="9.9.002" expanded="true" name="Process">
+    <parameter key="logverbosity" value="init"/>
+    <parameter key="random_seed" value="2001"/>
+    <parameter key="send_mail" value="never"/>
+    <parameter key="notification_email" value=""/>
+    <parameter key="process_duration_for_mail" value="30"/>
+    <parameter key="encoding" value="SYSTEM"/>
+    <process expanded="true">
+      <operator activated="true" class="generate_data" compatibility="9.9.002" expanded="true" height="68" name="Generate Data" width="90" x="45" y="187">
+        <parameter key="target_function" value="gaussian mixture clusters"/>
+        <parameter key="number_examples" value="4999"/>
+        <parameter key="number_of_attributes" value="2"/>
+        <parameter key="attributes_lower_bound" value="-10.0"/>
+        <parameter key="attributes_upper_bound" value="10.0"/>
+        <parameter key="gaussian_standard_deviation" value="10.0"/>
+        <parameter key="largest_radius" value="10.0"/>
+        <parameter key="use_local_random_seed" value="true"/>
+        <parameter key="local_random_seed" value="1992"/>
+        <parameter key="datamanagement" value="double_array"/>
+        <parameter key="data_management" value="auto"/>
+      </operator>
+      <operator activated="true" class="generate_data" compatibility="9.9.002" expanded="true" height="68" name="Generate Data (2)" width="90" x="447" y="340">
+        <parameter key="target_function" value="gaussian mixture clusters"/>
+        <parameter key="number_examples" value="4999"/>
+        <parameter key="number_of_attributes" value="2"/>
+        <parameter key="attributes_lower_bound" value="-10.0"/>
+        <parameter key="attributes_upper_bound" value="10.0"/>
+        <parameter key="gaussian_standard_deviation" value="10.0"/>
+        <parameter key="largest_radius" value="10.0"/>
+        <parameter key="use_local_random_seed" value="true"/>
+        <parameter key="local_random_seed" value="2000"/>
+        <parameter key="datamanagement" value="double_array"/>
+        <parameter key="data_management" value="auto"/>
+      </operator>
+      <operator activated="true" class="generate_id" compatibility="9.9.002" expanded="true" height="82" name="Generate ID" width="90" x="581" y="340">
+        <parameter key="create_nominal_ids" value="false"/>
+        <parameter key="offset" value="0"/>
+      </operator>
+      <operator activated="true" class="generate_id" compatibility="9.9.002" expanded="true" height="82" name="Generate ID (2)" width="90" x="179" y="187">
+        <parameter key="create_nominal_ids" value="false"/>
+        <parameter key="offset" value="0"/>
+      </operator>
+      <operator activated="true" class="multiply" compatibility="9.9.002" expanded="true" height="103" name="Multiply" width="90" x="313" y="187"/>
+      <operator activated="true" class="expectation_maximization_clustering" compatibility="9.9.002" expanded="true" height="82" name="Clustering" width="90" x="447" y="34">
+        <parameter key="k" value="2"/>
+        <parameter key="add_cluster_attribute" value="true"/>
+        <parameter key="add_as_label" value="false"/>
+        <parameter key="remove_unlabeled" value="false"/>
+        <parameter key="max_runs" value="5"/>
+        <parameter key="max_optimization_steps" value="100"/>
+        <parameter key="quality" value="1.0E-10"/>
+        <parameter key="use_local_random_seed" value="false"/>
+        <parameter key="local_random_seed" value="1992"/>
+        <parameter key="show_probabilities" value="true"/>
+        <parameter key="inital_distribution" value="k-means run"/>
+        <parameter key="numerical_measure_types" value="BregmanDivergences"/>
+        <parameter key="numerical_measure" value="EuclideanDistance"/>
+        <parameter key="divergence" value="SquaredEuclideanDistance"/>
+        <parameter key="kernel_type" value="radial"/>
+        <parameter key="kernel_gamma" value="1.0"/>
+        <parameter key="kernel_sigma1" value="1.0"/>
+        <parameter key="kernel_sigma2" value="0.0"/>
+        <parameter key="kernel_sigma3" value="2.0"/>
+        <parameter key="kernel_degree" value="3.0"/>
+        <parameter key="kernel_shift" value="1.0"/>
+        <parameter key="kernel_a" value="1.0"/>
+        <parameter key="kernel_b" value="0.0"/>
+        <parameter key="correlated_attributes" value="true"/>
+      </operator>
+      <operator activated="true" class="anomaly_detection:cluster_based_anomaly" compatibility="3.0.000" expanded="true" height="103" name="cluster_based_anomaly" width="90" x="715" y="34">
+        <parameter key="algorithm" value="LDCOF"/>
+        <parameter key="numerical_measure" value="EuclideanDistance"/>
+        <parameter key="kernel_type" value="radial"/>
+        <parameter key="kernel_gamma" value="1.0"/>
+        <parameter key="kernel_sigma1" value="1.0"/>
+        <parameter key="kernel_sigma2" value="0.0"/>
+        <parameter key="kernel_sigma3" value="2.0"/>
+        <parameter key="kernel_degree" value="3.0"/>
+        <parameter key="kernel_shift" value="1.0"/>
+        <parameter key="kernel_a" value="1.0"/>
+        <parameter key="kernel_b" value="0.0"/>
+        <parameter key="divide clusters like cblof" value="false"/>
+        <parameter key="alpha" value="90.0"/>
+        <parameter key="beta" value="5.0"/>
+        <parameter key="gamma_(ldcof)" value="0.1"/>
+        <parameter key="use cluster size as weighting factor" value="true"/>
+        <parameter key="probability for normal class" value="0.975"/>
+        <parameter key="gamma" value="0.1"/>
+        <parameter key="covariance estimation" value="Reduction"/>
+        <parameter key="times to remove outlier" value="1"/>
+        <parameter key="limit computations" value="false"/>
+        <parameter key="maximum" value="1000"/>
+        <parameter key="limit computations_" value="false"/>
+        <parameter key="maximum_" value="1000"/>
+        <parameter key="h (non-outlier instances)" value="-1"/>
+        <parameter key="iterations" value="500"/>
+        <parameter key="threshold for fastMCD" value="600"/>
+        <parameter key="number of subsets" value="5"/>
+        <parameter key="lambda" value="0.1"/>
+        <parameter key="parallelize evaluation process" value="false"/>
+        <parameter key="number of threads" value="8"/>
+        <parameter key="use_local_random_seed" value="false"/>
+        <parameter key="local_random_seed" value="1992"/>
+      </operator>
+      <operator activated="true" class="apply_model" compatibility="9.9.002" expanded="true" height="82" name="Apply Model" width="90" x="849" y="136">
+        <list key="application_parameters"/>
+        <parameter key="create_view" value="false"/>
+      </operator>
+      <operator activated="true" class="apply_model" compatibility="9.9.002" expanded="true" height="82" name="Apply Model (2)" width="90" x="916" y="289">
+        <list key="application_parameters"/>
+        <parameter key="create_view" value="false"/>
+      </operator>
+      <connect from_op="Generate Data" from_port="output" to_op="Generate ID (2)" to_port="example set input"/>
+      <connect from_op="Generate Data (2)" from_port="output" to_op="Generate ID" to_port="example set input"/>
+      <connect from_op="Generate ID" from_port="example set output" to_op="Apply Model (2)" to_port="unlabelled data"/>
+      <connect from_op="Generate ID (2)" from_port="example set output" to_op="Multiply" to_port="input"/>
+      <connect from_op="Multiply" from_port="output 1" to_op="Clustering" to_port="example set"/>
+      <connect from_op="Multiply" from_port="output 2" to_op="Apply Model" to_port="unlabelled data"/>
+      <connect from_op="Clustering" from_port="cluster model" to_op="cluster_based_anomaly" to_port="clu"/>
+      <connect from_op="Clustering" from_port="clustered set" to_op="cluster_based_anomaly" to_port="exa"/>
+      <connect from_op="cluster_based_anomaly" from_port="exa" to_port="result 1"/>
+      <connect from_op="cluster_based_anomaly" from_port="mod" to_op="Apply Model" to_port="model"/>
+      <connect from_op="Apply Model" from_port="labelled data" to_port="result 2"/>
+      <connect from_op="Apply Model" from_port="model" to_op="Apply Model (2)" to_port="model"/>
+      <connect from_op="Apply Model (2)" from_port="labelled data" to_port="result 3"/>
+      <portSpacing port="source_input 1" spacing="0"/>
+      <portSpacing port="sink_result 1" spacing="0"/>
+      <portSpacing port="sink_result 2" spacing="189"/>
+      <portSpacing port="sink_result 3" spacing="0"/>
+      <portSpacing port="sink_result 4" spacing="0"/>
+    </process>
+  </operator>
+</process>

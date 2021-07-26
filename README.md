@@ -1,18 +1,18 @@
 ![http://madm.dfki.de/_media/rapidminer/ad-logo.png](http://madm.dfki.de/_media/rapidminer/ad-logo.png)
 
-RapidMiner Anomaly Detection Extension 
+RapidMiner Anomaly Detection Extension
 ======================================
 
 The Anomaly Detection Extension for RapidMiner comprises the most well know unsupervised anomaly detection algorithms, assigning individual anomaly scores to data rows of example sets. It allows you to find data, which is significantly different from the normal, without the need for the data being labeled.
 
 Some of the algorithms are:
 
-  * Local Outlier Factor (LOF)
-  * k-NN Global Anomaly Score
-  * Connectivity-based Outlier Factor (COF)
-  * Local Correlation Integral (LOCI)
-  * Local Outlier Probability (LoOP)
-  * Cluster-based Local Outlier Factor (CBLOF)
+* Local Outlier Factor (LOF)
+* k-NN Global Anomaly Score
+* Connectivity-based Outlier Factor (COF)
+* Local Correlation Integral (LOCI)
+* Local Outlier Probability (LoOP)
+* Cluster-based Local Outlier Factor (CBLOF)
 
 More information and usage examples can be found on the <a target="_blank" href="https://www.goldiges.de/rapidminer-anomalydetection">author's homepage</a>
 
@@ -38,9 +38,9 @@ Markus Goldstein
 Mennatallah Amer  
 Johann Gebhardt  
 Patrick Kalka  
-Ahmed Elsawy  
+Ahmed Elsawy
 
 This Software is supported by ...  
-[![http://madm.dfki.de/lib/tpl/dfki/images/logo.jpg](http://madm.dfki.de/lib/tpl/dfki/images/logo.jpg)](http://www.madm.eu/) 
+[![http://madm.dfki.de/lib/tpl/dfki/images/logo.jpg](http://madm.dfki.de/lib/tpl/dfki/images/logo.jpg)](http://www.madm.eu/)
 [![http://www.kyushu-u.ac.jp/img/common/header_logo.png](http://www.kyushu-u.ac.jp/img/common/header_logo.png)](http://www.kyushu-u.ac.jp/english/)
 [![https://www.goldiges.de/assets/images/logo-full.png](https://www.goldiges.de/assets/images/logo-full.png)](https://www.goldiges.de/)

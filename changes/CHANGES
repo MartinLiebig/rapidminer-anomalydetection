@@ -1,0 +1,7 @@
+=== 3.0 ===
+* Added new operator Detect Outliers (Clustering) which wraps the three outlier detection algorithms
+* Detect Outliers (Clustering) provides a model to be applied on new data.
+* Added a new operator Detect Outliers (rPCA), which also provides a model.
+
+* Switched to an up-to date LibSVM version. Robust one-class is thus not available anymore. Results may differ slightly.
+* Switched the lib for RNN operator, results may differ.

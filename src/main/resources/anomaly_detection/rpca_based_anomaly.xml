@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../../../../../rapidminerreferencemanual/documentation2html.xsl"?>
+<p1:documents xmlns:p1="http://rapid-i.com/schemas/documentation/reference/1.0"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://rapid-i.com/schemas/documentation/reference/1.0 ">
+
+    <operator key="operator.anomaly_detection:cluster_based_anomaly" locale="en"
+              version="6.0.000">
+        <title>Detect Outlier (Clustering)</title>
+        <synopsis>This operator is allows you to use cluster based methods for anomaly detection. It currently supports
+            CBLOF, CMGOS and LDCOF
+        </synopsis>
+        <text>
+            <paragraph>Computes a robust PCA-based anomaly score. For robustness, trimming of the
+                original data set based on the Mahalanobis distance is performed first. Then,
+                PCA is computed and a score is determined based on the top upper and/or lower PCs.
+                This operator follows the papers "A Novel Anomaly Detection Scheme Based on
+                Principal Component Classifier" by Shyu et al (2003) and "Robust Methods for
+                Unsupervised PCA-based Anomaly Detection" by Kwitt et al. (2006). In contrast to
+                the original publications, this operator computes a normalized score instead of
+                classifying into normal/anomalous instances.
+            </paragraph>
+            <paragraph>
+                Please be aware of the fact that this method can deal with "one big" cluster only and will
+                probably fail if normal data consists of multiple clusters (non-linear dependencies) as
+                well as on local anomaly detection tasks.
+            </paragraph>
+
+        </text>
+        <inputPorts>
+
+            <port name="exa" type="com.rapidminer.example.ExampleSet">
+                The example set you want to run the algorithm on.
+            </port>
+
+
+        </inputPorts>
+        <outputPorts>
+            <port name="exa" type="com.rapidminer.example.ExampleSet">
+                The scored example set.
+            </port>
+            <port name="mod">
+                An anomaly model which can be used to apply this model on new data.
+            </port>
+
+        </outputPorts>
+        <parameters>
+            <parameter key="probability_for_normal_class">
+                This is the expected probability of normal data instances. Usually it should be between 0.95 and 1.0.
+            </parameter>
+            <parameter key="cumulative_variance">
+                Cumulative variance threshold for selecting major components.
+            </parameter>
+            <parameter key="number_of_major_pcs">
+                Number of major components to keep.
+            </parameter>
+            <parameter key="number_of_minor_pcs">
+                Number of minor components to keep.
+            </parameter>
+            <parameter key="eigenvalue_threshold_max">
+                The maximum allowed eigenvalue for minor components taken into account.
+            </parameter>
+        </parameters>
+
+
+        <relatedDocuments>
+            <!-- ... -->
+        </relatedDocuments>
+    </operator>
+</p1:documents>

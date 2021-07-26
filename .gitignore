@@ -1,0 +1,24 @@
+.gradle
+.settings
+bin/
+build/
+out/
+.classpath
+.project
+target/
+config/checkstyle/checkstyle.xml
+config/checkstyle/checkstyle.xsl
+config/codenarc/codenarc.conf
+config/pmd/ruleset.xml
+.idea/
+*.iml
+.checkstyle
+.pmd
+test-processes/*.properties
+test-processes/**/*.properties
+signed jar files/
+src/main/resources/com/rapidminer/extension/resources/additional_ressources/**/*.properties
+test-processes/Data_Export/store_tagged/model_to_ignore.ioo
+test-processes/Data_Export/store_tagged/model_to_ignore.md
+test-processes/Data_Export/store_tagged/data_to_ignore.md
+test-processes/Data_Export/store_tagged/data_to_ignore.ioo
