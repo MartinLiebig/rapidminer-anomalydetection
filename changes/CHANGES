@@ -5,3 +5,7 @@
 
 * Switched to an up-to date LibSVM version. Robust one-class is thus not available anymore. Results may differ slightly.
 * Switched the lib for RNN operator, results may differ.
+
+=== 3.0.2 ===
+* Fixed an error which caused an NPE if the scored input set does not create cluster names like cluster_\d+
+* Fixed an error caused by attribute names being not identified by name.

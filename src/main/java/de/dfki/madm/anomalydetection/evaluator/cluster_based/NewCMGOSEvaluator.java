@@ -430,7 +430,7 @@ public class NewCMGOSEvaluator implements Evaluator   {
 		return result;
 	}
 
-	public double[] score(double[][] points, int[] belongsToCluster) {
+	public double[] score(double[][] points, int[] belongsToCluster) throws OperatorException {
 		double[] score = new double[points.length];
 
 		this.belongsToCluster = belongsToCluster;
@@ -441,6 +441,9 @@ public class NewCMGOSEvaluator implements Evaluator   {
 			double[] point = points[exampleIndex];
 			for (int i = 0; i < this.meansPerCluster[0].length; ++i) {
 				int clusterId = this.belongsToCluster[exampleIndex];
+				if(clusterId == -1){
+					throw new OperatorException("row "+ exampleIndex+1 +" was not assigned to a cluster. This is likely caused by a problem with your clustering algorithm");
+				}
 				point[i] -= this.meansPerCluster[clusterId][i];
 			}
 		}
