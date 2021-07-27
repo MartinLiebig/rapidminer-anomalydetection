@@ -62,10 +62,12 @@ public abstract class ClusterBasedAnomalyDetectionModel extends AnomalyDetection
 				String clusterName = e.getNominalValue(clusterId);
 				int clusterIndex = originalMapping.getIndex(clusterName);
 				int attributeIndex = 0;
-
+				if(clusterIndex == -1){
+					throw new OperatorException("Cannot find "+clusterName+" in your training set");
+				}
 
 				for(Attribute a : clusterModel.getTrainingHeader().getAttributes()){
-					centroids[clusterIndex][attributeIndex]+= e.getValue(a);
+					centroids[clusterIndex][attributeIndex]+= e.getValue(e.getAttributes().get(a.getName()));
 					attributeIndex++;
 				}
 				clusterCount[clusterIndex]=clusterCount[clusterIndex]+1;
