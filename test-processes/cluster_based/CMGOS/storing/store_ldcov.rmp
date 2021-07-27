@@ -58,10 +58,10 @@
         <parameter key="kernel_a" value="1.0"/>
         <parameter key="kernel_b" value="0.0"/>
         <parameter key="max_optimization_steps" value="100"/>
-        <parameter key="use_local_random_seed" value="false"/>
+        <parameter key="use_local_random_seed" value="true"/>
         <parameter key="local_random_seed" value="1992"/>
       </operator>
-      <operator activated="true" class="anomalydetection:cluster_based_anomaly" compatibility="3.0.000" expanded="true" height="103" name="Detect Outlier (Clustering)" width="90" x="648" y="34">
+      <operator activated="true" class="anomalydetection:cluster_based_anomaly" compatibility="3.0.001" expanded="true" height="103" name="Detect Outlier (Clustering)" width="90" x="648" y="34">
         <parameter key="algorithm" value="LDCOF"/>
         <parameter key="measure_types" value="MixedMeasures"/>
         <parameter key="mixed_measure" value="MixedEuclideanDistance"/>
