@@ -1,6 +1,25 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <operators name="anomaly_detection" version="6.0"
            docbundle="com/rapidminer/extension/resources/i18n/OperatorsDocAnomalyDetection">
+    <group key="deprecated">
+        <operator>
+            <key>Cluster-Based Local Outlier Factor (CBLOF)</key>
+            <class>de.dfki.madm.anomalydetection.operator.cluster_based.CBLOFAnomalyDetectionOperator
+            </class>
+        </operator>
+
+        <operator>
+            <key>Local Density Cluster-Based Outlier Factor (LDCOF)</key>
+            <class>de.dfki.madm.anomalydetection.operator.cluster_based.LDCOFAnomalyDetectionOperator
+            </class>
+        </operator>
+
+        <operator>
+            <key>Clustering-based Multivariate Gaussian Outlier Score (CMGOS)</key>
+            <class>de.dfki.madm.anomalydetection.operator.cluster_based.CMGOSAnomalyDetectionOperator
+            </class>
+        </operator>
+    </group>
     <group key="">
         <icon>magnifying_glass.png</icon>
         <operator>
@@ -57,28 +76,6 @@
                     <class>de.dfki.madm.anomalydetection.operator.nearest_neighbor_based.INFLOAnomalyDetectionOperator
                     </class>
                 </operator>
-            </group>
-
-            <group key="clustering_based">
-                <operator>
-                    <key>Cluster-Based Local Outlier Factor (CBLOF)</key>
-                    <class>de.dfki.madm.anomalydetection.operator.cluster_based.CBLOFAnomalyDetectionOperator
-                    </class>
-                </operator>
-
-                <operator>
-                    <key>Local Density Cluster-Based Outlier Factor (LDCOF)</key>
-                    <class>de.dfki.madm.anomalydetection.operator.cluster_based.LDCOFAnomalyDetectionOperator
-                    </class>
-                </operator>
-
-                <operator>
-                    <key>Clustering-based Multivariate Gaussian Outlier Score (CMGOS)</key>
-                    <class>de.dfki.madm.anomalydetection.operator.cluster_based.CMGOSAnomalyDetectionOperator
-                    </class>
-                </operator>
-
-
             </group>
 
             <group key="statistical_based">
