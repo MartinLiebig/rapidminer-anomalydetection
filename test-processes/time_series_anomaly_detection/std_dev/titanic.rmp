@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?><process version="9.10.000">
+  <context>
+    <input/>
+    <output/>
+    <macros/>
+  </context>
+  <operator activated="true" class="process" compatibility="9.10.000" expanded="true" name="Process">
+    <parameter key="logverbosity" value="init"/>
+    <parameter key="random_seed" value="2001"/>
+    <parameter key="send_mail" value="never"/>
+    <parameter key="notification_email" value=""/>
+    <parameter key="process_duration_for_mail" value="30"/>
+    <parameter key="encoding" value="SYSTEM"/>
+    <process expanded="true">
+      <operator activated="true" class="retrieve" compatibility="9.10.000" expanded="true" height="68" name="Retrieve Titanic Training" width="90" x="112" y="34">
+        <parameter key="repository_entry" value="//Samples/data/Titanic Training"/>
+      </operator>
+      <operator activated="true" class="anomalydetection:time_series_anomaly_detection" compatibility="3.1.000" expanded="true" height="82" name="Detect Outlier (Time Series)" width="90" x="246" y="34">
+        <parameter key="type" value="include attributes"/>
+        <parameter key="attribute_filter_type" value="all attributes"/>
+        <parameter key="select_attribute" value=""/>
+        <parameter key="select_subset" value=""/>
+        <parameter key="also_apply_to_special_attributes_(id,_label..)" value="false"/>
+        <parameter key="method" value="Standard Deviation"/>
+        <parameter key="aggregation_method" value="Average"/>
+        <parameter key="training_size" value="12"/>
+        <parameter key="test_size" value="1"/>
+        <parameter key="show_advanced_settings" value="true"/>
+        <parameter key="show_individual_scores" value="true"/>
+        <parameter key="use_absolutes_in_aggregation" value="true"/>
+        <parameter key="normalize_regression_scores" value="true"/>
+      </operator>
+      <connect from_op="Retrieve Titanic Training" from_port="output" to_op="Detect Outlier (Time Series)" to_port="exa"/>
+      <connect from_op="Detect Outlier (Time Series)" from_port="scored" to_port="result 1"/>
+      <portSpacing port="source_input 1" spacing="0"/>
+      <portSpacing port="sink_result 1" spacing="0"/>
+      <portSpacing port="sink_result 2" spacing="0"/>
+    </process>
+  </operator>
+</process>
