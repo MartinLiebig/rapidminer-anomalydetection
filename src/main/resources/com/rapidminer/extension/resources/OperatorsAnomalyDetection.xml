@@ -32,6 +32,16 @@
             <class>com.rapidminer.extension.anomalydetection.operator.statistical.RPCAAnomalyDetectionOperator
             </class>
         </operator>
+        <operator>
+            <key>univariate_anomaly_detection</key>
+            <class>com.rapidminer.extension.anomalydetection.operator.univariate.DetectUnivariateOutliers
+            </class>
+        </operator>
+        <operator>
+            <key>time_series_anomaly_detection</key>
+            <class>com.rapidminer.extension.anomalydetection.operator.time_series.DetectTimeSeriesOutliers
+            </class>
+        </operator>
 
         <group key="anomaly_detection">
             <icon>table_new.png</icon>

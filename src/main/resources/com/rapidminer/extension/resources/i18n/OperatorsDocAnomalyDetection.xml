@@ -429,9 +429,32 @@
     <operator>
         <key>cluster_based_anomaly</key>
         <name>Detect Outlier (Clustering)</name>
+        <tag>Outliers</tag>
+        <tag>Anomaly</tag>
     </operator>
     <operator>
         <key>rpca_based_anomaly</key>
         <name>Detect Outlier (rPCA)</name>
+        <tag>Outliers</tag>
+        <tag>Anomaly</tag>
+        <tag>Principal Component Analysis</tag>
+        <tag>Robust</tag>
+    </operator>
+    <operator>
+        <key>time_series_anomaly_detection</key>
+        <name>Detect Outlier (Time Series)</name>
+        <tags>
+            <tag>Outliers</tag>
+            <tag>Anomaly</tag>
+            <tag>Time Series</tag>
+        </tags>
+    </operator>
+    <operator>
+        <key>univariate_anomaly_detection</key>
+        <name>Detect Outlier (Univariate)</name>
+        <tags>
+            <tag>Outliers</tag>
+            <tag>Anomaly</tag>
+        </tags>
     </operator>
 </operatorHelp>
