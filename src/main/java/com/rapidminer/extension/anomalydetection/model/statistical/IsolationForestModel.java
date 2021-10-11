@@ -12,6 +12,7 @@ import com.rapidminer.belt.buffer.NumericBuffer;
 import com.rapidminer.belt.column.Column;
 import com.rapidminer.belt.execution.Context;
 import com.rapidminer.belt.execution.ExecutionUtils;
+import com.rapidminer.belt.execution.SequentialContext;
 import com.rapidminer.belt.reader.MixedRowReader;
 import com.rapidminer.belt.reader.Readers;
 import com.rapidminer.belt.table.BeltConverter;
@@ -94,7 +95,7 @@ public class IsolationForestModel extends IOTableAnomalyModel {
 		ExecutionUtils.parallel(0, nTrees, i -> {
 			IsolationForestNode tree = new IsolationForestNode(maxLeafSize, treeRngs[i]);
 			try {
-				tree.fit(table, context);
+				tree.fit(table, new SequentialContext());
 				rootNodes[i] = tree;
 				operator.getProgress().step();
 			} catch (OperatorException e) {
