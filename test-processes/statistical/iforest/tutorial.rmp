@@ -41,6 +41,7 @@
       <operator activated="true" class="anomalydetection:iforest" compatibility="3.1.000" expanded="true" height="82" name="Detect Outlier (Isolation Forest)" width="90" x="179" y="85">
         <parameter key="number_of_trees" value="10"/>
         <parameter key="max_leaf_size" value="1"/>
+        <parameter key="max_features" value="5"/>
         <parameter key="score_calculation" value="normalized_score"/>
       </operator>
       <connect from_op="Generate DataSet" from_port="out 1" to_op="Detect Outlier (Isolation Forest)" to_port="exa"/>

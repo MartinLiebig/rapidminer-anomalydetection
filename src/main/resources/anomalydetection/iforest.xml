@@ -61,6 +61,16 @@
                     Maximal number of examples in a leaf. Used as stopping criterion.
                 </paragraph>
             </parameter>
+            <parameter key="use_feature_heuristic">
+                <paragraph>
+                   If set to true max_features is set to the square root of the number of regular attributes in your example set.
+                </paragraph>
+            </parameter>
+            <parameter key="max_features">
+                <paragraph>
+                    Defines how many features are taken in every tree. Splits are only performed in those features
+                </paragraph>
+            </parameter>
             <parameter key="score_calculation">
                 <paragraph>
                     What option to use to generate the score.

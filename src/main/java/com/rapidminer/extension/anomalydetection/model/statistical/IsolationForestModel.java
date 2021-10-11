@@ -62,7 +62,7 @@ public class IsolationForestModel extends IOTableAnomalyModel {
 	 * @param context
 	 * 		belt context for computation
 	 */
-	public IsolationForestModel(Table table, int nTrees, int maxLeafSize, String scoringMode,
+	public IsolationForestModel(Table table, int nTrees, int maxLeafSize, int maxFeatures, String scoringMode,
 								Context context, Operator operator) throws OperatorException {
 		super(TableViewCreator.INSTANCE.convertOnWriteView(new IOTable(table), false));
 
@@ -93,7 +93,7 @@ public class IsolationForestModel extends IOTableAnomalyModel {
 		Arrays.setAll(treeRngs, i -> root.split());
 
 		ExecutionUtils.parallel(0, nTrees, i -> {
-			IsolationForestNode tree = new IsolationForestNode(maxLeafSize, treeRngs[i]);
+			IsolationForestNode tree = new IsolationForestNode(maxLeafSize,maxFeatures, treeRngs[i]);
 			try {
 				tree.fit(table, new SequentialContext());
 				rootNodes[i] = tree;

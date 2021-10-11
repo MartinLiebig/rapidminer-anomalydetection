@@ -3,8 +3,13 @@ package com.rapidminer.extension.anomalydetection.model.statistical;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.SplittableRandom;
+
+import org.apache.commons.collections4.list.SetUniqueList;
+import org.apache.poi.poifs.filesystem.NPOIFSDocument;
 
 import com.rapidminer.belt.column.Column;
 import com.rapidminer.belt.column.Statistics;
@@ -31,20 +36,38 @@ public class IsolationForestNode implements Serializable {
 	private double threshold = 0.5;
 	private String splitString = "";
 	private final int maxLeafSize;
+	private int maxFeatures;
 
 	private String columnName;
 
 	private boolean isNominal = false;
 
-	public IsolationForestNode(int maxLeafSize, SplittableRandom random) {
+	private List<String> possibleLabels = null;
+
+	public IsolationForestNode(int maxLeafSize, int maxFeatures, SplittableRandom random) {
 		this.maxLeafSize = maxLeafSize;
 		this.randomGenerator = random;
+		this.maxFeatures = maxFeatures;
+	}
+
+	public IsolationForestNode(int maxLeafSize,int maxFeatures, List possibleLabels, SplittableRandom random) {
+		this.maxLeafSize = maxLeafSize;
+		this.randomGenerator = random;
+		this.maxFeatures = maxFeatures;
+		this.possibleLabels = possibleLabels;
 	}
 
 	public void fit(Table table, Context context) throws OperatorException {
-		List<String> labels = BeltTools.selectRegularColumns(table).labels();
-
-		columnName = labels.get(randomGenerator.nextInt(labels.size()));
+		if( possibleLabels == null){
+			possibleLabels = new ArrayList<>();
+			List<String> labels = BeltTools.selectRegularColumns(table).labels();
+			while(possibleLabels.size()<maxFeatures){
+				String label = labels.get(randomGenerator.nextInt(labels.size()));
+				if(!possibleLabels.contains(label))
+					possibleLabels.add(label);
+			}
+		}
+		columnName = possibleLabels.get(randomGenerator.nextInt(possibleLabels.size()));
 
 		if (table.column(columnName).type().category().equals(Column.Category.NUMERIC)) {
 			splitNumerical(table, context);
@@ -107,11 +130,11 @@ public class IsolationForestNode implements Serializable {
 
 	private void fitChild(Context context, Table left, Table right) throws OperatorException {
 		if (left.height() > maxLeafSize) {
-			leftChild = new IsolationForestNode(maxLeafSize, randomGenerator);
+			leftChild = new IsolationForestNode(maxLeafSize,maxFeatures,possibleLabels, randomGenerator);
 			leftChild.fit(left, context);
 		}
 		if (right.height() > maxLeafSize) {
-			rightChild = new IsolationForestNode(maxLeafSize, randomGenerator);
+			rightChild = new IsolationForestNode(maxLeafSize,maxFeatures, possibleLabels, randomGenerator);
 			rightChild.fit(right, context);
 		}
 	}

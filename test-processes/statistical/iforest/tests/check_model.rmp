@@ -41,10 +41,12 @@
       <operator activated="true" class="anomalydetection:iforest" compatibility="3.1.000" expanded="true" height="82" name="Detect Outlier (Isolation Forest)" width="90" x="179" y="85">
         <parameter key="number_of_trees" value="10"/>
         <parameter key="max_leaf_size" value="1"/>
+        <parameter key="use_feature_heuristic" value="true"/>
+        <parameter key="max_features" value="3"/>
         <parameter key="score_calculation" value="normalized_score"/>
       </operator>
       <operator activated="true" class="execute_script" compatibility="9.10.000" expanded="true" height="82" name="Execute Script" width="90" x="380" y="187">
-        <parameter key="script" value="import com.rapidminer.operator.text.Document;&#10;&#10;IOObject inputData = input[0];&#10;&#10;&#10;// You can add any code here&#10;&#10;&#10;// This line returns the first input as the first output&#10;return new Document(inputData.rootNodes[0].toString())"/>
+        <parameter key="script" value="import com.rapidminer.operator.text.Document;&#10;&#10;IOObject inputData = input[0];&#10;&#10;&#10;// You can add any code here&#10;&#10;&#10;// This line returns the first input as the first output&#10;return new Document(inputData.rootNodes[0].toString(0,5))"/>
         <parameter key="standard_imports" value="true"/>
         <description align="center" color="transparent" colored="false" width="126">extract the first tree as a string</description>
       </operator>
