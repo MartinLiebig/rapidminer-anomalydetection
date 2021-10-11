@@ -459,4 +459,13 @@
             <tag>Anomaly</tag>
         </tags>
     </operator>
+    <operator>
+        <key>iforest</key>
+        <name>Detect Outlier (Isolation Forest)</name>
+        <tags>
+            <tag>Outliers</tag>
+            <tag>Anomaly</tag>
+            <tag>Tree</tag>
+        </tags>
+    </operator>
 </operatorHelp>
