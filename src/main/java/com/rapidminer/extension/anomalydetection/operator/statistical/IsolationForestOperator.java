@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.rapidminer.adaption.belt.IOTable;
 import com.rapidminer.belt.execution.Context;
+import com.rapidminer.belt.execution.SequentialContext;
 import com.rapidminer.belt.table.Table;
 import com.rapidminer.belt.util.ColumnRole;
 //import com.rapidminer.extension.operator_toolbox.operator.outliers.OutlierModelMetaData;
@@ -73,7 +74,8 @@ public class IsolationForestOperator extends Operator implements CapabilityProvi
 		IOTable wrapper = exaInput.getData(IOTable.class);
 
 		Table table = wrapper.getTable();
-		Context context = BeltTools.getContext(this);
+
+		Context context = new SequentialContext();
 
 		IsolationForestModel forest = new IsolationForestModel(table,
 				getParameterAsInt(PARAMETER_N_TRESS),
