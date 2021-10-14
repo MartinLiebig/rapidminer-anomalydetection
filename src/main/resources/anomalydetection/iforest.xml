@@ -71,6 +71,16 @@
                     Defines how many features are taken in every tree. Splits are only performed in those features
                 </paragraph>
             </parameter>
+            <parameter key="bootstrap_ratio">
+                <paragraph>
+                    Each tree is trained on a bootstrapped subset of the original table. This means
+                    that you draw a sample of the original data set, but allow to have examples more than once
+                    in the resulting table.
+                    The ratio defined in this setting defines how many rows the bootstrapped table will have.
+                    If you have 100 rows in your original table and a bootstrap ratio of 0.9 every treee
+                    will be trained on 90 rows.
+                </paragraph>
+            </parameter>
             <parameter key="score_calculation">
                 <paragraph>
                     What option to use to generate the score.

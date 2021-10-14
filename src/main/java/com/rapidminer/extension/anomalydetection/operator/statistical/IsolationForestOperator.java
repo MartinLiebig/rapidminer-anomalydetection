@@ -23,6 +23,7 @@ import com.rapidminer.operator.ports.metadata.SetRelation;
 import com.rapidminer.parameter.ParameterType;
 import com.rapidminer.parameter.ParameterTypeBoolean;
 import com.rapidminer.parameter.ParameterTypeCategory;
+import com.rapidminer.parameter.ParameterTypeDouble;
 import com.rapidminer.parameter.ParameterTypeInt;
 import com.rapidminer.parameter.conditions.BooleanParameterCondition;
 import com.rapidminer.tools.Ontology;
@@ -45,6 +46,7 @@ public class IsolationForestOperator extends Operator implements CapabilityProvi
 	public static final String PARAMETER_MAX_FEATURES = "max_features";
 	public static final String PARAMETER_AUTO_FEATURE_SIZE = "use_feature_heuristic";
 	public static final String PARAMETER_SCORE_CALCULATION = "score_calculation";
+	public static final String PARAMETER_BOOTSTRAP_RATIO = "bootstrap_ratio";
 
 	public IsolationForestOperator(OperatorDescription description) {
 		super(description);
@@ -94,6 +96,7 @@ public class IsolationForestOperator extends Operator implements CapabilityProvi
 				getParameterAsInt(PARAMETER_N_TRESS),
 				getParameterAsInt(PARAMETER_MAX_LEAF_SIZE),
 				maxFeatures,
+				getParameterAsDouble(PARAMETER_BOOTSTRAP_RATIO),
 				getParameterAsString(
 						PARAMETER_SCORE_CALCULATION),
 				context, this);
@@ -111,6 +114,7 @@ public class IsolationForestOperator extends Operator implements CapabilityProvi
 		types.add(
 				new ParameterTypeInt(PARAMETER_MAX_LEAF_SIZE, "Number of examples in the last leaf",
 						1, Integer.MAX_VALUE, 1));
+		types.add(new ParameterTypeDouble(PARAMETER_BOOTSTRAP_RATIO,"defines what fraction of the data set is used for bootstrapping in each tree",0,Double.MAX_VALUE,0.9));
 		ParameterType useFeatureHeuristic = new ParameterTypeBoolean(PARAMETER_AUTO_FEATURE_SIZE,PARAMETER_AUTO_FEATURE_SIZE,true);
 		ParameterType maxFeatures =				new ParameterTypeInt(PARAMETER_MAX_FEATURES, "Number of features per tree",
 				1, Integer.MAX_VALUE, 5);

@@ -13,3 +13,8 @@
 === 3.1.0 ===
 * Added a new operator Detect Outliers (Univariate), which was previously part of Operator Toolbox
 * Added a new operator Detect Outliers (Time Series)
+
+=== 3.2.0 ===
+* Added a new operator Detect Outliers (Isolation Forest), which was previously part of Operator Toolbox
+* Trees in isolation forests are now trained on a bootstrapped subset of the original data
+* Trees in isolation forests can now define the number of features considered in every tree.

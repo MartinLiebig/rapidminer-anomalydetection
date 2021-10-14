@@ -24,6 +24,7 @@ import com.rapidminer.core.concurrency.ConcurrencyContext;
 import com.rapidminer.example.ExampleSet;
 import com.rapidminer.extension.anomalydetection.model.IOTableAnomalyModel;
 
+import com.rapidminer.extension.anomalydetection.utility.AnomalyUtilities;
 import com.rapidminer.operator.Operator;
 import com.rapidminer.operator.OperatorException;
 import com.rapidminer.operator.UserError;
@@ -49,6 +50,7 @@ public class IsolationForestModel extends IOTableAnomalyModel {
 	private final int trainingSize;
 	private final double scoreNormalizationConstant;
 	private static final long serialVersionUID = 6463454137845839353L;
+	;
 
 	/**
 	 * Builds an iForest with given parameters
@@ -62,7 +64,7 @@ public class IsolationForestModel extends IOTableAnomalyModel {
 	 * @param context
 	 * 		belt context for computation
 	 */
-	public IsolationForestModel(Table table, int nTrees, int maxLeafSize, int maxFeatures, String scoringMode,
+	public IsolationForestModel(Table table, int nTrees, int maxLeafSize, int maxFeatures,double bootstrapRatio, String scoringMode,
 								Context context, Operator operator) throws OperatorException {
 		super(TableViewCreator.INSTANCE.convertOnWriteView(new IOTable(table), false));
 
@@ -92,10 +94,13 @@ public class IsolationForestModel extends IOTableAnomalyModel {
 		SplittableRandom[] treeRngs = new SplittableRandom[nTrees];
 		Arrays.setAll(treeRngs, i -> root.split());
 
+		int bootstrappedSamples = (int) Math.round(bootstrapRatio*table.height());
 		ExecutionUtils.parallel(0, nTrees, i -> {
 			IsolationForestNode tree = new IsolationForestNode(maxLeafSize,maxFeatures, treeRngs[i]);
 			try {
-				tree.fit(table, new SequentialContext());
+				Context treeContext = new SequentialContext();
+				Table bootstrappedTable = AnomalyUtilities.bootStrapTable(table,bootstrappedSamples,treeRngs[i],treeContext);
+				tree.fit(bootstrappedTable,treeContext);
 				rootNodes[i] = tree;
 				operator.getProgress().step();
 			} catch (OperatorException e) {
