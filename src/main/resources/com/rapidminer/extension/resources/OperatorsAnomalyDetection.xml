@@ -47,6 +47,11 @@
             <class>com.rapidminer.extension.anomalydetection.operator.time_series.DetectTimeSeriesOutliers
             </class>
         </operator>
+        <operator>
+            <key>iforest</key>
+            <class>com.rapidminer.extension.anomalydetection.operator.statistical.IsolationForestOperator
+            </class>
+        </operator>
 
         <group key="anomaly_detection">
             <icon>table_new.png</icon>
