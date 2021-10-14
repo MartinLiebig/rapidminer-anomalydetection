@@ -5,15 +5,19 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.SplittableRandom;
 
 import org.apache.commons.math3.util.Pair;
 
+import com.rapidminer.belt.execution.Context;
+import com.rapidminer.belt.table.Table;
 import com.rapidminer.example.Attribute;
 import com.rapidminer.example.AttributeRole;
 import com.rapidminer.example.Attributes;
 import com.rapidminer.example.Example;
 import com.rapidminer.example.ExampleSet;
 import com.rapidminer.operator.OperatorException;
+import com.rapidminer.tools.RandomGenerator;
 
 
 public class AnomalyUtilities {
@@ -104,4 +108,21 @@ public class AnomalyUtilities {
 		return convertExampleSetToDoubleArrays(exaSet, convertedAtts, null, failOnMissing).getFirst();
 	}
 
+	/**
+	 * Bootstrap numberOfNewRows from a given table
+	 * @param tableToBeBootstrapped the table you want to draw from
+	 * @param numberOfNewRows number of rows of the original table
+	 * @param rng Random Generator used
+	 * @param beltContext context for execution
+	 * @return a bootstrapped version of the old Table
+	 */
+
+	public static Table bootStrapTable(Table tableToBeBootstrapped, int numberOfNewRows, SplittableRandom rng, Context beltContext){
+		int[] intArray = new int[numberOfNewRows];
+		for (int k = 0; k < numberOfNewRows; ++k) {
+			intArray[k] = rng.nextInt(0,tableToBeBootstrapped.height());
+		}
+		Table bootstrappedTable = tableToBeBootstrapped.rows(intArray, beltContext);
+		return bootstrappedTable;
+	}
 }

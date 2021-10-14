@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../../../../../rapidminerreferencemanual/documentation2html.xsl"?>
+<p1:documents xmlns:p1="http://rapid-i.com/schemas/documentation/reference/1.0"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://rapid-i.com/schemas/documentation/reference/1.0 ">
+
+    <operator key="operator.operator_toolbox:time_series_anomaly_detection" locale="en"
+              version="7.3.000">
+        <title>Detect Outliers (Time Series)</title>
+        <synopsis>
+            This operator detects outliers in time series data. So far only univariate outlier techniques are supported.
+        </synopsis>
+        <text>
+            <paragraph>
+                Time Series data is special in terms of anomalies, since they have to be seen in their temporal nature.
+                Especially the question: Is this data point an anomaly with respect to the previous k data points is
+                something very specific to time series.
+            </paragraph>
+            <paragraph>
+                This operator has two ways of operating, depending if the ref port is connected or not.
+                If the ref port is not connected the operator applys a sliding window approach.
+                It always uses the training_size number of data points to train a given algorithm, and then applies
+                it on the test_size succeeding ones. The used method can be defined in the 'method' parameter.
+            </paragraph>
+            <paragraph>
+                If the ref port is connected the training data set is always the one given at the ref port.
+            </paragraph>
+            <paragraph>
+                All currently implemented algorithm are univariate algorithms. They create one score per column.
+                The individual scores need to be aggregated, in order to get one score for the complete example.
+                The aggregation function can be selected using the aggregation_method parameter.
+            </paragraph>
+
+        </text>
+        <inputPorts>
+            <port name="example set" type="com.rapidminer.example.ExampleSet">
+                The input ExampleSet.
+            </port>
+            <port name="ref" type="com.rapidminer.example.ExampleSet">
+                The reference data set. If the port is connected, the data given at this port is used as a training
+                data set. Otherwise the operator uses a sliding window approach
+            </port>
+        </inputPorts>
+        <outputPorts>
+            <port name="sco" type="com.rapidminer.example.ExampleSet">
+                The resulting output ExampleSet with the anomaly score(s).
+            </port>
+
+            <port name="ori" type="com.rapidminer.example.ExampleSet">
+               The original data set
+            </port>
+        </outputPorts>
+
+        <parameters>
+            <parameter key="method">
+                <paragraph>
+                    This parameter allows you to select the method you want to use to calculate  outlier scores.
+                </paragraph>
+                <values>
+                    <value value = "z-score">
+                        In this method we calculate the mean and the standard deviation of the training set.
+                        We then calculate the z-score as: (value-mean)/std_dev for each value in the testing set.
+                        The higher the absolute value, the higher the likelihood of an outlier
+                    </value>
+                    <value value = "Standard Deviation">
+                        In this method we calculate the standard deviation of the training set. We then calculate also the
+                        standard deviation of the test set. The delivered score is the ratio: std_dev_testing/std_dev_training.
+                        This score can only be evaluated for test_sizes bigger than 1. Also notice
+                        than the anomaly score is the same over the whole test window.
+                    </value>
+                    <value value = "Linear Regression">
+                        In this method we fit a line through the training data points. We then extrapolate the
+                        line and evaluate it at the next data points. The forecasted value is then compared
+                        to the real value. The score is either the relative or the absolute
+                        difference between the two values, depending on how normalize_regression_scores is set.
+
+                    </value>
+                </values>
+            </parameter>
+            <parameter key = "aggregation_method" >
+                <paragraph>
+                    This parameter allows you to select how you want to aggregate (combine) the different outlier scores from the individual attributes.
+                </paragraph>
+                <values>
+                    <value value = "Average">
+                        Calculates the average (arithmetic mean) of all univariate outlier scores for one row of data.
+                    </value>
+                    <value value = "Maximum">
+                        Finds the maximum of all univariate outlier scores for one row of data.
+                    </value>
+                    <value value = "Product">
+                        Calculates a normalized product of all univariate outlier scores for one row of data (the product of outlier scores for one row divided by the number of scores). Note: for stability reasons we use sum of logs internally.
+                    </value>
+                </values>
+            </parameter>
+
+        </parameters>
+        <parameter key="training_size">
+            Size of the training window. Only used if the reference port is not connected.
+        </parameter>
+        <parameter key="test_size">
+            Size of the test window.
+        </parameter>
+
+        <parameter key = "show_individual_scores" >
+            If the show individual scores parameter is set to true, the operator creates
+            a new outlier score attribute for each attribute selected. If set to false, only the aggregated outlier score is shown.
+        </parameter>
+        <parameter key="use_absolutes_in_aggregation">
+            If set to true absolutes of the scores are used in the aggregation.
+        </parameter>
+        <parameter key="normalize_regression_scores">
+            If set to true the Linear Regression method will calculate relative differences. Otherwise absolute differences are used.
+        </parameter>
+
+        <tutorialProcesses>
+
+            <tutorialProcess key="process.operator_toolbox.outlier.univariate_time_series" title="Standard Deviation Analysis on German Gas Station Data">
+                <description>
+                    In this tutorial we take the Gas Station data set, which is the price of gasoline at the gas station in Dortmund next to the RapidMiner office.
+                    We use 'standard_deviation' as method to see if there is a change in standard deviations in the data set.
+
+                    The result are two distinct errors, where the standard deviation suddenly shrinks. One is on November 18th, where the price is not climbing as it usually is. The reason for this is unknown.
+
+                    The other point is on January 18th. Looking at the data set and the anomaly scores you can clearly see how the standard deviation shrinks. The reason for this is a change in legislation. Starting January 2018 German gas stations where only allowed to increase prices once per day, at noon.
+
+                    This regulatory change changed the standard deviation of our data set. This can be seen as a shift of concept in the prices.
+                </description>
+                <process version="9.10.000">
+                <context>
+                    <input/>
+                    <output/>
+                    <macros/>
+                </context>
+                <operator activated="true" class="process" compatibility="9.10.000" expanded="true" name="Process">
+                    <parameter key="logverbosity" value="init"/>
+                    <parameter key="random_seed" value="2001"/>
+                    <parameter key="send_mail" value="never"/>
+                    <parameter key="notification_email" value=""/>
+                    <parameter key="process_duration_for_mail" value="30"/>
+                    <parameter key="encoding" value="SYSTEM"/>
+                    <process expanded="true">
+                        <operator activated="true" class="retrieve" compatibility="9.10.000" expanded="true" height="68" name="Retrieve Prices of Gas Station" width="90" x="179" y="136">
+                            <parameter key="repository_entry" value="//Samples/Time Series/data sets/Prices of Gas Station"/>
+                        </operator>
+                        <operator activated="true" class="anomalydetection:time_series_anomaly_detection" compatibility="3.1.000" expanded="true" height="82" name="Detect Outlier (Time Series)" width="90" x="313" y="136">
+                            <parameter key="type" value="include attributes"/>
+                            <parameter key="attribute_filter_type" value="all attributes"/>
+                            <parameter key="select_attribute" value=""/>
+                            <parameter key="select_subset" value=""/>
+                            <parameter key="also_apply_to_special_attributes_(id,_label..)" value="false"/>
+                            <parameter key="method" value="Standard Deviation"/>
+                            <parameter key="aggregation_method" value="Average"/>
+                            <parameter key="training_size" value="240"/>
+                            <parameter key="test_size" value="24"/>
+                            <parameter key="show_advanced_settings" value="false"/>
+                            <parameter key="show_individual_scores" value="false"/>
+                            <parameter key="use_absolutes_in_aggregation" value="true"/>
+                            <parameter key="normalize_regression_scores" value="true"/>
+                        </operator>
+                        <connect from_op="Retrieve Prices of Gas Station" from_port="output" to_op="Detect Outlier (Time Series)" to_port="exa"/>
+                        <connect from_op="Detect Outlier (Time Series)" from_port="scored" to_port="result 1"/>
+                        <portSpacing port="source_input 1" spacing="0"/>
+                        <portSpacing port="sink_result 1" spacing="0"/>
+                        <portSpacing port="sink_result 2" spacing="0"/>
+                        <description align="center" color="yellow" colored="false" height="245" resized="true" width="806" x="52" y="260">In this tutorial we take the Gas Station data set, which is the price of gasoline at the gas station in Dortmund next to the RapidMiner office.&lt;br&gt;We use 'standard_deviation' as method to see if there is a change in standard deviations in the data set.&lt;br&gt;&lt;br&gt;The result are two distinct errors, where the standard deviation suddenly shrinks. One is on November 18th, where the price is not climbing as it usually is. The reason for this is unknown.&lt;br&gt;&lt;br&gt;The other point is on January 18th. Looking at the data set and the anomaly scores you can clearly see how the standard deviation shrinks. The reason for this is a change in legislation. Starting January 2018 German gas stations where only allowed to increase prices once per day, at noon. This regulatory change changed the standard deviation of our data set. This can be seen as a shift of concept in the prices.</description>
+                    </process>
+                </operator>
+            </process>
+
+            </tutorialProcess>
+
+        </tutorialProcesses>
+
+        <relatedDocuments>
+            <!-- ... -->
+        </relatedDocuments>
+    </operator>
+</p1:documents>

@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="windows-1252" standalone="no"?>
 <operatorHelp lang="en_EN">
+
+
     <operator>
         <name>k-NN Global Anomaly Score</name>
         <synopsis>Calculates the outlier score based on k-nearest-neighbors
@@ -429,9 +431,41 @@
     <operator>
         <key>cluster_based_anomaly</key>
         <name>Detect Outlier (Clustering)</name>
+        <tag>Outliers</tag>
+        <tag>Anomaly</tag>
     </operator>
     <operator>
         <key>rpca_based_anomaly</key>
         <name>Detect Outlier (rPCA)</name>
+        <tag>Outliers</tag>
+        <tag>Anomaly</tag>
+        <tag>Principal Component Analysis</tag>
+        <tag>Robust</tag>
+    </operator>
+    <operator>
+        <key>time_series_anomaly_detection</key>
+        <name>Detect Outlier (Time Series)</name>
+        <tags>
+            <tag>Outliers</tag>
+            <tag>Anomaly</tag>
+            <tag>Time Series</tag>
+        </tags>
+    </operator>
+    <operator>
+        <key>univariate_anomaly_detection</key>
+        <name>Detect Outlier (Univariate)</name>
+        <tags>
+            <tag>Outliers</tag>
+            <tag>Anomaly</tag>
+        </tags>
+    </operator>
+    <operator>
+        <key>iforest</key>
+        <name>Detect Outlier (Isolation Forest)</name>
+        <tags>
+            <tag>Outliers</tag>
+            <tag>Anomaly</tag>
+            <tag>Tree</tag>
+        </tags>
     </operator>
 </operatorHelp>

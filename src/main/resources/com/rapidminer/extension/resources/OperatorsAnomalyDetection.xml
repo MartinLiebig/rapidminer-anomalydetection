@@ -1,6 +1,30 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <operators name="anomaly_detection" version="6.0"
            docbundle="com/rapidminer/extension/resources/i18n/OperatorsDocAnomalyDetection">
+    <group key="deprecated">
+        <operator>
+            <key>Cluster-Based Local Outlier Factor (CBLOF)</key>
+            <class>de.dfki.madm.anomalydetection.operator.cluster_based.CBLOFAnomalyDetectionOperator
+            </class>
+        </operator>
+
+        <operator>
+            <key>Local Density Cluster-Based Outlier Factor (LDCOF)</key>
+            <class>de.dfki.madm.anomalydetection.operator.cluster_based.LDCOFAnomalyDetectionOperator
+            </class>
+        </operator>
+
+        <operator>
+            <key>Clustering-based Multivariate Gaussian Outlier Score (CMGOS)</key>
+            <class>de.dfki.madm.anomalydetection.operator.cluster_based.CMGOSAnomalyDetectionOperator
+            </class>
+        </operator>
+        <operator>
+            <key>Robust Principal Component Analysis Anomaly Score (rPCA)</key>
+            <class>de.dfki.madm.anomalydetection.operator.statistical_based.RobustPCAOperator
+            </class>
+        </operator>
+    </group>
     <group key="">
         <icon>magnifying_glass.png</icon>
         <operator>
@@ -11,6 +35,21 @@
         <operator>
             <key>rpca_based_anomaly</key>
             <class>com.rapidminer.extension.anomalydetection.operator.statistical.RPCAAnomalyDetectionOperator
+            </class>
+        </operator>
+        <operator>
+            <key>univariate_anomaly_detection</key>
+            <class>com.rapidminer.extension.anomalydetection.operator.univariate.DetectUnivariateOutliers
+            </class>
+        </operator>
+        <operator>
+            <key>time_series_anomaly_detection</key>
+            <class>com.rapidminer.extension.anomalydetection.operator.time_series.DetectTimeSeriesOutliers
+            </class>
+        </operator>
+        <operator>
+            <key>iforest</key>
+            <class>com.rapidminer.extension.anomalydetection.operator.statistical.IsolationForestOperator
             </class>
         </operator>
 
@@ -59,28 +98,6 @@
                 </operator>
             </group>
 
-            <group key="clustering_based">
-                <operator>
-                    <key>Cluster-Based Local Outlier Factor (CBLOF)</key>
-                    <class>de.dfki.madm.anomalydetection.operator.cluster_based.CBLOFAnomalyDetectionOperator
-                    </class>
-                </operator>
-
-                <operator>
-                    <key>Local Density Cluster-Based Outlier Factor (LDCOF)</key>
-                    <class>de.dfki.madm.anomalydetection.operator.cluster_based.LDCOFAnomalyDetectionOperator
-                    </class>
-                </operator>
-
-                <operator>
-                    <key>Clustering-based Multivariate Gaussian Outlier Score (CMGOS)</key>
-                    <class>de.dfki.madm.anomalydetection.operator.cluster_based.CMGOSAnomalyDetectionOperator
-                    </class>
-                </operator>
-
-
-            </group>
-
             <group key="statistical_based">
                 <operator>
                     <key>Histogram-based Outlier Score (HBOS)</key>
@@ -92,11 +109,7 @@
                     <class>de.dfki.madm.anomalydetection.operator.statistical_based.OutlierColorJoin
                     </class>
                 </operator>
-                <operator>
-                    <key>Robust Principal Component Analysis Anomaly Score (rPCA)</key>
-                    <class>de.dfki.madm.anomalydetection.operator.statistical_based.RobustPCAOperator
-                    </class>
-                </operator>
+
             </group>
             <group key="kernel_based">
                 <operator>
