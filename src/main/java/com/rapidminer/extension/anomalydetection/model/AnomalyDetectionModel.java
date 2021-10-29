@@ -1,13 +1,16 @@
 package com.rapidminer.extension.anomalydetection.model;
 
 import java.io.Serializable;
+import java.util.Locale;
 
+import com.rapidminer.belt.util.ColumnRole;
 import com.rapidminer.example.Attribute;
 import com.rapidminer.example.Attributes;
 import com.rapidminer.example.Example;
 import com.rapidminer.example.ExampleSet;
 import com.rapidminer.example.set.RemappedExampleSet;
 import com.rapidminer.example.table.AttributeFactory;
+import com.rapidminer.extension.anomalydetection.utility.AnomalyUtilities;
 import com.rapidminer.operator.AbstractModel;
 import com.rapidminer.operator.OperatorException;
 import com.rapidminer.tools.Ontology;
@@ -38,7 +41,7 @@ public abstract class AnomalyDetectionModel extends AbstractModel implements Ser
 		Attribute anomalyScore = AttributeFactory.createAttribute(
 				Attributes.OUTLIER_NAME, Ontology.REAL);
 		exampleSet.getExampleTable().addAttribute(anomalyScore);
-		exampleSet.getAttributes().setOutlier(anomalyScore);
+		exampleSet.getAttributes().setSpecialAttribute(anomalyScore, Attributes.CONFIDENCE_NAME);
 		return anomalyScore;
 	}
 }

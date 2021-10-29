@@ -10,6 +10,8 @@ import java.util.SplittableRandom;
 import org.apache.commons.math3.util.Pair;
 
 import com.rapidminer.belt.execution.Context;
+import com.rapidminer.belt.reader.NumericReader;
+import com.rapidminer.belt.reader.Readers;
 import com.rapidminer.belt.table.Table;
 import com.rapidminer.example.Attribute;
 import com.rapidminer.example.AttributeRole;
@@ -21,6 +23,14 @@ import com.rapidminer.tools.RandomGenerator;
 
 
 public class AnomalyUtilities {
+
+	private AnomalyUtilities(){};
+
+	public static final String ANOMALY_SCORE_NAME = "score";
+	public static final String ANOMALY_FLAG_NAME = "outlier_flag";
+	public static final String ANOMALY_NAME = "Outlier";
+	public static final String NO_ANOMALY_NAME = "No Outlier";
+
 	private static Pair<double[][], double[]> convertExampleSetToDoubleArrays(ExampleSet exaSet,
 																			  List<Attribute> attributeList, com.rapidminer.example.Attribute labelAttribute,
 																			  boolean failOnMissing) throws OperatorException {
@@ -125,4 +135,37 @@ public class AnomalyUtilities {
 		Table bootstrappedTable = tableToBeBootstrapped.rows(intArray, beltContext);
 		return bootstrappedTable;
 	}
+
+
+	/**
+	 * Computes the (interpolated) pth percentile of the given n (sorted) values. Please note that there is not a
+	 * standard universally accepted way to interpolate percentiles. This implementation uses the method proposed by
+	 * the National Institute of Standards and Technology (NIST) as described in its Engineering Statistics Handbook.
+	 *
+	 * @param reader
+	 * 		the reader for the sorted values
+	 * @param n
+	 * 		the number of non-missing values
+	 * @param p
+	 * 		the percentile to compute
+	 * @return the pth percentile
+	 */
+	public static double computePercentile(NumericReader reader, int n, double p) {
+		double rank = p * (n + 1);
+		int index = (int) rank;
+		if (index < 1) {
+			reader.setPosition(Readers.BEFORE_FIRST_ROW);
+			return reader.read();
+		} else if (index < n) {
+			reader.setPosition(index - 2);
+			double weight = rank - index;
+			double value = reader.read();
+			value += weight * (reader.read() - value);
+			return value;
+		} else {
+			reader.setPosition(n - 2);
+			return reader.read();
+		}
+	}
+
 }
