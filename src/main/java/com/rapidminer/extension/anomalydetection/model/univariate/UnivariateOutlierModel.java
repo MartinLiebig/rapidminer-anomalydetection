@@ -28,6 +28,7 @@ import com.rapidminer.extension.anomalydetection.operator.univariate.HistogramBa
 import com.rapidminer.extension.anomalydetection.operator.univariate.QuartileScorer;
 import com.rapidminer.extension.anomalydetection.operator.univariate.UnivariateScorer;
 import com.rapidminer.extension.anomalydetection.operator.univariate.ZScorer;
+import com.rapidminer.extension.anomalydetection.utility.AnomalyUtilities;
 import com.rapidminer.extension.anomalydetection.utility.algorithms.score_aggregations.AverageScoreAggregation;
 import com.rapidminer.extension.anomalydetection.utility.algorithms.score_aggregations.MaxScoreAggregation;
 import com.rapidminer.extension.anomalydetection.utility.algorithms.score_aggregations.ProductScoreAggregation;
@@ -187,7 +188,7 @@ public class UnivariateOutlierModel extends PreprocessingModel {
 //		explainPredictionsObject =  new ExplainPredictionsIOObject(
 //					TableViewCreator.INSTANCE
 //							.convertOnWriteView(new IOTable(table), false), kv);
-		builder.add("outlier_score", buffer.toColumn()).addMetaData("outlier_score", ColumnRole.PREDICTION);
+		builder.add(AnomalyUtilities.ANOMALY_SCORE_NAME, buffer.toColumn()).addMetaData(AnomalyUtilities.ANOMALY_SCORE_NAME, ColumnRole.SCORE);
 		return builder.build(context);
 	}
 

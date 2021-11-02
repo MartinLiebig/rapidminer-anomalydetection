@@ -53,6 +53,14 @@
             </class>
         </operator>
 
+        <group key="utility">
+            <operator>
+                <key>generate_anomaly_flag</key>
+                <class>com.rapidminer.extension.anomalydetection.operator.utility.GenerateOutlierFlag
+                </class>
+            </operator>
+        </group>
+
         <group key="anomaly_detection">
             <icon>table_new.png</icon>
             <group key="nearest_neighbor_based">

@@ -11,19 +11,27 @@ import java.util.Set;
 
 import com.rapidminer.adaption.belt.ContextAdapter;
 import com.rapidminer.adaption.belt.IOTable;
+import com.rapidminer.belt.column.ColumnType;
 import com.rapidminer.belt.execution.Context;
 import com.rapidminer.belt.table.BeltConverter;
 import com.rapidminer.belt.table.Table;
+import com.rapidminer.belt.util.ColumnRole;
 import com.rapidminer.core.concurrency.ConcurrencyContext;
 import com.rapidminer.example.Attribute;
 import com.rapidminer.example.ExampleSet;
 import com.rapidminer.extension.anomalydetection.model.univariate.UnivariateOutlierModel;
+import com.rapidminer.extension.anomalydetection.utility.AnomalyUtilities;
 import com.rapidminer.operator.Operator;
 import com.rapidminer.operator.OperatorDescription;
 import com.rapidminer.operator.OperatorException;
 import com.rapidminer.operator.UserError;
+import com.rapidminer.operator.ports.IncompatibleMDClassException;
 import com.rapidminer.operator.ports.InputPort;
 import com.rapidminer.operator.ports.OutputPort;
+import com.rapidminer.operator.ports.metadata.MDTransformationRule;
+import com.rapidminer.operator.ports.metadata.table.ColumnInfoBuilder;
+import com.rapidminer.operator.ports.metadata.table.TableMetaData;
+import com.rapidminer.operator.ports.metadata.table.TableMetaDataBuilder;
 import com.rapidminer.operator.preprocessing.PreprocessingModel;
 import com.rapidminer.operator.tools.AttributeSubsetSelector;
 import com.rapidminer.parameter.ParameterType;
@@ -57,8 +65,22 @@ public class DetectUnivariateOutliers extends Operator {
 		super(description);
 		//getTransformer().addGenerationRule(visOutput, ExplainPredictionsIOObject.class);
 		getTransformer().addGenerationRule(modOutput, PreprocessingModel.class);
-		// TODO: make this proper
-		getTransformer().addPassThroughRule(exaInput, exaOutput);
+		getTransformer().addRule(new MDTransformationRule() {
+			@Override
+			public void transformMD() {
+				try {
+					TableMetaData tmd = exaInput.getMetaData(TableMetaData.class);
+					TableMetaDataBuilder builder = new TableMetaDataBuilder(tmd);
+					ColumnInfoBuilder columnInfoBuilder =
+							new ColumnInfoBuilder(ColumnType.REAL);
+					builder.add(AnomalyUtilities.ANOMALY_SCORE_NAME,columnInfoBuilder.build()).addColumnMetaData(AnomalyUtilities.ANOMALY_SCORE_NAME, ColumnRole.SCORE);
+					exaOutput.deliverMD(builder.build());
+				} catch (IncompatibleMDClassException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		//getTransformer().addPassThroughRule(exaInput, exaOutput);
 	}
 
 	@Override

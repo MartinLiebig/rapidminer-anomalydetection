@@ -468,4 +468,17 @@
             <tag>Tree</tag>
         </tags>
     </operator>
+    <operator>
+        <key>generate_anomaly_flag</key>
+        <name>Generate Outlier Flag</name>
+        <tags>
+            <tag>Outliers</tag>
+            <tag>Anomaly</tag>
+            <tag>Flag</tag>
+            <tag>Score</tag>
+            <tag>Discretize</tag>
+            <tag>Threshold</tag>
+        </tags>
+    </operator>
+
 </operatorHelp>

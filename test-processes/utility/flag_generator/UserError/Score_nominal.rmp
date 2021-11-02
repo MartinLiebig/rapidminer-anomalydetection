@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?><process version="9.10.000">
+  <context>
+    <input/>
+    <output/>
+    <macros/>
+  </context>
+  <operator activated="true" class="process" compatibility="9.10.000" expanded="true" name="Process">
+    <parameter key="logverbosity" value="init"/>
+    <parameter key="random_seed" value="2001"/>
+    <parameter key="send_mail" value="never"/>
+    <parameter key="notification_email" value=""/>
+    <parameter key="process_duration_for_mail" value="30"/>
+    <parameter key="encoding" value="SYSTEM"/>
+    <process expanded="true">
+      <operator activated="false" class="retrieve" compatibility="9.10.000" expanded="true" height="68" name="Retrieve Sonar" width="90" x="246" y="340">
+        <parameter key="repository_entry" value="//Samples/data/Sonar"/>
+      </operator>
+      <operator activated="true" class="retrieve" compatibility="9.10.000" expanded="true" height="68" name="Retrieve Sonar (2)" width="90" x="45" y="34">
+        <parameter key="repository_entry" value="//Samples/data/Sonar"/>
+      </operator>
+      <operator activated="true" class="anomalydetection:iforest" compatibility="3.3.000" expanded="true" height="82" name="Detect Outlier (Isolation Forest)" width="90" x="179" y="34">
+        <parameter key="number_of_trees" value="100"/>
+        <parameter key="max_leaf_size" value="1"/>
+        <parameter key="bootstrap_ratio" value="0.9"/>
+        <parameter key="use_feature_heuristic" value="true"/>
+        <parameter key="max_features" value="5"/>
+        <parameter key="score_calculation" value="normalized_score"/>
+      </operator>
+      <operator activated="true" class="numerical_to_polynominal" compatibility="9.10.000" expanded="true" height="82" name="Numerical to Polynominal" width="90" x="313" y="34">
+        <parameter key="attribute_filter_type" value="single"/>
+        <parameter key="attribute" value="outlier_score"/>
+        <parameter key="attributes" value=""/>
+        <parameter key="use_except_expression" value="false"/>
+        <parameter key="value_type" value="numeric"/>
+        <parameter key="use_value_type_exception" value="false"/>
+        <parameter key="except_value_type" value="real"/>
+        <parameter key="block_type" value="value_series"/>
+        <parameter key="use_block_type_exception" value="false"/>
+        <parameter key="except_block_type" value="value_series_end"/>
+        <parameter key="invert_selection" value="false"/>
+        <parameter key="include_special_attributes" value="true"/>
+      </operator>
+      <operator activated="true" class="test:expect_user_error" compatibility="9.3.002" expanded="true" height="82" name="Expect UserError" width="90" x="715" y="34">
+        <parameter key="i18n_key" value="anomaly_detection.outlier_flag.score_not_real"/>
+        <parameter key="add_details_to_log" value="false"/>
+        <process expanded="true">
+          <operator activated="true" class="anomalydetection:generate_anomaly_flag" compatibility="3.3.000" expanded="true" height="103" name="generate_anomaly_flag" width="90" x="45" y="34">
+            <parameter key="method" value="contamination"/>
+            <parameter key="define_score_column" value="false"/>
+            <parameter key="score_column" value="outlier_score"/>
+            <parameter key="contamination_threshold" value="0.05"/>
+            <parameter key="manual_threshold" value="1.0"/>
+            <parameter key="zscore_threshold" value="3.0"/>
+          </operator>
+          <connect from_port="in 1" to_op="generate_anomaly_flag" to_port="example set"/>
+          <portSpacing port="source_in 1" spacing="0"/>
+          <portSpacing port="source_in 2" spacing="0"/>
+        </process>
+      </operator>
+      <connect from_op="Retrieve Sonar (2)" from_port="output" to_op="Detect Outlier (Isolation Forest)" to_port="exa"/>
+      <connect from_op="Detect Outlier (Isolation Forest)" from_port="exa" to_op="Numerical to Polynominal" to_port="example set input"/>
+      <connect from_op="Numerical to Polynominal" from_port="example set output" to_op="Expect UserError" to_port="in 1"/>
+      <portSpacing port="source_input 1" spacing="0"/>
+      <portSpacing port="sink_result 1" spacing="0"/>
+    </process>
+  </operator>
+</process>

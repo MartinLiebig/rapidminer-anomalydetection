@@ -18,3 +18,8 @@
 * Added a new operator Detect Outliers (Isolation Forest), which was previously part of Operator Toolbox
 * Trees in isolation forests are now trained on a bootstrapped subset of the original data
 * Trees in isolation forests can now define the number of features considered in every tree.
+
+=== 3.3.0 ===
+* Changed the role of outlier scores of Detect Outlier (Clustering), Detect Outlier (Univariate) Detect Outlier (rPCA). Its now both a confidence (score).
+* Changed the name of the generated score attribute in Detect Outlier (Univariate). It is now "score"
+* Added a new operator "Generate Outlier Flag" which allows you to discretize the score attributes.
