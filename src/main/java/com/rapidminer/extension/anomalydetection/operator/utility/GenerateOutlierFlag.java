@@ -13,6 +13,9 @@ import com.rapidminer.belt.reader.Readers;
 import com.rapidminer.belt.util.ColumnRole;
 import com.rapidminer.belt.util.Order;
 import com.rapidminer.core.concurrency.ConcurrencyContext;
+import com.rapidminer.extension.anomalydetection.metadata.ThresholdFlagModelMetaData;
+import com.rapidminer.extension.anomalydetection.metadata.UnivariateOutlierMetaData;
+import com.rapidminer.extension.anomalydetection.model.univariate.UnivariateOutlierModel;
 import com.rapidminer.extension.anomalydetection.operator.utility.flag_generator.ThresholdFlagModel;
 import com.rapidminer.extension.anomalydetection.utility.AnomalyUtilities;
 import com.rapidminer.operator.GeneralModel;
@@ -24,6 +27,7 @@ import com.rapidminer.operator.learner.functions.FunctionFittingModel;
 import com.rapidminer.operator.ports.IncompatibleMDClassException;
 import com.rapidminer.operator.ports.InputPort;
 import com.rapidminer.operator.ports.OutputPort;
+import com.rapidminer.operator.ports.metadata.ExampleSetMetaData;
 import com.rapidminer.operator.ports.metadata.GenerateTableModelTransformationRule;
 import com.rapidminer.operator.ports.metadata.MDTransformationRule;
 import com.rapidminer.operator.ports.metadata.table.ColumnInfoBuilder;
@@ -65,9 +69,18 @@ public class GenerateOutlierFlag extends Operator {
 		super(description);
 		getTransformer().addPassThroughRule(exaInput,oriOutput);
 //		getTransformer().addRule(
-//				new GenerateTableModelTransformationRule(exaInput, modOutput, ThresholdFlagModel.class,
-//						GeneralModel.ModelKind.POSTPROCESSING));
-		getTransformer().addGenerationRule(modOutput,ThresholdFlagModel.class);
+				new GenerateTableModelTransformationRule(exaInput, modOutput, ThresholdFlagModel.class,
+//						GeneralModel.ModelKind.PREPROCESSING));
+
+		getTransformer().addRule(() -> {
+			try {
+				modOutput.deliverMD(
+						new ThresholdFlagModelMetaData(exaInput.getMetaData(TableMetaData.class)));
+			} catch (IncompatibleMDClassException e) {
+				e.printStackTrace();
+			}
+		});
+//		getTransformer().addGenerationRule(modOutput,ThresholdFlagModel.class);
 		getTransformer().addRule(() -> {
 			try {
 				TableMetaData tmd = exaInput.getMetaData(TableMetaData.class);

@@ -12,7 +12,7 @@
     <parameter key="process_duration_for_mail" value="30"/>
     <parameter key="encoding" value="SYSTEM"/>
     <process expanded="true">
-      <operator activated="true" class="subprocess" compatibility="9.10.001" expanded="true" height="82" name="Generate DataSet" width="90" x="45" y="34">
+      <operator activated="true" class="subprocess" compatibility="9.10.001" expanded="true" height="82" name="Generate DataSet" width="90" x="45" y="136">
         <process expanded="true">
           <operator activated="true" class="utility:create_exampleset" compatibility="9.10.001" expanded="true" height="68" name="Create ExampleSet" origin="GENERATED_TUTORIAL" width="90" x="179" y="34">
             <parameter key="generator_type" value="comma separated text"/>
@@ -31,20 +31,14 @@
             <parameter key="decimal_point_character" value="."/>
             <parameter key="trim_attribute_names" value="true"/>
           </operator>
-          <operator activated="true" class="set_role" compatibility="9.10.001" expanded="true" height="82" name="Set Role" width="90" x="313" y="34">
-            <parameter key="attribute_name" value="part"/>
-            <parameter key="target_role" value="part"/>
-            <list key="set_additional_roles"/>
-          </operator>
-          <connect from_op="Create ExampleSet" from_port="output" to_op="Set Role" to_port="example set input"/>
-          <connect from_op="Set Role" from_port="example set output" to_port="out 1"/>
+          <connect from_op="Create ExampleSet" from_port="output" to_port="out 1"/>
           <portSpacing port="source_in 1" spacing="0"/>
           <portSpacing port="sink_out 1" spacing="0"/>
           <portSpacing port="sink_out 2" spacing="0"/>
         </process>
-        <description align="center" color="transparent" colored="false" width="126">Generate Mouse Data set</description>
       </operator>
-      <operator activated="true" class="anomalydetection:univariate_anomaly_detection" compatibility="3.3.000" expanded="true" height="82" name="Detect Outlier (Univariate)" width="90" x="179" y="34">
+      <operator activated="true" class="multiply" compatibility="9.10.001" expanded="true" height="103" name="Multiply" width="90" x="179" y="136"/>
+      <operator activated="true" class="anomalydetection:univariate_anomaly_detection" compatibility="3.3.000" expanded="true" height="82" name="Detect Outlier (Univariate)" width="90" x="313" y="34">
         <parameter key="attribute_filter_type" value="all"/>
         <parameter key="attribute" value=""/>
         <parameter key="attributes" value=""/>
@@ -61,56 +55,18 @@
         <parameter key="aggregation_method" value="Product"/>
         <parameter key="show_individual_scores" value="false"/>
       </operator>
-      <operator activated="true" class="anomalydetection:generate_anomaly_flag" compatibility="3.3.000" expanded="true" height="103" name="Generate Outlier Flag" width="90" x="514" y="34">
-        <parameter key="method" value="contamination"/>
-        <parameter key="define_score_column" value="false"/>
-        <parameter key="score_column" value=""/>
-        <parameter key="contamination_threshold" value="0.05"/>
-        <parameter key="manual_threshold" value="1.0"/>
-        <parameter key="zscore_threshold" value="3.0"/>
-        <description align="center" color="transparent" colored="false" width="126">Generate outlier flag using contamination.</description>
-      </operator>
-      <operator activated="true" class="utility:create_exampleset" compatibility="9.10.001" expanded="true" height="68" name="Create ExampleSet (2)" width="90" x="45" y="289">
-        <parameter key="generator_type" value="attribute functions"/>
-        <parameter key="number_of_examples" value="100"/>
-        <parameter key="use_stepsize" value="false"/>
-        <list key="function_descriptions">
-          <parameter key="x" value="rand()"/>
-          <parameter key="y" value="rand()"/>
-        </list>
-        <parameter key="add_id_attribute" value="false"/>
-        <list key="numeric_series_configuration"/>
-        <list key="date_series_configuration"/>
-        <list key="date_series_configuration (interval)"/>
-        <parameter key="date_format" value="yyyy-MM-dd HH:mm:ss"/>
-        <parameter key="time_zone" value="SYSTEM"/>
-        <parameter key="column_separator" value=","/>
-        <parameter key="parse_all_as_nominal" value="false"/>
-        <parameter key="decimal_point_character" value="."/>
-        <parameter key="trim_attribute_names" value="true"/>
-        <description align="center" color="transparent" colored="false" width="126">Random data in [0,1]</description>
-      </operator>
-      <operator activated="true" class="apply_model" compatibility="9.10.001" expanded="true" height="82" name="Apply Model" width="90" x="514" y="238">
+      <operator activated="true" class="apply_model" compatibility="9.10.001" expanded="true" height="82" name="Apply Model" width="90" x="447" y="136">
         <list key="application_parameters"/>
         <parameter key="create_view" value="false"/>
       </operator>
-      <operator activated="true" class="apply_model" compatibility="9.10.001" expanded="true" height="82" name="Apply Model (2)" width="90" x="648" y="136">
-        <list key="application_parameters"/>
-        <parameter key="create_view" value="false"/>
-      </operator>
-      <connect from_op="Generate DataSet" from_port="out 1" to_op="Detect Outlier (Univariate)" to_port="exa"/>
-      <connect from_op="Detect Outlier (Univariate)" from_port="outlier" to_op="Generate Outlier Flag" to_port="example set"/>
+      <connect from_op="Generate DataSet" from_port="out 1" to_op="Multiply" to_port="input"/>
+      <connect from_op="Multiply" from_port="output 1" to_op="Detect Outlier (Univariate)" to_port="exa"/>
+      <connect from_op="Multiply" from_port="output 2" to_op="Apply Model" to_port="unlabelled data"/>
       <connect from_op="Detect Outlier (Univariate)" from_port="mod" to_op="Apply Model" to_port="model"/>
-      <connect from_op="Generate Outlier Flag" from_port="example set" to_port="result 1"/>
-      <connect from_op="Generate Outlier Flag" from_port="model" to_op="Apply Model (2)" to_port="model"/>
-      <connect from_op="Create ExampleSet (2)" from_port="output" to_op="Apply Model" to_port="unlabelled data"/>
-      <connect from_op="Apply Model" from_port="labelled data" to_op="Apply Model (2)" to_port="unlabelled data"/>
-      <connect from_op="Apply Model (2)" from_port="labelled data" to_port="result 2"/>
+      <connect from_op="Apply Model" from_port="labelled data" to_port="result 1"/>
       <portSpacing port="source_input 1" spacing="0"/>
       <portSpacing port="sink_result 1" spacing="0"/>
       <portSpacing port="sink_result 2" spacing="0"/>
-      <portSpacing port="sink_result 3" spacing="0"/>
-      <description align="center" color="yellow" colored="false" height="163" resized="true" width="668" x="233" y="370">In this tutorial we first create a univariate outlier score on the mouse data set. We the use the Generate Outlier Flag operator to create a flag which is derived from the score. We use the contamination method with a contamination threshold of 0.05. This means that the 5% highest scores are flagged as outliers.&lt;br&gt;&lt;br&gt;We later apply both, the univariate outlier model and the flag model on a data set with uniform values in [0,1].&lt;br&gt;You can see that the threshold generated on the mouse data set is used on the random data. This means that only data points 'within the mouse' are considered to be normal.</description>
     </process>
   </operator>
 </process>
