@@ -68,9 +68,6 @@ public class GenerateOutlierFlag extends Operator {
 	public GenerateOutlierFlag(OperatorDescription description) {
 		super(description);
 		getTransformer().addPassThroughRule(exaInput,oriOutput);
-//		getTransformer().addRule(
-				new GenerateTableModelTransformationRule(exaInput, modOutput, ThresholdFlagModel.class,
-//						GeneralModel.ModelKind.PREPROCESSING));
 
 		getTransformer().addRule(() -> {
 			try {
@@ -80,7 +77,7 @@ public class GenerateOutlierFlag extends Operator {
 				e.printStackTrace();
 			}
 		});
-//		getTransformer().addGenerationRule(modOutput,ThresholdFlagModel.class);
+
 		getTransformer().addRule(() -> {
 			try {
 				TableMetaData tmd = exaInput.getMetaData(TableMetaData.class);
