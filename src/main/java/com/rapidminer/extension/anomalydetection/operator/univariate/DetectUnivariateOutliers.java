@@ -19,8 +19,10 @@ import com.rapidminer.belt.util.ColumnRole;
 import com.rapidminer.core.concurrency.ConcurrencyContext;
 import com.rapidminer.example.Attribute;
 import com.rapidminer.example.ExampleSet;
+import com.rapidminer.extension.anomalydetection.metadata.UnivariateOutlierMetaData;
 import com.rapidminer.extension.anomalydetection.model.univariate.UnivariateOutlierModel;
 import com.rapidminer.extension.anomalydetection.utility.AnomalyUtilities;
+import com.rapidminer.operator.GeneralModel;
 import com.rapidminer.operator.Operator;
 import com.rapidminer.operator.OperatorDescription;
 import com.rapidminer.operator.OperatorException;
@@ -28,11 +30,10 @@ import com.rapidminer.operator.UserError;
 import com.rapidminer.operator.ports.IncompatibleMDClassException;
 import com.rapidminer.operator.ports.InputPort;
 import com.rapidminer.operator.ports.OutputPort;
-import com.rapidminer.operator.ports.metadata.MDTransformationRule;
+import com.rapidminer.operator.ports.metadata.ExampleSetMetaData;
 import com.rapidminer.operator.ports.metadata.table.ColumnInfoBuilder;
 import com.rapidminer.operator.ports.metadata.table.TableMetaData;
 import com.rapidminer.operator.ports.metadata.table.TableMetaDataBuilder;
-import com.rapidminer.operator.preprocessing.PreprocessingModel;
 import com.rapidminer.operator.tools.AttributeSubsetSelector;
 import com.rapidminer.parameter.ParameterType;
 import com.rapidminer.parameter.ParameterTypeBoolean;
@@ -63,24 +64,31 @@ public class DetectUnivariateOutliers extends Operator {
 
 	public DetectUnivariateOutliers(OperatorDescription description) {
 		super(description);
-		//getTransformer().addGenerationRule(visOutput, ExplainPredictionsIOObject.class);
-		getTransformer().addGenerationRule(modOutput, PreprocessingModel.class);
-		getTransformer().addRule(new MDTransformationRule() {
-			@Override
-			public void transformMD() {
-				try {
-					TableMetaData tmd = exaInput.getMetaData(TableMetaData.class);
-					TableMetaDataBuilder builder = new TableMetaDataBuilder(tmd);
-					ColumnInfoBuilder columnInfoBuilder =
-							new ColumnInfoBuilder(ColumnType.REAL);
-					builder.add(AnomalyUtilities.ANOMALY_SCORE_NAME,columnInfoBuilder.build()).addColumnMetaData(AnomalyUtilities.ANOMALY_SCORE_NAME, ColumnRole.SCORE);
-					exaOutput.deliverMD(builder.build());
-				} catch (IncompatibleMDClassException e) {
-					e.printStackTrace();
-				}
+
+
+		getTransformer().addRule(() -> {
+			try {
+				modOutput.deliverMD(
+						new UnivariateOutlierMetaData(
+								UnivariateOutlierModel.class,
+								exaInput.getMetaData(ExampleSetMetaData.class), GeneralModel.ModelKind.PREPROCESSING));
+			} catch (IncompatibleMDClassException e) {
+				e.printStackTrace();
+			}
+			});
+
+		getTransformer().addRule(() -> {
+			try {
+				TableMetaData tmd = exaInput.getMetaData(TableMetaData.class);
+				TableMetaDataBuilder builder = new TableMetaDataBuilder(tmd);
+				ColumnInfoBuilder columnInfoBuilder =
+						new ColumnInfoBuilder(ColumnType.REAL);
+				builder.add(AnomalyUtilities.ANOMALY_SCORE_NAME, columnInfoBuilder.build()).addColumnMetaData(AnomalyUtilities.ANOMALY_SCORE_NAME, ColumnRole.SCORE);
+				exaOutput.deliverMD(builder.build());
+			} catch (IncompatibleMDClassException e) {
+				e.printStackTrace();
 			}
 		});
-		//getTransformer().addPassThroughRule(exaInput, exaOutput);
 	}
 
 	@Override
