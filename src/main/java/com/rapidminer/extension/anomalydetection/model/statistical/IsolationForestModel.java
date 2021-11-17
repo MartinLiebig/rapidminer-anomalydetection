@@ -160,8 +160,8 @@ public class IsolationForestModel extends IOTableAnomalyModel {
 		}
 
 		Table resulttable = Builders.newTableBuilder(table)
-				.add(OUTLIER_SCORE_NAME, buffer.toColumn())
-				.addMetaData(OUTLIER_SCORE_NAME, ColumnRole.SCORE)
+				.add(AnomalyUtilities.ANOMALY_SCORE_NAME, buffer.toColumn())
+				.addMetaData(AnomalyUtilities.ANOMALY_SCORE_NAME, ColumnRole.SCORE)
 				.build(ContextAdapter.adapt(context));
 		return new IOTable(resulttable);
 	}

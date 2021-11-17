@@ -7,7 +7,9 @@ import com.rapidminer.adaption.belt.IOTable;
 import com.rapidminer.belt.execution.Context;
 import com.rapidminer.belt.table.Table;
 import com.rapidminer.belt.util.ColumnRole;
+import com.rapidminer.example.Attributes;
 import com.rapidminer.extension.anomalydetection.model.statistical.IsolationForestModel;
+import com.rapidminer.extension.anomalydetection.utility.AnomalyUtilities;
 import com.rapidminer.operator.Operator;
 import com.rapidminer.operator.OperatorCapability;
 import com.rapidminer.operator.OperatorDescription;
@@ -64,8 +66,8 @@ public class IsolationForestOperator extends Operator implements CapabilityProvi
 					@Override
 					public ExampleSetMetaData modifyExampleSet(ExampleSetMetaData metaData) {
 
-						metaData.addAttribute(new AttributeMetaData("outlier_score", Ontology.REAL,
-								ColumnRole.OUTLIER.toString()));
+						metaData.addAttribute(new AttributeMetaData(AnomalyUtilities.ANOMALY_SCORE_NAME, Ontology.REAL,
+								Attributes.CONFIDENCE_NAME));
 
 						return metaData;
 					}

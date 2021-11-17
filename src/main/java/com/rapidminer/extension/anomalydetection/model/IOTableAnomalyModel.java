@@ -13,7 +13,7 @@ import com.rapidminer.studio.concurrency.internal.SequentialConcurrencyContext;
 
 public abstract class IOTableAnomalyModel extends AbstractModel {
 
-	public static final String OUTLIER_SCORE_NAME = "outlier_score";
+
 
 	private static final long serialVersionUID = 1085847259711014431L;
 

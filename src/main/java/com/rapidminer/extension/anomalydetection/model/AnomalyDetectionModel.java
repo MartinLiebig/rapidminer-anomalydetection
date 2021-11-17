@@ -39,7 +39,7 @@ public abstract class AnomalyDetectionModel extends AbstractModel implements Ser
 
 	public Attribute addAnomalyAttribute(ExampleSet exampleSet) {
 		Attribute anomalyScore = AttributeFactory.createAttribute(
-				Attributes.OUTLIER_NAME, Ontology.REAL);
+				AnomalyUtilities.ANOMALY_SCORE_NAME, Ontology.REAL);
 		exampleSet.getExampleTable().addAttribute(anomalyScore);
 		exampleSet.getAttributes().setSpecialAttribute(anomalyScore, Attributes.CONFIDENCE_NAME);
 		return anomalyScore;

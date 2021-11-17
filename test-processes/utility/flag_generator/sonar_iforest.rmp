@@ -23,8 +23,8 @@
         <parameter key="max_features" value="5"/>
         <parameter key="score_calculation" value="normalized_score"/>
       </operator>
-      <operator activated="true" breakpoints="after" class="multiply" compatibility="9.10.001" expanded="true" height="103" name="Multiply" width="90" x="514" y="238"/>
-      <operator activated="true" breakpoints="after" class="anomalydetection:generate_anomaly_flag" compatibility="3.3.000" expanded="true" height="103" name="generate_anomaly_flag" width="90" x="648" y="85">
+      <operator activated="true" class="multiply" compatibility="9.10.001" expanded="true" height="103" name="Multiply" width="90" x="514" y="238"/>
+      <operator activated="true" class="anomalydetection:generate_anomaly_flag" compatibility="3.3.000" expanded="true" height="103" name="generate_anomaly_flag" width="90" x="648" y="85">
         <parameter key="method" value="contamination"/>
         <parameter key="define_score_column" value="false"/>
         <parameter key="score_column" value="outlier_score"/>
