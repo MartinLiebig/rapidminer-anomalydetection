@@ -20,6 +20,6 @@
 * Trees in isolation forests can now define the number of features considered in every tree.
 
 === 3.3.0 ===
-* Changed the role of outlier scores of Detect Outlier (Clustering), Detect Outlier (Univariate) Detect Outlier (rPCA). Its now both a confidence (score).
-* Changed the name of the generated score attribute in Detect Outlier (Univariate). It is now "score"
+* Changed the role of outlier scores in all Detect Outlier operators. Its now a confidence (score).
+* Changed the name of the generated score attribute in all Detect Outlier operators. It is now "score"
 * Added a new operator "Generate Outlier Flag" which allows you to discretize the score attributes.

@@ -20,6 +20,7 @@ import com.rapidminer.extension.anomalydetection.operator.time_series.algorithm.
 import com.rapidminer.extension.anomalydetection.operator.time_series.algorithm.ZScoreOutlierDetector;
 import com.rapidminer.extension.anomalydetection.operator.univariate.DetectUnivariateOutliers;
 
+import com.rapidminer.extension.anomalydetection.utility.AnomalyUtilities;
 import com.rapidminer.extension.anomalydetection.utility.algorithms.score_aggregations.AverageScoreAggregation;
 import com.rapidminer.extension.anomalydetection.utility.algorithms.score_aggregations.MaxScoreAggregation;
 import com.rapidminer.extension.anomalydetection.utility.algorithms.score_aggregations.ProductScoreAggregation;
@@ -86,7 +87,7 @@ public class DetectTimeSeriesOutliers extends Operator {
 
 			@Override
 			public ExampleSetMetaData modifyExampleSet(ExampleSetMetaData metaData) {
-				metaData.addAttribute(new AttributeMetaData("score", Ontology.REAL, ColumnRole.OUTLIER.toString()));
+				metaData.addAttribute(new AttributeMetaData(AnomalyUtilities.ANOMALY_SCORE_NAME, Ontology.REAL, ColumnRole.SCORE.toString().toLowerCase()));
 				return metaData;
 			}
 		});
@@ -105,8 +106,8 @@ public class DetectTimeSeriesOutliers extends Operator {
 		Context context = ContextAdapter.adapt(Resources.getConcurrencyContext(this));
 
 		TableBuilder builder = Builders.newTableBuilder(table);
-		if (table.labels().contains("score")) {
-			builder.remove("score");
+		if (table.labels().contains(AnomalyUtilities.ANOMALY_SCORE_NAME)) {
+			builder.remove(AnomalyUtilities.ANOMALY_SCORE_NAME);
 		}
 		// create the individual scores
 		List<NumericBuffer> scoreBuffers = new ArrayList<>();
@@ -120,8 +121,8 @@ public class DetectTimeSeriesOutliers extends Operator {
 			}
 			scoreBuffers.add(results);
 			if(getParameterAsBoolean(PARAMETER_CREATE_INDIVIDUAL_SCORES)) {
-				builder.add("score_" + columnName, results.toColumn())
-						.addMetaData("score_" + columnName, ColumnRole.OUTLIER);
+				builder.add(AnomalyUtilities.ANOMALY_SCORE_NAME+"_" + columnName, results.toColumn())
+						.addMetaData(AnomalyUtilities.ANOMALY_SCORE_NAME+"_" + columnName, ColumnRole.SCORE);
 			}
 		}
 		// Create an aggregated score
@@ -135,8 +136,8 @@ public class DetectTimeSeriesOutliers extends Operator {
 			aggregatedScoreBuffer.set(rowCounter, scoreAggregation.getAggregate());
 
 		}
-		builder.add("score", aggregatedScoreBuffer.toColumn())
-				.addMetaData("score", ColumnRole.OUTLIER);
+		builder.add(AnomalyUtilities.ANOMALY_SCORE_NAME, aggregatedScoreBuffer.toColumn())
+				.addMetaData(AnomalyUtilities.ANOMALY_SCORE_NAME, ColumnRole.SCORE);
 		exaOutput.deliver(new IOTable(builder.build(context)));
 
 
