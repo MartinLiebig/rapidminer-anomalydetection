@@ -23,3 +23,6 @@
 * Changed the role of outlier scores in all Detect Outlier operators. Its now a confidence (score).
 * Changed the name of the generated score attribute in all Detect Outlier operators. It is now "score"
 * Added a new operator "Generate Outlier Flag" which allows you to discretize the score attributes.
+
+=== 3.3.1 ===
+* Fixed a bug in Detect Outlier (TS), were z-scores wouldn't work with a reference set.

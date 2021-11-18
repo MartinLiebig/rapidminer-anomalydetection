@@ -82,7 +82,7 @@ public class DetectTimeSeriesOutliers extends Operator {
 
 	public DetectTimeSeriesOutliers(OperatorDescription description) {
 		super(description);
-
+		getTransformer().addPassThroughRule(exaInput,oriOutput);
 		getTransformer().addRule(new ExampleSetPassThroughRule(exaInput, exaOutput, SetRelation.EQUAL) {
 
 			@Override
@@ -211,7 +211,7 @@ public class DetectTimeSeriesOutliers extends Operator {
 		//
 		AbstractTSOutlierDetector outlierDetector = createOutlierDetector();
 		if (!outlierDetector.supportsCapability(TSOutlierCapability.SUPPORTS_TRAINING)) {
-			throw new UserError(this, "operator_toolbox.outlier.does_not_support_window", getParameterAsString(PARAMETER_METHOD));
+			throw new UserError(this, "anomaly_detection.detect_outlier_ts.does_not_support_training", getParameterAsString(PARAMETER_METHOD));
 		}
 
 		double[] trainingData = new double[trainingBuffer.size()];
