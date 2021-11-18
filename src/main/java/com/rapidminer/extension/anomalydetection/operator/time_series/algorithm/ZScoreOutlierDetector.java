@@ -30,9 +30,8 @@ public class ZScoreOutlierDetector extends AbstractTSOutlierDetector {
 	public boolean supportsCapability(TSOutlierCapability capability) {
 		switch (capability) {
 			case SUPPORTS_SLIDING_WINDOW:
-				return true;
 			case SUPPORTS_TRAINING:
-				return false;
+				return true;
 			default:
 				return false;
 		}
