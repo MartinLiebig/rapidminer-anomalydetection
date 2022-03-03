@@ -204,8 +204,8 @@ public class DetectTimeSeriesOutliers extends Operator {
 	 */
 	private NumericBuffer applyWithTrainingSet(Table trainingTable, Table testingTable, String columnName) throws UserError {
 		NumericBuffer trainingBuffer = Buffers.realBuffer(trainingTable.column(columnName));
-		NumericBuffer results = Buffers.realBuffer(trainingBuffer.size());
 		NumericBuffer testingBuffer = Buffers.realBuffer(testingTable.column(columnName));
+		NumericBuffer results = Buffers.realBuffer(testingBuffer.size());
 		//
 		// Train the model
 		//
