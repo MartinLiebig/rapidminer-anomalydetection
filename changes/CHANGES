@@ -26,6 +26,7 @@
 
 === 3.3.1 ===
 * Fixed a bug in Detect Outlier (TS), were z-scores wouldn't work with a reference set.
+* Fixed a bug in Detect Outlier (TS), were algorithms won't work if the reference set is smaller than the test set
 
 
 
