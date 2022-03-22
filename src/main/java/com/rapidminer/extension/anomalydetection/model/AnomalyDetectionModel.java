@@ -15,7 +15,7 @@ import com.rapidminer.operator.AbstractModel;
 import com.rapidminer.operator.OperatorException;
 import com.rapidminer.tools.Ontology;
 
-
+@Deprecated
 public abstract class AnomalyDetectionModel extends AbstractModel implements Serializable {
 
 	protected AnomalyDetectionModel(ExampleSet exampleSet) {

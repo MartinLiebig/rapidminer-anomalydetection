@@ -1,28 +1,44 @@
-package com.rapidminer.extension.anomalydetection.model.statistical;
+package com.rapidminer.extension.anomalydetection.anomaly_models.statistical;
 
-import Jama.EigenvalueDecomposition;
-import Jama.Matrix;
-
-import com.rapidminer.example.Attribute;
-import com.rapidminer.example.Example;
-import com.rapidminer.example.ExampleSet;
-import com.rapidminer.example.Tools;
-import com.rapidminer.example.set.MappedExampleSet;
-import com.rapidminer.extension.anomalydetection.model.AnomalyDetectionModel;
-import com.rapidminer.operator.OperatorException;
-import com.rapidminer.operator.features.transformation.PCAModel;
-import com.rapidminer.tools.math.matrix.CovarianceMatrix;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.math.MathException;
 import org.apache.commons.math.distribution.ChiSquaredDistributionImpl;
 
-import java.util.*;
+import com.rapidminer.adaption.belt.IOTable;
+import com.rapidminer.belt.buffer.Buffers;
+import com.rapidminer.belt.buffer.NumericBuffer;
+import com.rapidminer.belt.column.Column;
+import com.rapidminer.belt.table.BeltConverter;
+import com.rapidminer.belt.table.Table;
+import com.rapidminer.belt.table.Tables;
+import com.rapidminer.core.concurrency.ConcurrencyContext;
+import com.rapidminer.example.Attribute;
+import com.rapidminer.example.Example;
+import com.rapidminer.example.ExampleSet;
+import com.rapidminer.example.Tools;
+import com.rapidminer.example.set.MappedExampleSet;
+import com.rapidminer.extension.anomalydetection.anomaly_models.IOTableAnomalyModel;
+import com.rapidminer.operator.Operator;
+import com.rapidminer.operator.OperatorException;
+import com.rapidminer.operator.features.transformation.PCAModel;
+import com.rapidminer.operator.learner.IOTablePredictionModel;
+import com.rapidminer.studio.concurrency.internal.SequentialConcurrencyContext;
+import com.rapidminer.tools.math.matrix.CovarianceMatrix;
 
-/** use RPCA in anomaly_models instead **/
+import Jama.EigenvalueDecomposition;
+import Jama.Matrix;
 
-@Deprecated
-public class RPCAModel extends AnomalyDetectionModel {
+
+public class RPCAModel extends IOTableAnomalyModel {
 
 
 	private double normProb = 0.05;
@@ -53,8 +69,9 @@ public class RPCAModel extends AnomalyDetectionModel {
 	private int[] opcs;
 	double scoreNormalizer = 1.0;
 
-	public RPCAModel(ExampleSet exampleSet) {
-		super(exampleSet);
+	public RPCAModel(){}
+	public RPCAModel(IOTable table) {
+		super(table, Tables.ColumnSetRequirement.EQUAL, Tables.TypeRequirement.ALLOW_INT_FOR_REAL);
 	}
 
 	public void train(ExampleSet trainSet) throws OperatorException {
@@ -217,13 +234,19 @@ public class RPCAModel extends AnomalyDetectionModel {
 
 	}
 
-
 	@Override
-	public double[] evaluate(ExampleSet testSet) throws OperatorException {
+	protected Column performPrediction(Table adapted, Map<String, Column> confidences, Operator operator) throws OperatorException {
+		ConcurrencyContext context = new SequentialConcurrencyContext();
+		ExampleSet exampleSet = BeltConverter.convert(new IOTable(adapted), context);
+		return evaluate(exampleSet).toColumn();
+	}
+
+
+	public NumericBuffer evaluate(ExampleSet testSet) throws OperatorException {
 
 		ExampleSet res = model.apply((ExampleSet) testSet.clone());
-		double[] score = new double[res.size()];
 
+		NumericBuffer score = Buffers.realBuffer(res.size());
 		for (int exNr = 0; exNr < testSet.size(); exNr++) {
 			Example pc = res.getExample(exNr);
 			double oscore = 0.0;
@@ -239,7 +262,7 @@ public class RPCAModel extends AnomalyDetectionModel {
 				aNr++;
 				ctr++;
 			}
-			score[exNr] = oscore / scoreNormalizer; //orig.setValue(scoreAttr, oscore/scoreNormalizer);
+			score.set(exNr, oscore / scoreNormalizer); //orig.setValue(scoreAttr, oscore/scoreNormalizer);
 		}
 		return score;
 	}
@@ -275,6 +298,7 @@ public class RPCAModel extends AnomalyDetectionModel {
 	public void setValueThreshold(double valueThreshold) {
 		this.valueThreshold = valueThreshold;
 	}
+
 
 	@Override
 	public String toString() {

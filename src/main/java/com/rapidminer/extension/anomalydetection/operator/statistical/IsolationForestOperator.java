@@ -6,9 +6,9 @@ import java.util.List;
 import com.rapidminer.adaption.belt.IOTable;
 import com.rapidminer.belt.execution.Context;
 import com.rapidminer.belt.table.Table;
-import com.rapidminer.belt.util.ColumnRole;
+
 import com.rapidminer.example.Attributes;
-import com.rapidminer.extension.anomalydetection.model.statistical.IsolationForestModel;
+import com.rapidminer.extension.anomalydetection.anomaly_models.statistical.IsolationForestModel;
 import com.rapidminer.extension.anomalydetection.utility.AnomalyUtilities;
 import com.rapidminer.operator.Operator;
 import com.rapidminer.operator.OperatorCapability;
@@ -76,9 +76,9 @@ public class IsolationForestOperator extends Operator implements CapabilityProvi
 
 	@Override
 	public void doWork() throws OperatorException {
-		IOTable wrapper = exaInput.getData(IOTable.class);
+		IOTable ioTable = exaInput.getData(IOTable.class);
 
-		Table table = wrapper.getTable();
+		Table table = ioTable.getTable();
 
 		Context context = BeltTools.getContext(this);
 
@@ -94,7 +94,7 @@ public class IsolationForestOperator extends Operator implements CapabilityProvi
 			throw new UserError(this,"anomaly_detection.example_error",maxFeatures,regularWidth);
 		}
 
-		IsolationForestModel forest = new IsolationForestModel(table,
+		IsolationForestModel forest = new IsolationForestModel(ioTable,
 				getParameterAsInt(PARAMETER_N_TRESS),
 				getParameterAsInt(PARAMETER_MAX_LEAF_SIZE),
 				maxFeatures,
@@ -103,7 +103,7 @@ public class IsolationForestOperator extends Operator implements CapabilityProvi
 						PARAMETER_SCORE_CALCULATION),
 				context, this);
 
-		IOTable result = forest.apply(table);
+		IOTable result = forest.apply(ioTable,this);
 		exaOuput.deliver(result);
 		modOutput.deliver(forest);
 	}
