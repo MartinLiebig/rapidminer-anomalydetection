@@ -38,7 +38,7 @@ public abstract class ClusterBasedAnomalyDetectionModel extends IOTableAnomalyMo
 	public ClusterBasedAnomalyDetectionModel(){}
 
 	public ClusterBasedAnomalyDetectionModel(IOTable ioTable, ClusterModel model, DistanceMeasure measure) throws OperatorException {
-		super(ioTable, Tables.ColumnSetRequirement.EQUAL, Tables.TypeRequirement.ALLOW_INT_FOR_REAL);
+		super(ioTable, Tables.ColumnSetRequirement.SUPERSET, Tables.TypeRequirement.ALLOW_INT_FOR_REAL);
 		clusterModel = model;
 		distanceMeasure = measure;
 		SequentialConcurrencyContext context = new SequentialConcurrencyContext();
