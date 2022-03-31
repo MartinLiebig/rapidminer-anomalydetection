@@ -11,7 +11,12 @@ import com.rapidminer.operator.OperatorException;
 import com.rapidminer.operator.clustering.ClusterModel;
 import com.rapidminer.tools.math.similarity.DistanceMeasure;
 
-
+/**
+ * Deprecated because this does not use IOTablePredictionModel and is not using JSON.
+ * Please use the model in anomaly_models package.
+ * @author mschmitz
+ */
+@Deprecated
 public abstract class ClusterBasedAnomalyDetectionModel extends AnomalyDetectionModel {
 	protected DistanceMeasure distanceMeasure;
 	protected ClusterModel clusterModel;

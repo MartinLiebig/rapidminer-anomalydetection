@@ -15,6 +15,7 @@ public class ProductScoreAggregation extends ScoreAggregation {
 	double aggregate = 0;
 	int count;
 
+	public ProductScoreAggregation(){}
 	public ProductScoreAggregation(boolean takeAbsolutes) {
 		super(takeAbsolutes);
 	}

@@ -6,10 +6,12 @@
 package com.rapidminer.extension.anomalydetection.utility;
 
 public class Histogram {
+
 	private double[] frequency;
 	private double[] borders;
 	private int bins;
 
+	public Histogram(){}
 	/**
 	 * Creates a new histogram between min and max with bins number of bins + overflow and underflow
 	 * @param min
