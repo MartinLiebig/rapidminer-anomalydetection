@@ -11,7 +11,7 @@ import com.rapidminer.operator.ports.metadata.ExampleSetMetaData;
 import com.rapidminer.operator.ports.metadata.ModelMetaData;
 import com.rapidminer.tools.Ontology;
 
-
+@Deprecated
 public class UnivariateOutlierMetaData extends ModelMetaData {
 	public UnivariateOutlierMetaData() {
 		super();

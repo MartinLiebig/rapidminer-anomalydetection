@@ -23,8 +23,8 @@ package com.rapidminer.extension.anomalydetection;
 import com.rapidminer.extension.anomalydetection.anomaly_models.statistical.IsolationForestModel;
 import com.rapidminer.extension.anomalydetection.anomaly_models.statistical.RPCAModel;
 import com.rapidminer.extension.anomalydetection.anomaly_models.univariate.UnivariateOutlierModel;
-import com.rapidminer.extension.anomalydetection.metadata.UnivariateOutlierMetaData;
 
+import com.rapidminer.extension.anomalydetection.metadata.UnivariateOutlierModelMetaData;
 import com.rapidminer.extension.anomalydetection.operator.utility.flag_generator.ThresholdFlagModel;
 import com.rapidminer.extension.anomalydetection.metadata.ThresholdFlagModelMetaData;
 import com.rapidminer.gui.MainFrame;
@@ -55,8 +55,9 @@ public final class PluginInitAnomalyDetection {
 		JsonStorableIOObjectResolver.INSTANCE.register(IsolationForestModel.class);
 		JsonStorableIOObjectResolver.INSTANCE.register(RPCAModel.class);
 		JsonStorableIOObjectResolver.INSTANCE.register(UnivariateOutlierModel.class);
-		//MetaDataFactory.registerIOObjectMetaData(UnivariateOutlierModel.class, UnivariateOutlierMetaData.class);
+		MetaDataFactory.registerIOObjectMetaData(UnivariateOutlierModel.class, UnivariateOutlierModelMetaData.class);
 		MetaDataFactory.registerIOObjectMetaData(ThresholdFlagModel.class, ThresholdFlagModelMetaData.class);
+
 
 	}
 

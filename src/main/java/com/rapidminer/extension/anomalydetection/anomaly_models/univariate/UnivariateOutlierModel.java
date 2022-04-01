@@ -108,15 +108,15 @@ public class UnivariateOutlierModel extends IOTablePreprocessingModel {
 				scoreAggregations.get(i).addValue(buffer.get(i));
 			}
 			if (showScores) {
-				builder.add(columnName + "_score", buffer.toColumn())
-						.addMetaData(columnName + "_score", ColumnRole.OUTLIER);
+				builder.add(Attributes.PREDICTION_NAME + "(" + columnName + ")", buffer.toColumn())
+						.addMetaData(Attributes.PREDICTION_NAME + "(" + columnName + ")", ColumnRole.PREDICTION);
 			}
 		}
 		NumericBuffer buffer = Buffers.realBuffer(adjusted.height());
 		for (int i = 0; i < adjusted.height(); ++i) {
 			buffer.set(i, scoreAggregations.get(i).getAggregate());
 		}
-		builder.add(AnomalyUtilities.ANOMALY_SCORE_NAME, buffer.toColumn()).addMetaData(AnomalyUtilities.ANOMALY_SCORE_NAME, ColumnRole.SCORE);
+		builder.add(Attributes.PREDICTION_NAME, buffer.toColumn()).addMetaData(Attributes.PREDICTION_NAME, ColumnRole.PREDICTION);
 
 	}
 

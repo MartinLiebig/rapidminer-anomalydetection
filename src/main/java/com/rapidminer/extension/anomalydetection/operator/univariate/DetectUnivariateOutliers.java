@@ -10,23 +10,18 @@ import java.util.List;
 
 import com.rapidminer.adaption.belt.ContextAdapter;
 import com.rapidminer.adaption.belt.IOTable;
-import com.rapidminer.belt.column.ColumnType;
 import com.rapidminer.belt.execution.Context;
-import com.rapidminer.belt.util.ColumnRole;
 import com.rapidminer.core.concurrency.ConcurrencyContext;
 import com.rapidminer.example.ExampleSet;
 import com.rapidminer.extension.anomalydetection.anomaly_models.univariate.UnivariateOutlierModel;
-import com.rapidminer.extension.anomalydetection.utility.AnomalyUtilities;
+import com.rapidminer.extension.anomalydetection.metadata.UnivariateOutlierModelMetaData;
 import com.rapidminer.operator.Operator;
 import com.rapidminer.operator.OperatorDescription;
 import com.rapidminer.operator.OperatorException;
 import com.rapidminer.operator.ports.IncompatibleMDClassException;
 import com.rapidminer.operator.ports.InputPort;
 import com.rapidminer.operator.ports.OutputPort;
-import com.rapidminer.operator.ports.metadata.TableModelMetaData;
-import com.rapidminer.operator.ports.metadata.table.ColumnInfoBuilder;
 import com.rapidminer.operator.ports.metadata.table.TableMetaData;
-import com.rapidminer.operator.ports.metadata.table.TableMetaDataBuilder;
 import com.rapidminer.operator.preprocessing.filter.columns.ValueTypeColumnFilter;
 import com.rapidminer.operator.tools.TableSubsetSelector;
 import com.rapidminer.parameter.ParameterType;
@@ -54,27 +49,44 @@ public class DetectUnivariateOutliers extends Operator {
 
 	private final TableSubsetSelector attributeSelector = new TableSubsetSelector(this, exaInput, ValueTypeColumnFilter.TYPE_REAL, ValueTypeColumnFilter.TYPE_INTEGER);
 
-	public DetectUnivariateOutliers(OperatorDescription description) {
+	public DetectUnivariateOutliers(OperatorDescription description) throws IncompatibleMDClassException {
 		super(description);
 
 
 		getTransformer().addRule(() -> {
 			try {
+				UnivariateOutlierModelMetaData md = null;
+
+				md = new UnivariateOutlierModelMetaData(
+						exaInput.getMetaData(TableMetaData.class));
+
+				if (exaInput.isConnected()) {
+					TableMetaData subset = attributeSelector.getMetaDataSubset(exaInput.getMetaData(TableMetaData.class), false);
+					if (getParameterAsBoolean(PARAMETER_CREATE_INDIVIDUAL_SCORES)) {
+						md.addIndividualScores(subset);
+					}
+				}
 				modOutput.deliverMD(
-					new TableModelMetaData(UnivariateOutlierModel.class,exaInput.getMetaData(TableMetaData.class)));
+						md);
 			} catch (IncompatibleMDClassException e) {
 				e.printStackTrace();
 			}
-			});
+		});
 
 		getTransformer().addRule(() -> {
 			try {
+				UnivariateOutlierModelMetaData md = new UnivariateOutlierModelMetaData(
+						exaInput.getMetaData(TableMetaData.class));
+				if (exaInput.isConnected()) {
+					TableMetaData subset = attributeSelector.getMetaDataSubset(exaInput.getMetaData(TableMetaData.class), false);
+					if (getParameterAsBoolean(PARAMETER_CREATE_INDIVIDUAL_SCORES)) {
+						md.addIndividualScores(subset);
+					}
+				}
 				TableMetaData tmd = exaInput.getMetaData(TableMetaData.class);
-				TableMetaDataBuilder builder = new TableMetaDataBuilder(tmd);
-				ColumnInfoBuilder columnInfoBuilder =
-						new ColumnInfoBuilder(ColumnType.REAL);
-				builder.add(AnomalyUtilities.ANOMALY_SCORE_NAME, columnInfoBuilder.build()).addColumnMetaData(AnomalyUtilities.ANOMALY_SCORE_NAME, ColumnRole.SCORE);
-				exaOutput.deliverMD(builder.build());
+				TableMetaData resultMD = md.apply(tmd, exaInput);
+
+				exaOutput.deliverMD(resultMD);
 			} catch (IncompatibleMDClassException e) {
 				e.printStackTrace();
 			}
