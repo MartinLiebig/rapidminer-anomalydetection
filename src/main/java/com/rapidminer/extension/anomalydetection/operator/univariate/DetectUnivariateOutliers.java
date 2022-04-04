@@ -63,7 +63,7 @@ public class DetectUnivariateOutliers extends Operator {
 				if (exaInput.isConnected()) {
 					TableMetaData subset = attributeSelector.getMetaDataSubset(exaInput.getMetaData(TableMetaData.class), false);
 					if (getParameterAsBoolean(PARAMETER_CREATE_INDIVIDUAL_SCORES)) {
-						md.addIndividualScores(subset);
+						md.addIndividualScores(new ArrayList<>(subset.labels()));
 					}
 				}
 				modOutput.deliverMD(
@@ -80,7 +80,7 @@ public class DetectUnivariateOutliers extends Operator {
 				if (exaInput.isConnected()) {
 					TableMetaData subset = attributeSelector.getMetaDataSubset(exaInput.getMetaData(TableMetaData.class), false);
 					if (getParameterAsBoolean(PARAMETER_CREATE_INDIVIDUAL_SCORES)) {
-						md.addIndividualScores(subset);
+						md.addIndividualScores(new ArrayList<>(subset.labels()));
 					}
 				}
 				TableMetaData tmd = exaInput.getMetaData(TableMetaData.class);

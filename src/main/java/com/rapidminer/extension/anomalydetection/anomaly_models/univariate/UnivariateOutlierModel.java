@@ -14,20 +14,14 @@ import com.rapidminer.adaption.belt.IOTable;
 import com.rapidminer.belt.buffer.Buffers;
 import com.rapidminer.belt.buffer.NumericBuffer;
 import com.rapidminer.belt.execution.Context;
-import com.rapidminer.belt.table.BeltConverter;
-import com.rapidminer.belt.table.Builders;
 import com.rapidminer.belt.table.Table;
 import com.rapidminer.belt.table.TableBuilder;
 import com.rapidminer.belt.util.ColumnRole;
-import com.rapidminer.core.concurrency.ConcurrencyContext;
-import com.rapidminer.example.Attribute;
 import com.rapidminer.example.Attributes;
-import com.rapidminer.example.ExampleSet;
 import com.rapidminer.extension.anomalydetection.operator.univariate.HistogramBasedScorer;
 import com.rapidminer.extension.anomalydetection.operator.univariate.QuartileScorer;
 import com.rapidminer.extension.anomalydetection.operator.univariate.UnivariateScorer;
 import com.rapidminer.extension.anomalydetection.operator.univariate.ZScorer;
-import com.rapidminer.extension.anomalydetection.utility.AnomalyUtilities;
 import com.rapidminer.extension.anomalydetection.utility.algorithms.score_aggregations.AverageScoreAggregation;
 import com.rapidminer.extension.anomalydetection.utility.algorithms.score_aggregations.MaxScoreAggregation;
 import com.rapidminer.extension.anomalydetection.utility.algorithms.score_aggregations.ProductScoreAggregation;
@@ -45,6 +39,7 @@ import com.rapidminer.studio.internal.Resources;
 public class UnivariateOutlierModel extends IOTablePreprocessingModel {
 
 
+	private List<String> trainingColumns;
 	private final HashMap<String, UnivariateScorer> scorerMap = new HashMap<>();
 	private List<ScoreAggregation> scoreAggregations;
 	//private ExplainPredictionsIOObject explainPredictionsObject = null;
@@ -53,6 +48,8 @@ public class UnivariateOutlierModel extends IOTablePreprocessingModel {
 
 	private final String usedMethod;
 	private final String usedAggregationMethod;
+
+
 	private Boolean showScores;
 
 	public UnivariateOutlierModel() {
@@ -65,7 +62,7 @@ public class UnivariateOutlierModel extends IOTablePreprocessingModel {
 	/**
 	 * Create a model
 	 *
-	 * @param table        		training table, used for headerExampleSet and such
+	 * @param table             training table, used for headerExampleSet and such
 	 * @param method            the desiered anomaly detection method
 	 * @param aggregationMethod the desired aggregation methods
 	 * @param showScores        if set to true one column will be created with the anomaly score for the given column.
@@ -134,7 +131,7 @@ public class UnivariateOutlierModel extends IOTablePreprocessingModel {
 	 * @throws OperatorException if the method is not found
 	 */
 	public void learnOnBelt(Table table, List<String> trainingColumns, Context context) throws OperatorException {
-
+		this.trainingColumns = trainingColumns;
 		for (String label : trainingColumns) {
 			UnivariateScorer scorer;
 			switch (usedMethod) {
@@ -156,6 +153,13 @@ public class UnivariateOutlierModel extends IOTablePreprocessingModel {
 
 	}
 
+	public Boolean getShowScores() {
+		return showScores;
+	}
+
+	public List<String> getTrainingColumns() {
+		return trainingColumns;
+	}
 
 
 }
