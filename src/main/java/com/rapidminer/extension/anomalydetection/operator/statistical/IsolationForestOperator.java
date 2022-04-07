@@ -9,6 +9,7 @@ import com.rapidminer.belt.table.Table;
 
 import com.rapidminer.example.Attributes;
 import com.rapidminer.extension.anomalydetection.anomaly_models.statistical.IsolationForestModel;
+import com.rapidminer.extension.anomalydetection.operator.AbstractAnomalyOperator;
 import com.rapidminer.extension.anomalydetection.utility.AnomalyUtilities;
 import com.rapidminer.operator.Operator;
 import com.rapidminer.operator.OperatorCapability;
@@ -22,6 +23,7 @@ import com.rapidminer.operator.ports.metadata.AttributeMetaData;
 import com.rapidminer.operator.ports.metadata.ExampleSetMetaData;
 import com.rapidminer.operator.ports.metadata.ExampleSetPassThroughRule;
 import com.rapidminer.operator.ports.metadata.SetRelation;
+import com.rapidminer.operator.ports.metadata.table.TableMetaData;
 import com.rapidminer.parameter.ParameterType;
 import com.rapidminer.parameter.ParameterTypeBoolean;
 import com.rapidminer.parameter.ParameterTypeCategory;
@@ -36,12 +38,7 @@ import com.rapidminer.tools.belt.BeltTools;
  * @author mschmitz
  * @since 2.10.0
  */
-public class IsolationForestOperator extends Operator implements CapabilityProvider {
-
-	private final InputPort exaInput = getInputPorts().createPort("exa");
-
-	private final OutputPort exaOuput = getOutputPorts().createPort("exa");
-	private final OutputPort modOutput = getOutputPorts().createPort("mod");
+public class IsolationForestOperator extends AbstractAnomalyOperator implements CapabilityProvider {
 
 	public static final String PARAMETER_N_TRESS = "number_of_trees";
 	public static final String PARAMETER_MAX_LEAF_SIZE = "max_leaf_size";
@@ -53,25 +50,8 @@ public class IsolationForestOperator extends Operator implements CapabilityProvi
 	public IsolationForestOperator(OperatorDescription description) {
 		super(description);
 
-		getTransformer().addGenerationRule(modOutput, IsolationForestModel.class);
-//		getTransformer().addRule(() -> {
-//			OutlierModelMetaData ommd = new OutlierModelMetaData(
-//					(ExampleSetMetaData) exaInput.getMetaData());
-//			modOutput.deliverMD(ommd);
-//		});
 
-		getTransformer().addRule(
-				new ExampleSetPassThroughRule(exaInput, exaOuput, SetRelation.EQUAL) {
 
-					@Override
-					public ExampleSetMetaData modifyExampleSet(ExampleSetMetaData metaData) {
-
-						metaData.addAttribute(new AttributeMetaData(AnomalyUtilities.ANOMALY_SCORE_NAME, Ontology.REAL,
-								Attributes.CONFIDENCE_NAME));
-
-						return metaData;
-					}
-				});
 	}
 
 	@Override
@@ -104,7 +84,7 @@ public class IsolationForestOperator extends Operator implements CapabilityProvi
 				context, this);
 
 		IOTable result = forest.apply(ioTable,this);
-		exaOuput.deliver(result);
+		exaOutput.deliver(result);
 		modOutput.deliver(forest);
 	}
 

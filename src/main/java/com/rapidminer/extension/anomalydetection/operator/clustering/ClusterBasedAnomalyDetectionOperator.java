@@ -7,6 +7,7 @@ import com.rapidminer.adaption.belt.IOTable;
 import com.rapidminer.belt.table.BeltConverter;
 import com.rapidminer.example.ExampleSet;
 
+import com.rapidminer.extension.anomalydetection.anomaly_models.IOTableAnomalyModel;
 import com.rapidminer.extension.anomalydetection.anomaly_models.clustering.CBLOFModel;
 import com.rapidminer.extension.anomalydetection.anomaly_models.clustering.CMGOSModel;
 import com.rapidminer.extension.anomalydetection.anomaly_models.clustering.ClusterBasedAnomalyDetectionModel;

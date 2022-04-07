@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?><process version="9.8.001">
+<?xml version="1.0" encoding="UTF-8"?><process version="9.10.001">
   <context>
     <input/>
     <output/>
     <macros/>
   </context>
-  <operator activated="true" class="process" compatibility="9.8.001" expanded="true" name="Process">
+  <operator activated="true" class="process" compatibility="9.10.001" expanded="true" name="Process">
     <parameter key="logverbosity" value="init"/>
     <parameter key="random_seed" value="2001"/>
     <parameter key="send_mail" value="never"/>
@@ -12,10 +12,10 @@
     <parameter key="process_duration_for_mail" value="30"/>
     <parameter key="encoding" value="SYSTEM"/>
     <process expanded="true">
-      <operator activated="true" class="retrieve" compatibility="9.8.001" expanded="true" height="68" name="Retrieve Titanic Training" width="90" x="45" y="85">
+      <operator activated="true" class="retrieve" compatibility="9.10.001" expanded="true" height="68" name="Retrieve Titanic Training" width="90" x="45" y="85">
         <parameter key="repository_entry" value="//Samples/data/Titanic Training"/>
       </operator>
-      <operator activated="true" class="nominal_to_numerical" compatibility="9.8.001" expanded="true" height="103" name="Nominal to Numerical" width="90" x="179" y="85">
+      <operator activated="true" class="nominal_to_numerical" compatibility="9.10.001" expanded="true" height="103" name="Nominal to Numerical" width="90" x="179" y="85">
         <parameter key="return_preprocessing_model" value="false"/>
         <parameter key="create_view" value="false"/>
         <parameter key="attribute_filter_type" value="all"/>
@@ -36,7 +36,7 @@
         <parameter key="unexpected_value_handling" value="all 0 and warning"/>
         <parameter key="use_underscore_in_name" value="false"/>
       </operator>
-      <operator activated="true" class="h2o:kmeans" compatibility="9.8.001" expanded="true" height="82" name="k-Means (H2O)" width="90" x="313" y="85">
+      <operator activated="true" class="h2o:kmeans" compatibility="9.10.001" expanded="true" height="82" name="k-Means (H2O)" width="90" x="313" y="85">
         <parameter key="add_cluster_attribute" value="true"/>
         <parameter key="add_as_label" value="false"/>
         <parameter key="remove_unlabeled" value="false"/>
@@ -51,7 +51,7 @@
         <parameter key="max_iterations" value="100"/>
         <list key="expert_parameters"/>
       </operator>
-      <operator activated="true" class="anomalydetection:cluster_based_anomaly" compatibility="3.0.000" expanded="true" height="103" name="Detect Outlier (Clustering)" width="90" x="581" y="85">
+      <operator activated="true" class="anomalydetection:cluster_based_anomaly" compatibility="4.0.000" expanded="true" height="103" name="Detect Outlier (Clustering)" width="90" x="581" y="85">
         <parameter key="algorithm" value="CBLOF"/>
         <parameter key="measure_types" value="MixedMeasures"/>
         <parameter key="mixed_measure" value="MixedEuclideanDistance"/>
@@ -90,18 +90,18 @@
         <parameter key="use_local_random_seed" value="false"/>
         <parameter key="local_random_seed" value="1992"/>
       </operator>
-      <operator activated="true" class="retrieve" compatibility="9.8.001" expanded="true" height="68" name="Retrieve Titanic Unlabeled" width="90" x="246" y="442">
+      <operator activated="true" class="retrieve" compatibility="9.10.001" expanded="true" height="68" name="Retrieve Titanic Unlabeled" width="90" x="246" y="442">
         <parameter key="repository_entry" value="//Samples/data/Titanic Unlabeled"/>
       </operator>
-      <operator activated="true" class="apply_model" compatibility="9.8.001" expanded="true" height="82" name="Apply Model (2)" width="90" x="380" y="340">
+      <operator activated="true" class="apply_model" compatibility="9.10.001" expanded="true" height="82" name="Apply Model (2)" width="90" x="380" y="340">
         <list key="application_parameters"/>
         <parameter key="create_view" value="false"/>
       </operator>
-      <operator activated="true" class="apply_model" compatibility="9.8.001" expanded="true" height="82" name="Apply Model (3)" width="90" x="581" y="340">
+      <operator activated="true" class="apply_model" compatibility="9.10.001" expanded="true" height="82" name="Apply Model (3)" width="90" x="581" y="340">
         <list key="application_parameters"/>
         <parameter key="create_view" value="false"/>
       </operator>
-      <operator activated="true" class="apply_model" compatibility="9.8.001" expanded="true" height="82" name="Apply Model" width="90" x="782" y="187">
+      <operator activated="true" class="apply_model" compatibility="9.10.001" expanded="true" height="82" name="Apply Model" width="90" x="782" y="187">
         <list key="application_parameters"/>
         <parameter key="create_view" value="false"/>
       </operator>

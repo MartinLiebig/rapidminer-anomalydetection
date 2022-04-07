@@ -42,7 +42,7 @@
       <operator activated="true" class="retrieve" compatibility="9.10.001" expanded="true" height="68" name="Retrieve" width="90" x="581" y="187">
         <parameter key="repository_entry" value="univariate_model"/>
       </operator>
-      <operator activated="true" breakpoints="after" class="apply_model" compatibility="9.10.001" expanded="true" height="82" name="Apply Model" width="90" x="715" y="238">
+      <operator activated="true" class="apply_model" compatibility="9.10.001" expanded="true" height="82" name="Apply Model" width="90" x="715" y="238">
         <list key="application_parameters"/>
         <parameter key="create_view" value="false"/>
       </operator>

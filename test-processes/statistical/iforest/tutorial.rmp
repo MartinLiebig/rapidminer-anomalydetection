@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?><process version="9.10.000">
+<?xml version="1.0" encoding="UTF-8"?><process version="9.10.001">
   <context>
     <input/>
     <output/>
     <macros/>
   </context>
-  <operator activated="true" class="process" compatibility="9.10.000" expanded="true" name="Process">
+  <operator activated="true" class="process" compatibility="9.10.001" expanded="true" name="Process">
     <parameter key="logverbosity" value="init"/>
     <parameter key="random_seed" value="2001"/>
     <parameter key="send_mail" value="never"/>
@@ -12,9 +12,9 @@
     <parameter key="process_duration_for_mail" value="30"/>
     <parameter key="encoding" value="SYSTEM"/>
     <process expanded="true">
-      <operator activated="true" class="subprocess" compatibility="9.10.000" expanded="true" height="82" name="Generate DataSet" width="90" x="45" y="85">
+      <operator activated="true" class="subprocess" compatibility="9.10.001" expanded="true" height="82" name="Generate DataSet" width="90" x="45" y="85">
         <process expanded="true">
-          <operator activated="true" class="utility:create_exampleset" compatibility="9.10.000" expanded="true" height="68" name="Create ExampleSet (2)" origin="GENERATED_TUTORIAL" width="90" x="179" y="34">
+          <operator activated="true" class="utility:create_exampleset" compatibility="9.10.001" expanded="true" height="68" name="Create ExampleSet (2)" origin="GENERATED_TUTORIAL" width="90" x="179" y="34">
             <parameter key="generator_type" value="comma separated text"/>
             <parameter key="number_of_examples" value="100"/>
             <parameter key="use_stepsize" value="false"/>
@@ -38,7 +38,7 @@
         </process>
         <description align="center" color="transparent" colored="false" width="126">Generate a Data set like mickey mouse</description>
       </operator>
-      <operator activated="true" class="anomalydetection:iforest" compatibility="3.1.000" expanded="true" height="82" name="Detect Outlier (Isolation Forest)" width="90" x="179" y="85">
+      <operator activated="true" class="anomalydetection:iforest" compatibility="4.0.000" expanded="true" height="82" name="Detect Outlier (Isolation Forest)" width="90" x="179" y="85">
         <parameter key="number_of_trees" value="100"/>
         <parameter key="max_leaf_size" value="1"/>
         <parameter key="bootstrap_ratio" value="0.9"/>
@@ -46,8 +46,14 @@
         <parameter key="max_features" value="5"/>
         <parameter key="score_calculation" value="normalized_score"/>
       </operator>
+      <operator activated="true" class="apply_model" compatibility="9.10.001" expanded="true" height="82" name="Apply Model" width="90" x="313" y="85">
+        <list key="application_parameters"/>
+        <parameter key="create_view" value="false"/>
+      </operator>
       <connect from_op="Generate DataSet" from_port="out 1" to_op="Detect Outlier (Isolation Forest)" to_port="exa"/>
-      <connect from_op="Detect Outlier (Isolation Forest)" from_port="exa" to_port="result 1"/>
+      <connect from_op="Detect Outlier (Isolation Forest)" from_port="exa" to_op="Apply Model" to_port="unlabelled data"/>
+      <connect from_op="Detect Outlier (Isolation Forest)" from_port="mod" to_op="Apply Model" to_port="model"/>
+      <connect from_op="Apply Model" from_port="labelled data" to_port="result 1"/>
       <portSpacing port="source_input 1" spacing="0"/>
       <portSpacing port="sink_result 1" spacing="0"/>
       <portSpacing port="sink_result 2" spacing="0"/>
