@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?><process version="9.11.000-SNAPSHOT">
+  <context>
+    <input/>
+    <output/>
+    <macros/>
+  </context>
+  <operator activated="true" class="process" compatibility="9.11.000-SNAPSHOT" expanded="true" name="Process">
+    <parameter key="logverbosity" value="init"/>
+    <parameter key="random_seed" value="2001"/>
+    <parameter key="send_mail" value="never"/>
+    <parameter key="notification_email" value=""/>
+    <parameter key="process_duration_for_mail" value="30"/>
+    <parameter key="encoding" value="SYSTEM"/>
+    <process expanded="true">
+      <operator activated="true" class="generate_data" compatibility="9.11.000-SNAPSHOT" expanded="true" height="68" name="Generate Data" width="90" x="179" y="85">
+        <parameter key="target_function" value="random"/>
+        <parameter key="number_examples" value="100"/>
+        <parameter key="number_of_attributes" value="3"/>
+        <parameter key="attributes_lower_bound" value="-10.0"/>
+        <parameter key="attributes_upper_bound" value="10.0"/>
+        <parameter key="gaussian_standard_deviation" value="10.0"/>
+        <parameter key="largest_radius" value="10.0"/>
+        <parameter key="use_local_random_seed" value="true"/>
+        <parameter key="local_random_seed" value="1992"/>
+        <parameter key="datamanagement" value="double_array"/>
+        <parameter key="data_management" value="auto"/>
+      </operator>
+      <operator activated="true" class="anomalydetection:rpca_based_anomaly" compatibility="3.4.000" expanded="true" height="82" name="Detect Outlier (rPCA)" width="90" x="313" y="85">
+        <parameter key="probability_for_normal_class" value="0.975"/>
+        <parameter key="component_usage" value="use all components"/>
+        <parameter key="major_components" value="use variance threshold"/>
+        <parameter key="cumulative_variance" value="0.5"/>
+        <parameter key="number_of_major_pcs" value="1"/>
+        <parameter key="minor_components" value="use max eigenvalue"/>
+        <parameter key="eigenvalue_threshold_max" value="0.2"/>
+        <parameter key="number_of_minor_pcs" value="1"/>
+      </operator>
+      <operator activated="true" class="store" compatibility="9.11.000-SNAPSHOT" expanded="true" height="68" name="Store" width="90" x="447" y="187">
+        <parameter key="repository_entry" value="rpca_model"/>
+      </operator>
+      <operator activated="true" class="retrieve" compatibility="9.11.000-SNAPSHOT" expanded="true" height="68" name="Retrieve" width="90" x="581" y="34">
+        <parameter key="repository_entry" value="rpca_model"/>
+      </operator>
+      <operator activated="true" class="apply_model" compatibility="9.11.000-SNAPSHOT" expanded="true" height="82" name="Apply Model" width="90" x="782" y="85">
+        <list key="application_parameters"/>
+        <parameter key="create_view" value="false"/>
+      </operator>
+      <connect from_op="Generate Data" from_port="output" to_op="Detect Outlier (rPCA)" to_port="exa"/>
+      <connect from_op="Detect Outlier (rPCA)" from_port="exa" to_op="Apply Model" to_port="unlabelled data"/>
+      <connect from_op="Detect Outlier (rPCA)" from_port="mod" to_op="Store" to_port="input"/>
+      <connect from_op="Retrieve" from_port="output" to_op="Apply Model" to_port="model"/>
+      <connect from_op="Apply Model" from_port="labelled data" to_port="result 1"/>
+      <portSpacing port="source_input 1" spacing="0"/>
+      <portSpacing port="sink_result 1" spacing="0"/>
+      <portSpacing port="sink_result 2" spacing="0"/>
+    </process>
+  </operator>
+</process>

@@ -8,7 +8,12 @@ import com.rapidminer.tools.math.similarity.DistanceMeasure;
 
 import de.dfki.madm.anomalydetection.evaluator.cluster_based.LDCOFEvaluator;
 
-
+/**
+ * Deprecated because this does not use IOTablePredictionModel and is not using JSON.
+ * Please use the model in anomaly_models package.
+ * @author mschmitz
+ */
+@Deprecated
 public class LDCOFModel extends ClusterBasedAnomalyDetectionModel {
 	private double alpha;
 	private double beta;

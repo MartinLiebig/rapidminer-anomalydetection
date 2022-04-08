@@ -1,7 +1,10 @@
 package com.rapidminer.extension.anomalydetection.operator.statistical;
 
+import com.rapidminer.adaption.belt.IOTable;
+import com.rapidminer.belt.table.BeltConverter;
+import com.rapidminer.core.concurrency.ConcurrencyContext;
 import com.rapidminer.example.ExampleSet;
-import com.rapidminer.extension.anomalydetection.model.statistical.RPCAModel;
+import com.rapidminer.extension.anomalydetection.anomaly_models.statistical.RPCAModel;
 import com.rapidminer.extension.anomalydetection.operator.AbstractAnomalyOperator;
 import com.rapidminer.operator.*;
 import com.rapidminer.parameter.ParameterType;
@@ -9,6 +12,7 @@ import com.rapidminer.parameter.ParameterTypeCategory;
 import com.rapidminer.parameter.ParameterTypeDouble;
 import com.rapidminer.parameter.ParameterTypeInt;
 import com.rapidminer.parameter.conditions.EqualTypeCondition;
+import com.rapidminer.studio.concurrency.internal.SequentialConcurrencyContext;
 
 import java.util.List;
 
@@ -73,7 +77,7 @@ public class RPCAAnomalyDetectionOperator extends AbstractAnomalyOperator {
     }
 
     public void doWork() throws OperatorException {
-        ExampleSet trainset = exaInput.getData(ExampleSet.class);
+        IOTable trainset = exaInput.getData(IOTable.class);
         RPCAModel rpcaModel = new RPCAModel(trainset);
 
         // set parameters
@@ -87,9 +91,10 @@ public class RPCAAnomalyDetectionOperator extends AbstractAnomalyOperator {
         rpcaModel.setValueThreshold(getParameterAsDouble(PARAMETER_VALUE_THRESHOLD));
 
         rpcaModel.setNumberOfLowComponents(getParameterAsInt(PARAMETER_NUMBER_OF_COMPONENTS_LOW));
-
-        rpcaModel.train(trainset);
-        exaOutput.deliver(rpcaModel.apply(trainset));
+        ConcurrencyContext context = new SequentialConcurrencyContext();
+        ExampleSet exampleSet = BeltConverter.convert(trainset, context);
+        rpcaModel.train(exampleSet);
+        exaOutput.deliver(rpcaModel.apply(trainset, this));
         modOutput.deliver(rpcaModel);
     }
     @Override

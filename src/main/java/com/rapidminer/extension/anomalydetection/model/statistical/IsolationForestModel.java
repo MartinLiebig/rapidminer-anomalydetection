@@ -34,9 +34,12 @@ import com.rapidminer.tools.belt.BeltTools;
 
 
 /**
+ * Deprecated because this does not use IOTablePredictionModel and is not using JSON.
+ * Please use the model in anomaly_models package.
  * @author mschmitz
  * @since 2.10.0
  */
+@Deprecated
 public class IsolationForestModel extends IOTableAnomalyModel {
 
 	private static final String AVERAGE_PATH = "average_path";

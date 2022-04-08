@@ -21,10 +21,12 @@ import com.rapidminer.operator.OperatorException;
 import com.rapidminer.tools.belt.BeltTools;
 
 /**
- *
+ * Deprecated because this does not use JSON.
+ * Please use the model in anomaly_models package.
  * @author mschmitz
  * @since 2.10.0
  */
+@Deprecated
 public class IsolationForestNode implements Serializable {
 
 	private static final long serialVersionUID = -6361565464734538899L;

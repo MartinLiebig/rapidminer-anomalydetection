@@ -108,7 +108,7 @@ public class GenerateOutlierFlag extends Operator {
 		}
 		else{
 			try {
-				scoreColumnName = inputData.getTable().select().withMetaData(ColumnRole.SCORE).labels().get(0);
+				scoreColumnName = inputData.getTable().select().withMetaData(ColumnRole.PREDICTION).labels().get(0);
 			}catch (Exception e){
 				throw new UserError(this,"anomaly_detection.outlier_flag.cant_find_score");
 			}

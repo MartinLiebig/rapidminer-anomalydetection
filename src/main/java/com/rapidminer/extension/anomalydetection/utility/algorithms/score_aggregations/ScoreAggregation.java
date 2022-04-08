@@ -5,14 +5,33 @@
  */
 package com.rapidminer.extension.anomalydetection.utility.algorithms.score_aggregations;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.rapidminer.extension.anomalydetection.operator.univariate.HistogramBasedScorer;
+import com.rapidminer.extension.anomalydetection.operator.univariate.QuartileScorer;
+import com.rapidminer.extension.anomalydetection.operator.univariate.ZScorer;
+
+
 /**
  * Different aggregation used in UnivariateOutlierModel to aggregate one anomaly score out of many individual column
  * scores
  *
  * @author MartinSchmitz
  */
+@JsonTypeInfo(
+		use = JsonTypeInfo.Id.NAME,
+		include = JsonTypeInfo.As.PROPERTY,
+		property = "type",
+		defaultImpl = AverageScoreAggregation.class
+)
+@JsonSubTypes({
+		@JsonSubTypes.Type(value = AverageScoreAggregation.class, name = "average"),
+		@JsonSubTypes.Type(value = MaxScoreAggregation.class, name = "max"),
+		@JsonSubTypes.Type(value = ProductScoreAggregation.class, name = "product")
+})
 public abstract class ScoreAggregation {
 	protected boolean takeAbsolutes;
+	public ScoreAggregation(){}
 	public ScoreAggregation(boolean takeAbsolutes){
 		this.takeAbsolutes = takeAbsolutes;
 	}

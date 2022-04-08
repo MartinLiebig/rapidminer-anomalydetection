@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?><process version="9.10.001">
+  <context>
+    <input/>
+    <output/>
+    <macros/>
+  </context>
+  <operator activated="true" class="process" compatibility="9.10.001" expanded="true" name="Process">
+    <parameter key="logverbosity" value="init"/>
+    <parameter key="random_seed" value="2001"/>
+    <parameter key="send_mail" value="never"/>
+    <parameter key="notification_email" value=""/>
+    <parameter key="process_duration_for_mail" value="30"/>
+    <parameter key="encoding" value="SYSTEM"/>
+    <process expanded="true">
+      <operator activated="true" class="generate_data" compatibility="9.10.001" expanded="true" height="68" name="Generate Data" width="90" x="45" y="238">
+        <parameter key="target_function" value="random"/>
+        <parameter key="number_examples" value="100"/>
+        <parameter key="number_of_attributes" value="5"/>
+        <parameter key="attributes_lower_bound" value="-10.0"/>
+        <parameter key="attributes_upper_bound" value="10.0"/>
+        <parameter key="gaussian_standard_deviation" value="10.0"/>
+        <parameter key="largest_radius" value="10.0"/>
+        <parameter key="use_local_random_seed" value="false"/>
+        <parameter key="local_random_seed" value="1992"/>
+        <parameter key="datamanagement" value="double_array"/>
+        <parameter key="data_management" value="auto"/>
+      </operator>
+      <operator activated="true" class="multiply" compatibility="9.10.001" expanded="true" height="103" name="Multiply" width="90" x="179" y="238"/>
+      <operator activated="true" class="anomalydetection:univariate_anomaly_detection" compatibility="4.0.000" expanded="true" height="82" name="Detect Outlier (Univariate)" width="90" x="313" y="85">
+        <parameter key="type" value="include attributes"/>
+        <parameter key="attribute_filter_type" value="all attributes"/>
+        <parameter key="select_attribute" value=""/>
+        <parameter key="select_subset" value=""/>
+        <parameter key="also_apply_to_special_attributes_(id,_label..)" value="false"/>
+        <parameter key="method" value="Quartiles"/>
+        <parameter key="aggregation_method" value="Product"/>
+        <parameter key="show_individual_scores" value="true"/>
+      </operator>
+      <operator activated="true" class="store" compatibility="9.10.001" expanded="true" height="68" name="Store" width="90" x="447" y="136">
+        <parameter key="repository_entry" value="univariate_model"/>
+      </operator>
+      <operator activated="true" class="retrieve" compatibility="9.10.001" expanded="true" height="68" name="Retrieve" width="90" x="581" y="187">
+        <parameter key="repository_entry" value="univariate_model"/>
+      </operator>
+      <operator activated="true" class="apply_model" compatibility="9.10.001" expanded="true" height="82" name="Apply Model" width="90" x="715" y="238">
+        <list key="application_parameters"/>
+        <parameter key="create_view" value="false"/>
+      </operator>
+      <connect from_op="Generate Data" from_port="output" to_op="Multiply" to_port="input"/>
+      <connect from_op="Multiply" from_port="output 1" to_op="Detect Outlier (Univariate)" to_port="exa"/>
+      <connect from_op="Multiply" from_port="output 2" to_op="Apply Model" to_port="unlabelled data"/>
+      <connect from_op="Detect Outlier (Univariate)" from_port="mod" to_op="Store" to_port="input"/>
+      <connect from_op="Retrieve" from_port="output" to_op="Apply Model" to_port="model"/>
+      <connect from_op="Apply Model" from_port="labelled data" to_port="result 1"/>
+      <portSpacing port="source_input 1" spacing="0"/>
+      <portSpacing port="sink_result 1" spacing="0"/>
+      <portSpacing port="sink_result 2" spacing="0"/>
+    </process>
+  </operator>
+</process>

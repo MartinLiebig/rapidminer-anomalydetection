@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?><process version="9.10.000">
+<?xml version="1.0" encoding="UTF-8"?><process version="9.10.001">
   <context>
     <input/>
     <output/>
     <macros/>
   </context>
-  <operator activated="true" class="process" compatibility="9.10.000" expanded="true" name="Process">
+  <operator activated="true" class="process" compatibility="9.10.001" expanded="true" name="Process">
     <parameter key="logverbosity" value="init"/>
     <parameter key="random_seed" value="2001"/>
     <parameter key="send_mail" value="never"/>
@@ -12,27 +12,20 @@
     <parameter key="process_duration_for_mail" value="30"/>
     <parameter key="encoding" value="SYSTEM"/>
     <process expanded="true">
-      <operator activated="true" class="retrieve" compatibility="9.10.000" expanded="true" height="68" name="Retrieve Sonar" width="90" x="45" y="238">
+      <operator activated="true" class="retrieve" compatibility="9.10.001" expanded="true" height="68" name="Retrieve Sonar" width="90" x="45" y="238">
         <parameter key="repository_entry" value="//Samples/data/Sonar"/>
       </operator>
-      <operator activated="true" class="anomalydetection:univariate_anomaly_detection" compatibility="3.3.000" expanded="true" height="82" name="Detect Outlier (Univariate)" width="90" x="179" y="238">
+      <operator activated="true" class="anomalydetection:univariate_anomaly_detection" compatibility="4.0.000" expanded="true" height="82" name="Detect Outlier (Univariate)" width="90" x="179" y="238">
+        <parameter key="type" value="include attributes"/>
         <parameter key="attribute_filter_type" value="all"/>
-        <parameter key="attribute" value=""/>
-        <parameter key="attributes" value=""/>
-        <parameter key="use_except_expression" value="false"/>
-        <parameter key="value_type" value="numeric"/>
-        <parameter key="use_value_type_exception" value="false"/>
-        <parameter key="except_value_type" value="real"/>
-        <parameter key="block_type" value="value_series"/>
-        <parameter key="use_block_type_exception" value="false"/>
-        <parameter key="except_block_type" value="value_series_end"/>
-        <parameter key="invert_selection" value="false"/>
-        <parameter key="include_special_attributes" value="false"/>
+        <parameter key="select_attribute" value=""/>
+        <parameter key="select_subset" value=""/>
+        <parameter key="also_apply_to_special_attributes_(id,_label..)" value="false"/>
         <parameter key="method" value="Quartiles"/>
         <parameter key="aggregation_method" value="Average"/>
         <parameter key="show_individual_scores" value="false"/>
       </operator>
-      <operator activated="false" class="anomalydetection:iforest" compatibility="3.3.000" expanded="true" height="82" name="Detect Outlier (Isolation Forest)" width="90" x="313" y="391">
+      <operator activated="false" class="anomalydetection:iforest" compatibility="4.0.000" expanded="true" height="82" name="Detect Outlier (Isolation Forest)" width="90" x="313" y="391">
         <parameter key="number_of_trees" value="100"/>
         <parameter key="max_leaf_size" value="1"/>
         <parameter key="bootstrap_ratio" value="0.9"/>
@@ -40,8 +33,8 @@
         <parameter key="max_features" value="5"/>
         <parameter key="score_calculation" value="normalized_score"/>
       </operator>
-      <operator activated="true" class="multiply" compatibility="9.10.000" expanded="true" height="124" name="Multiply" width="90" x="313" y="238"/>
-      <operator activated="true" class="anomalydetection:generate_anomaly_flag" compatibility="3.3.000" expanded="true" height="103" name="generate_anomaly_flag (3)" width="90" x="581" y="391">
+      <operator activated="true" class="multiply" compatibility="9.10.001" expanded="true" height="124" name="Multiply" width="90" x="313" y="238"/>
+      <operator activated="true" class="anomalydetection:generate_anomaly_flag" compatibility="4.0.000" expanded="true" height="103" name="generate_anomaly_flag (3)" width="90" x="581" y="391">
         <parameter key="method" value="z-score"/>
         <parameter key="define_score_column" value="false"/>
         <parameter key="score_column" value="outlier_score"/>
@@ -49,7 +42,7 @@
         <parameter key="manual_threshold" value="1.0"/>
         <parameter key="zscore_threshold" value="3.0"/>
       </operator>
-      <operator activated="true" class="anomalydetection:generate_anomaly_flag" compatibility="3.3.000" expanded="true" height="103" name="generate_anomaly_flag (2)" width="90" x="581" y="238">
+      <operator activated="true" class="anomalydetection:generate_anomaly_flag" compatibility="4.0.000" expanded="true" height="103" name="generate_anomaly_flag (2)" width="90" x="581" y="238">
         <parameter key="method" value="manual"/>
         <parameter key="define_score_column" value="false"/>
         <parameter key="score_column" value="outlier_score"/>
@@ -57,7 +50,7 @@
         <parameter key="manual_threshold" value="1.0"/>
         <parameter key="zscore_threshold" value="3.0"/>
       </operator>
-      <operator activated="true" class="anomalydetection:generate_anomaly_flag" compatibility="3.3.000" expanded="true" height="103" name="generate_anomaly_flag" width="90" x="581" y="85">
+      <operator activated="true" class="anomalydetection:generate_anomaly_flag" compatibility="4.0.000" expanded="true" height="103" name="generate_anomaly_flag" width="90" x="581" y="85">
         <parameter key="method" value="contamination"/>
         <parameter key="define_score_column" value="false"/>
         <parameter key="score_column" value="outlier_score"/>

@@ -14,7 +14,7 @@ package com.rapidminer.extension.anomalydetection.utility.algorithms.score_aggre
 public class AverageScoreAggregation extends ScoreAggregation {
 	double aggregation =0;
 	int count = 0;
-
+	public AverageScoreAggregation(){}
 	public AverageScoreAggregation(boolean takeAbsolutes) {
 		super(takeAbsolutes);
 	}

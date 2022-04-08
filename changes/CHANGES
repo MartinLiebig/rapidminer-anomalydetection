@@ -28,6 +28,14 @@
 * Fixed a bug in Detect Outlier (TS), were z-scores wouldn't work with a reference set.
 * Fixed a bug in Detect Outlier (TS), were algorithms won't work if the reference set is smaller than the test set
 
+=== 4.0.0 ===
+Please be aware that this release is not backwards compatible, since attributes got new names!
+* Anomaly models are not serialized using JSON, not java serialization
+* Normal Anomaly models are now IOTablePredictionModels, just like any other learner (except clustering)
+* Since Anomaly models are now IOTablePredictionModels their response is prediction, not a score
+* Univariate models are still Preprocessing models, but their main score is called prediction. all other scores are called prediction(attributeName)
+
+
 
 
 
