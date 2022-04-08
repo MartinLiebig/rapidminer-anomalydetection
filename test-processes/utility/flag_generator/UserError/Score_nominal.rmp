@@ -18,7 +18,7 @@
       <operator activated="true" class="retrieve" compatibility="9.10.001" expanded="true" height="68" name="Retrieve Sonar (2)" width="90" x="45" y="34">
         <parameter key="repository_entry" value="//Samples/data/Sonar"/>
       </operator>
-      <operator activated="true" class="anomalydetection:iforest" compatibility="3.3.000" expanded="true" height="82" name="Detect Outlier (Isolation Forest)" width="90" x="179" y="34">
+      <operator activated="true" class="anomalydetection:iforest" compatibility="4.0.000" expanded="true" height="82" name="Detect Outlier (Isolation Forest)" width="90" x="179" y="34">
         <parameter key="number_of_trees" value="100"/>
         <parameter key="max_leaf_size" value="1"/>
         <parameter key="bootstrap_ratio" value="0.9"/>
@@ -28,7 +28,7 @@
       </operator>
       <operator activated="true" class="numerical_to_polynominal" compatibility="9.10.001" expanded="true" height="82" name="Numerical to Polynominal" width="90" x="313" y="34">
         <parameter key="attribute_filter_type" value="single"/>
-        <parameter key="attribute" value="score"/>
+        <parameter key="attribute" value="prediction"/>
         <parameter key="attributes" value=""/>
         <parameter key="use_except_expression" value="false"/>
         <parameter key="value_type" value="numeric"/>
@@ -44,7 +44,7 @@
         <parameter key="i18n_key" value="anomaly_detection.outlier_flag.score_not_real"/>
         <parameter key="add_details_to_log" value="false"/>
         <process expanded="true">
-          <operator activated="true" class="anomalydetection:generate_anomaly_flag" compatibility="3.3.000" expanded="true" height="103" name="generate_anomaly_flag" width="90" x="45" y="34">
+          <operator activated="true" class="anomalydetection:generate_anomaly_flag" compatibility="4.0.000" expanded="true" height="103" name="generate_anomaly_flag" width="90" x="45" y="34">
             <parameter key="method" value="contamination"/>
             <parameter key="define_score_column" value="false"/>
             <parameter key="score_column" value="outlier_score"/>

@@ -71,7 +71,7 @@ public class RPCAModel extends IOTableAnomalyModel {
 
 	public RPCAModel(){}
 	public RPCAModel(IOTable table) {
-		super(table, Tables.ColumnSetRequirement.EQUAL, Tables.TypeRequirement.ALLOW_INT_FOR_REAL);
+		super(table, Tables.ColumnSetRequirement.SUPERSET, Tables.TypeRequirement.ALLOW_INT_FOR_REAL);
 	}
 
 	public void train(ExampleSet trainSet) throws OperatorException {

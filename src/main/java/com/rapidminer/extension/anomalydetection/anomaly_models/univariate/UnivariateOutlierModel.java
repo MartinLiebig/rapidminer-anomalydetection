@@ -106,7 +106,7 @@ public class UnivariateOutlierModel extends IOTablePreprocessingModel {
 			}
 			if (showScores) {
 				builder.add(Attributes.PREDICTION_NAME + "(" + columnName + ")", buffer.toColumn())
-						.addMetaData(Attributes.PREDICTION_NAME + "(" + columnName + ")", ColumnRole.PREDICTION);
+						.addMetaData(Attributes.PREDICTION_NAME + "(" + columnName + ")", ColumnRole.SCORE);
 			}
 		}
 		NumericBuffer buffer = Buffers.realBuffer(adjusted.height());

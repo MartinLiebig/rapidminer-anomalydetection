@@ -69,7 +69,7 @@ public class IsolationForestModel extends IOTableAnomalyModel {
 	public IsolationForestModel(IOTable ioTable, int nTrees, int maxLeafSize, int maxFeatures, double bootstrapRatio, String scoringMode,
 								Context context, Operator operator) throws OperatorException {
 
-		super(ioTable, Tables.ColumnSetRequirement.EQUAL, Tables.TypeRequirement.ALLOW_INT_FOR_REAL);
+		super(ioTable, Tables.ColumnSetRequirement.SUPERSET, Tables.TypeRequirement.ALLOW_INT_FOR_REAL);
 		Table table = ioTable.getTable();
 		this.scoringMode = scoringMode;
 		trainingSize = table.height();

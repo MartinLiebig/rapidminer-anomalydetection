@@ -18,7 +18,7 @@ import com.rapidminer.operator.ports.metadata.table.TableMetaDataBuilder;
 
 
 public class UnivariateOutlierModelMetaData extends TableModelMetaData {
-	public List<String> trainingColumns;
+	public List<String> trainingColumns = new ArrayList<>();
 	public boolean showIndividualScores = false;
 
 	public UnivariateOutlierModelMetaData() {

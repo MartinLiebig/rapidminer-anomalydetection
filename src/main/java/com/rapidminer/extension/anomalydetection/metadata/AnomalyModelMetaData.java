@@ -38,7 +38,7 @@ public class AnomalyModelMetaData extends TableModelMetaData {
 	protected TableMetaData applyEffects(TableMetaData tmd, InputPort inputPort) {
 		TableMetaDataBuilder tableMetaDataBuilder = new TableMetaDataBuilder(tmd);
 		ColumnInfoBuilder columnInfoBuilder = new ColumnInfoBuilder(ColumnType.REAL);
-		tableMetaDataBuilder.add(Attributes.PREDICTION_NAME, columnInfoBuilder.build()).addColumnMetaData(Attributes.PREDICTION_NAME, ColumnRole.PREDICTION);
+		tableMetaDataBuilder.add(Attributes.PREDICTION_NAME, columnInfoBuilder.build()).addColumnMetaData(Attributes.PREDICTION_NAME, ColumnRole.SCORE);
 
 		return tableMetaDataBuilder.build();
 	}
