@@ -10,7 +10,7 @@ import com.rapidminer.operator.AbstractModel;
 import com.rapidminer.operator.OperatorException;
 import com.rapidminer.studio.concurrency.internal.SequentialConcurrencyContext;
 
-
+@Deprecated
 public abstract class IOTableAnomalyModel extends AbstractModel {
 
 

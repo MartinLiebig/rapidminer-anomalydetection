@@ -9,6 +9,12 @@ import com.rapidminer.tools.math.similarity.DistanceMeasure;
 import de.dfki.madm.anomalydetection.evaluator.cluster_based.CBLOFEvaluator;
 
 
+/**
+ * Deprecated because this does not use IOTablePredictionModel and is not using JSON.
+ * Please use the model in anomaly_models package.
+ * @author mschmitz
+ */
+@Deprecated
 public class CBLOFModel extends ClusterBasedAnomalyDetectionModel {
 	private CBLOFEvaluator evaluator;
 

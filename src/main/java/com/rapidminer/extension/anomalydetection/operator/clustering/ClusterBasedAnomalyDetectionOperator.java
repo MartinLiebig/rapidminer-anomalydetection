@@ -3,17 +3,23 @@ package com.rapidminer.extension.anomalydetection.operator.clustering;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.rapidminer.adaption.belt.IOTable;
+import com.rapidminer.belt.table.BeltConverter;
 import com.rapidminer.example.ExampleSet;
+
+import com.rapidminer.extension.anomalydetection.anomaly_models.IOTableAnomalyModel;
+import com.rapidminer.extension.anomalydetection.anomaly_models.clustering.CBLOFModel;
+import com.rapidminer.extension.anomalydetection.anomaly_models.clustering.CMGOSModel;
+import com.rapidminer.extension.anomalydetection.anomaly_models.clustering.ClusterBasedAnomalyDetectionModel;
+import com.rapidminer.extension.anomalydetection.anomaly_models.clustering.LDCOFModel;
 import com.rapidminer.extension.anomalydetection.model.AnomalyDetectionModel;
-import com.rapidminer.extension.anomalydetection.model.clustering.CBLOFModel;
-import com.rapidminer.extension.anomalydetection.model.clustering.CMGOSModel;
-import com.rapidminer.extension.anomalydetection.model.clustering.LDCOFModel;
 import com.rapidminer.extension.anomalydetection.operator.AbstractAnomalyOperator;
 import com.rapidminer.operator.OperatorDescription;
 import com.rapidminer.operator.OperatorException;
 import com.rapidminer.operator.clustering.ClusterModel;
 import com.rapidminer.operator.learner.CapabilityCheck;
 import com.rapidminer.operator.learner.CapabilityProvider;
+import com.rapidminer.operator.learner.IOTablePredictionModel;
 import com.rapidminer.operator.ports.InputPort;
 import com.rapidminer.operator.ports.OutputPort;
 import com.rapidminer.parameter.ParameterType;
@@ -24,6 +30,7 @@ import com.rapidminer.parameter.ParameterTypeInt;
 import com.rapidminer.parameter.conditions.BooleanParameterCondition;
 import com.rapidminer.parameter.conditions.EqualStringCondition;
 import com.rapidminer.parameter.conditions.EqualTypeCondition;
+import com.rapidminer.studio.concurrency.internal.SequentialConcurrencyContext;
 import com.rapidminer.tools.ParameterService;
 import com.rapidminer.tools.RandomGenerator;
 import com.rapidminer.tools.Tools;
@@ -153,30 +160,32 @@ public class ClusterBasedAnomalyDetectionOperator extends AbstractAnomalyOperato
 	}
 
 	public void doWork() throws OperatorException {
-		ExampleSet exampleSet = exaInput.getData(ExampleSet.class);
+		IOTable ioTable = exaInput.getData(IOTable.class);
+		SequentialConcurrencyContext context = new SequentialConcurrencyContext();
+		ExampleSet exampleSet = BeltConverter.convert(ioTable,context);
 
 		CapabilityCheck check = new CapabilityCheck(this, Tools.booleanValue(
 				ParameterService.getParameterValue(CapabilityProvider.PROPERTY_RAPIDMINER_GENERAL_CAPABILITIES_WARN), true));
 		check.checkLearnerCapabilities(this, exampleSet);
 
-		AnomalyDetectionModel model;
+		ClusterBasedAnomalyDetectionModel model;
 		String usedAlgorithm = getParameterAsString(PARAMETER_ALGORITHM);
 		DistanceMeasure measure = measureHelper.getInitializedMeasure(exampleSet);
 		switch (usedAlgorithm) {
 			case CBLOF:
-				model = buildCBLOF(exampleSet, measure);
+				model = buildCBLOF(ioTable, measure);
 				break;
 			case LDCOF:
-				model = buildLDCOF(exampleSet, measure);
+				model = buildLDCOF(ioTable, measure);
 				break;
 			case CMGOS:
-				model = buildCMGOS(exampleSet, measure);
+				model = buildCMGOS(ioTable, measure);
 				break;
 			default:
 				throw new OperatorException("Unknown algorithm " + usedAlgorithm);
 		}
 
-		ExampleSet resultSet = model.apply(exampleSet);
+		IOTable resultSet = model.apply(ioTable,this);
 
 		exaOutput.deliver(resultSet);
 		modOutput.deliver(model);
@@ -184,7 +193,7 @@ public class ClusterBasedAnomalyDetectionOperator extends AbstractAnomalyOperato
 
 	}
 
-	protected AnomalyDetectionModel buildCBLOF(ExampleSet trainingSet, DistanceMeasure measure) throws OperatorException {
+	protected ClusterBasedAnomalyDetectionModel buildCBLOF(IOTable trainingSet, DistanceMeasure measure) throws OperatorException {
 		ClusterModel mod = clusterInput.getData(ClusterModel.class);
 		CBLOFModel anomalyModel = new CBLOFModel(trainingSet, mod, measure);
 		anomalyModel.setAlpha(getParameterAsDouble(PARAMETER_ALPHA));
@@ -193,7 +202,7 @@ public class ClusterBasedAnomalyDetectionOperator extends AbstractAnomalyOperato
 		return anomalyModel;
 	}
 
-	protected AnomalyDetectionModel buildLDCOF(ExampleSet trainingSet, DistanceMeasure measure) throws OperatorException {
+	protected ClusterBasedAnomalyDetectionModel buildLDCOF(IOTable trainingSet, DistanceMeasure measure) throws OperatorException {
 		ClusterModel mod = clusterInput.getData(ClusterModel.class);
 
 		LDCOFModel anomalyModel;
@@ -209,7 +218,7 @@ public class ClusterBasedAnomalyDetectionOperator extends AbstractAnomalyOperato
 		return anomalyModel;
 	}
 
-	protected AnomalyDetectionModel buildCMGOS(ExampleSet trainingSet, DistanceMeasure measure) throws OperatorException {
+	protected ClusterBasedAnomalyDetectionModel buildCMGOS(IOTable trainingSet, DistanceMeasure measure) throws OperatorException {
 		ClusterModel mod = clusterInput.getData(ClusterModel.class);
 		CMGOSModel anomalyModel = new CMGOSModel(trainingSet, mod, measure);
 		anomalyModel.setThreads(1);

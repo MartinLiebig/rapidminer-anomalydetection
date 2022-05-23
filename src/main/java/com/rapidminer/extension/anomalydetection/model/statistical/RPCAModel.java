@@ -19,7 +19,9 @@ import org.apache.commons.math.distribution.ChiSquaredDistributionImpl;
 
 import java.util.*;
 
+/** use RPCA in anomaly_models instead **/
 
+@Deprecated
 public class RPCAModel extends AnomalyDetectionModel {
 
 

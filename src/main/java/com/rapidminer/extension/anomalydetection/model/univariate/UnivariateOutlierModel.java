@@ -42,6 +42,7 @@ import com.rapidminer.studio.internal.Resources;
  * Univariate Anomaly Model which scores creates one anomaly model per attribute.
  * The individual scores are aggregated with one of the aggregation_methods;
  */
+@Deprecated
 public class UnivariateOutlierModel extends PreprocessingModel {
 	
 

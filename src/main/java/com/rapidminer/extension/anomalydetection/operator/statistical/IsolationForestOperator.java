@@ -6,9 +6,10 @@ import java.util.List;
 import com.rapidminer.adaption.belt.IOTable;
 import com.rapidminer.belt.execution.Context;
 import com.rapidminer.belt.table.Table;
-import com.rapidminer.belt.util.ColumnRole;
+
 import com.rapidminer.example.Attributes;
-import com.rapidminer.extension.anomalydetection.model.statistical.IsolationForestModel;
+import com.rapidminer.extension.anomalydetection.anomaly_models.statistical.IsolationForestModel;
+import com.rapidminer.extension.anomalydetection.operator.AbstractAnomalyOperator;
 import com.rapidminer.extension.anomalydetection.utility.AnomalyUtilities;
 import com.rapidminer.operator.Operator;
 import com.rapidminer.operator.OperatorCapability;
@@ -22,6 +23,7 @@ import com.rapidminer.operator.ports.metadata.AttributeMetaData;
 import com.rapidminer.operator.ports.metadata.ExampleSetMetaData;
 import com.rapidminer.operator.ports.metadata.ExampleSetPassThroughRule;
 import com.rapidminer.operator.ports.metadata.SetRelation;
+import com.rapidminer.operator.ports.metadata.table.TableMetaData;
 import com.rapidminer.parameter.ParameterType;
 import com.rapidminer.parameter.ParameterTypeBoolean;
 import com.rapidminer.parameter.ParameterTypeCategory;
@@ -36,12 +38,7 @@ import com.rapidminer.tools.belt.BeltTools;
  * @author mschmitz
  * @since 2.10.0
  */
-public class IsolationForestOperator extends Operator implements CapabilityProvider {
-
-	private final InputPort exaInput = getInputPorts().createPort("exa");
-
-	private final OutputPort exaOuput = getOutputPorts().createPort("exa");
-	private final OutputPort modOutput = getOutputPorts().createPort("mod");
+public class IsolationForestOperator extends AbstractAnomalyOperator implements CapabilityProvider {
 
 	public static final String PARAMETER_N_TRESS = "number_of_trees";
 	public static final String PARAMETER_MAX_LEAF_SIZE = "max_leaf_size";
@@ -53,32 +50,15 @@ public class IsolationForestOperator extends Operator implements CapabilityProvi
 	public IsolationForestOperator(OperatorDescription description) {
 		super(description);
 
-		getTransformer().addGenerationRule(modOutput, IsolationForestModel.class);
-//		getTransformer().addRule(() -> {
-//			OutlierModelMetaData ommd = new OutlierModelMetaData(
-//					(ExampleSetMetaData) exaInput.getMetaData());
-//			modOutput.deliverMD(ommd);
-//		});
 
-		getTransformer().addRule(
-				new ExampleSetPassThroughRule(exaInput, exaOuput, SetRelation.EQUAL) {
 
-					@Override
-					public ExampleSetMetaData modifyExampleSet(ExampleSetMetaData metaData) {
-
-						metaData.addAttribute(new AttributeMetaData(AnomalyUtilities.ANOMALY_SCORE_NAME, Ontology.REAL,
-								Attributes.CONFIDENCE_NAME));
-
-						return metaData;
-					}
-				});
 	}
 
 	@Override
 	public void doWork() throws OperatorException {
-		IOTable wrapper = exaInput.getData(IOTable.class);
+		IOTable ioTable = exaInput.getData(IOTable.class);
 
-		Table table = wrapper.getTable();
+		Table table = ioTable.getTable();
 
 		Context context = BeltTools.getContext(this);
 
@@ -94,7 +74,7 @@ public class IsolationForestOperator extends Operator implements CapabilityProvi
 			throw new UserError(this,"anomaly_detection.example_error",maxFeatures,regularWidth);
 		}
 
-		IsolationForestModel forest = new IsolationForestModel(table,
+		IsolationForestModel forest = new IsolationForestModel(ioTable,
 				getParameterAsInt(PARAMETER_N_TRESS),
 				getParameterAsInt(PARAMETER_MAX_LEAF_SIZE),
 				maxFeatures,
@@ -103,8 +83,8 @@ public class IsolationForestOperator extends Operator implements CapabilityProvi
 						PARAMETER_SCORE_CALCULATION),
 				context, this);
 
-		IOTable result = forest.apply(table);
-		exaOuput.deliver(result);
+		IOTable result = forest.apply(ioTable,this);
+		exaOutput.deliver(result);
 		modOutput.deliver(forest);
 	}
 

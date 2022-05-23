@@ -13,6 +13,7 @@ package com.rapidminer.extension.anomalydetection.utility.algorithms.score_aggre
 public class MaxScoreAggregation extends ScoreAggregation {
 	double aggregate = Double.NaN;
 
+	public MaxScoreAggregation(){}
 	public MaxScoreAggregation(boolean takeAbsolutes) {
 		super(takeAbsolutes);
 	}
