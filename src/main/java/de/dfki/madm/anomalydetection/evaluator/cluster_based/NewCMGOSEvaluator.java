@@ -86,7 +86,7 @@ public class NewCMGOSEvaluator implements Evaluator   {
 	 */
 	private int cov_sampling;
 
-	private RandomGenerator generator;
+	transient private RandomGenerator generator;
 	/**
 	 * Percentage determining if a cluster is large or small.
 	 */
@@ -108,13 +108,20 @@ public class NewCMGOSEvaluator implements Evaluator   {
 	private int initIteration;
 	private CovarianceMatrix[] CovariancematrixPerCluster;
 	private double[] DistanceLimitPerCluster;
-	private Matrix[] mhInverse;
+	//transient private Matrix[] mhInverse;
+	private ArrayList<double[][]> mhInverseList;
 	double DistanceLimit;
 	int[][] remove;
 	private double[][] meansPerCluster;
 	private boolean removed_cluster[];
 	double limit;
 
+	/**
+	 * Constructor for JSON serialization
+	 */
+	public NewCMGOSEvaluator(){
+		generator = RandomGenerator.getGlobalRandomGenerator();
+	}
 
 	/**
 	 * Instantiates a new covariance matrix evaluator.
@@ -239,7 +246,11 @@ public class NewCMGOSEvaluator implements Evaluator   {
 		Arrays.fill(DistanceLimitPerCluster, DistanceLimit);
 
 		this.CovariancematrixPerCluster = new CovarianceMatrix[NumberOfCluster];
-		this.mhInverse = new Matrix[NumberOfCluster];
+		//this.mhInverse = new Matrix[NumberOfCluster];
+		this.mhInverseList = new ArrayList<>();
+		for(int i = 0; i < NumberOfCluster; ++i){
+			mhInverseList.add(null);
+		}
 		// in case of fastMCD make sure don't remove any outliers and recompute
 		// sanity check from user interface
 		if (this.red == METHOD_COV_MCD) {
@@ -420,7 +431,8 @@ public class NewCMGOSEvaluator implements Evaluator   {
 					}
 
 					mh = mh.inverse();
-					mhInverse[ClusterId] = mh;
+					//mhInverse[ClusterId] = mh;
+					this.mhInverseList.set(ClusterId, mh.getArray());
 					score(this.points, result, workBelongsToCluster, ClusterId);
 
 				}
@@ -458,8 +470,8 @@ public class NewCMGOSEvaluator implements Evaluator   {
 
 	private void score(double[][] points, double[] result, int[] workBelongsToCluster, int ClusterId) {
 
-		if (this.mhInverse[ClusterId] != null) {
-			Matrix mh = this.mhInverse[ClusterId];
+		if (this.mhInverseList.get(ClusterId) != null) {
+			Matrix mh = new Matrix(mhInverseList.get(ClusterId));//this.mhInverse[ClusterId];
 			for (int PointId = 0; PointId < points.length; PointId++) {
 				if (workBelongsToCluster[PointId] == ClusterId) {
 

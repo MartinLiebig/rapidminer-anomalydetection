@@ -112,6 +112,11 @@ public class CMGOSEvaluator implements Evaluator {
 	CovarianceMatrix[] CovariancematrixPerCluster;
 
 	/**
+	 * Constructor for JSON serialization
+	 */
+	public CMGOSEvaluator(){}
+
+	/**
 	 * Instantiates a new covariance matrix evaluator.
 	 *
 	 * @param measure

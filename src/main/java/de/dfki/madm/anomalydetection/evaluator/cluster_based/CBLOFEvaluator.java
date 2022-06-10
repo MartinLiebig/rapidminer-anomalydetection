@@ -59,6 +59,11 @@ public class CBLOFEvaluator implements Evaluator {
 	
 	protected  boolean [] largeCluster;
 
+	/**
+	 * Constructor for JSON serialization
+	 */
+	public CBLOFEvaluator(){}
+
 	public CBLOFEvaluator(double alpha, double beta, DistanceMeasure measure,
 			double[][] points, int[] belongsToCluster, double[][] centroids,
 			int clusterSize[], boolean weighting) {
