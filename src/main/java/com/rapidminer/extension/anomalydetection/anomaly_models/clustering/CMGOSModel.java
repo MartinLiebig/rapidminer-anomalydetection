@@ -27,9 +27,17 @@ public class CMGOSModel extends ClusterBasedAnomalyDetectionModel {
 	int numberOfSubsets;
 	int fastMCDPoints;
 	int inititeration;
-	RandomGenerator randomGenerator = RandomGenerator.getGlobalRandomGenerator();
+
+	transient RandomGenerator randomGenerator = RandomGenerator.getGlobalRandomGenerator();
 	NewCMGOSEvaluator evaluator;
 	boolean trained;
+
+	/**
+	 * Constructor for JSON serialization
+	 */
+	public CMGOSModel(){
+		randomGenerator = RandomGenerator.getGlobalRandomGenerator();
+	}
 
 	public CMGOSModel(IOTable ioTable, ClusterModel model, DistanceMeasure measure) throws OperatorException {
 		super(ioTable, model, measure);

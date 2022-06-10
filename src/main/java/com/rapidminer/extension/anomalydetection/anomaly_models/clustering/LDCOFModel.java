@@ -20,6 +20,11 @@ public class LDCOFModel extends ClusterBasedAnomalyDetectionModel {
 	private double gamma;
 	private boolean useGamma;
 
+	/**
+	 * Constructor for JSON serialization
+	 */
+	public LDCOFModel(){}
+
 	public LDCOFModel(IOTable ioTable, ClusterModel model, DistanceMeasure measure) throws OperatorException {
 		super(ioTable, model, measure);
 	}

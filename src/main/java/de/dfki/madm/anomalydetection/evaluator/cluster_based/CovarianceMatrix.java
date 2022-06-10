@@ -31,6 +31,12 @@ public class CovarianceMatrix implements Serializable {
 	private int dim = 0;
 	private int numberOfThreads;
 
+
+	/**
+	 * Constructor for JSON serialization
+	 */
+	public CovarianceMatrix(){}
+
 	public double[][] getCovMat() {
 		return this.CovMat;
 	}

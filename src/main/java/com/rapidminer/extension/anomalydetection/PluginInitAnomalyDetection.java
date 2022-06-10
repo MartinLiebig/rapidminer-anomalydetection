@@ -21,6 +21,10 @@
 package com.rapidminer.extension.anomalydetection;
 
 import com.rapidminer.extension.anomalydetection.anomaly_models.IOTableAnomalyModel;
+import com.rapidminer.extension.anomalydetection.anomaly_models.clustering.CBLOFModel;
+import com.rapidminer.extension.anomalydetection.anomaly_models.clustering.CMGOSModel;
+import com.rapidminer.extension.anomalydetection.anomaly_models.clustering.ClusterBasedAnomalyDetectionModel;
+import com.rapidminer.extension.anomalydetection.anomaly_models.clustering.LDCOFModel;
 import com.rapidminer.extension.anomalydetection.anomaly_models.statistical.IsolationForestModel;
 import com.rapidminer.extension.anomalydetection.anomaly_models.statistical.RPCAModel;
 import com.rapidminer.extension.anomalydetection.anomaly_models.univariate.UnivariateOutlierModel;
@@ -54,9 +58,15 @@ public final class PluginInitAnomalyDetection {
 	 */
 	public static void initPlugin() {
 		JsonStorableIOObjectResolver.INSTANCE.register(ThresholdFlagModel.class);
-		JsonStorableIOObjectResolver.INSTANCE.register(IsolationForestModel.class);
 		JsonStorableIOObjectResolver.INSTANCE.register(RPCAModel.class);
 		JsonStorableIOObjectResolver.INSTANCE.register(UnivariateOutlierModel.class);
+
+		JsonStorableIOObjectResolver.INSTANCE.register(ClusterBasedAnomalyDetectionModel.class);
+		JsonStorableIOObjectResolver.INSTANCE.register(CBLOFModel.class);
+		JsonStorableIOObjectResolver.INSTANCE.register(CMGOSModel.class);
+		JsonStorableIOObjectResolver.INSTANCE.register(LDCOFModel.class);
+		JsonStorableIOObjectResolver.INSTANCE.register(IsolationForestModel.class);
+		JsonStorableIOObjectResolver.INSTANCE.register(RPCAModel.class);
 
 		MetaDataFactory.registerIOObjectMetaData(UnivariateOutlierModel.class, UnivariateOutlierModelMetaData.class);
 		MetaDataFactory.registerIOObjectMetaData(ThresholdFlagModel.class, ThresholdFlagModelMetaData.class);

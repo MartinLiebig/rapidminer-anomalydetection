@@ -19,7 +19,9 @@ public class CBLOFModel extends ClusterBasedAnomalyDetectionModel {
 	private double beta;
 
 	private boolean useClusterWeights;
-
+	/**
+	 * Constructor for JSON serialization
+	 */
 	public CBLOFModel(){}
 
 	public CBLOFModel(IOTable ioTable, ClusterModel model, DistanceMeasure measure) throws OperatorException {
@@ -28,7 +30,7 @@ public class CBLOFModel extends ClusterBasedAnomalyDetectionModel {
 	}
 
 	public NumericBuffer evaluate(ExampleSet testSet) throws OperatorException {
-		double[][] points = AnomalyUtilities.exampleSetToDoubleArray(testSet,trainingHeader.getAttributes(),true);
+		double[][] points = AnomalyUtilities.exampleSetToDoubleArray(testSet, trainingHeader.getAttributes(),true);
 
 		evaluator = new CBLOFEvaluator(alpha, beta,distanceMeasure,points,getClusterIds(testSet),centroids,clusterSize,useClusterWeights);
 		double[] scores = evaluator.evaluate();

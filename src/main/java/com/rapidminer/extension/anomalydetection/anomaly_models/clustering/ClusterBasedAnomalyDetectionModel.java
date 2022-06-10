@@ -3,11 +3,11 @@ package com.rapidminer.extension.anomalydetection.anomaly_models.clustering;
 import java.util.Arrays;
 import java.util.Map;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.rapidminer.adaption.belt.IOTable;
 import com.rapidminer.belt.buffer.NumericBuffer;
 import com.rapidminer.belt.column.Column;
-import com.rapidminer.belt.execution.Context;
-import com.rapidminer.belt.execution.SequentialContext;
 import com.rapidminer.belt.table.BeltConverter;
 import com.rapidminer.belt.table.Table;
 import com.rapidminer.belt.table.Tables;
@@ -17,15 +17,13 @@ import com.rapidminer.example.ExampleSet;
 import com.rapidminer.example.set.HeaderExampleSet;
 import com.rapidminer.example.table.NominalMapping;
 import com.rapidminer.extension.anomalydetection.anomaly_models.IOTableAnomalyModel;
-import com.rapidminer.extension.anomalydetection.model.AnomalyDetectionModel;
 import com.rapidminer.operator.Operator;
 import com.rapidminer.operator.OperatorException;
 import com.rapidminer.operator.clustering.ClusterModel;
-import com.rapidminer.operator.learner.IOTablePredictionModel;
 import com.rapidminer.studio.concurrency.internal.SequentialConcurrencyContext;
-import com.rapidminer.tools.belt.BeltTools;
 import com.rapidminer.tools.math.similarity.DistanceMeasure;
-
+import com.rapidminer.storage.hdf5.HeaderExampleSetJsonDeserializer;
+import com.rapidminer.storage.hdf5.HeaderExampleSetJsonSerializer;
 
 public abstract class ClusterBasedAnomalyDetectionModel extends IOTableAnomalyModel {
 	protected DistanceMeasure distanceMeasure;
@@ -33,7 +31,10 @@ public abstract class ClusterBasedAnomalyDetectionModel extends IOTableAnomalyMo
 	protected double[][] centroids;
 	protected int[] clusterSize;
 
+	@JsonSerialize(using = HeaderExampleSetJsonSerializer.class)
+	@JsonDeserialize(using = HeaderExampleSetJsonDeserializer.class)
 	protected HeaderExampleSet trainingHeader;
+
 
 	public ClusterBasedAnomalyDetectionModel(){}
 

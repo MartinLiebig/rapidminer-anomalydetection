@@ -52,6 +52,10 @@ public class LDCOFEvaluator implements Evaluator {
 	protected boolean[] largeCluster;
 
 	/**
+	 * Constructor for JSON serialization
+	 */
+	public LDCOFEvaluator(){};
+	/**
 	 * Constructor used when the LDCOF uses the method defined in CBLOF to
 	 * divide the clusters into small and large clusters.
 	 * 
