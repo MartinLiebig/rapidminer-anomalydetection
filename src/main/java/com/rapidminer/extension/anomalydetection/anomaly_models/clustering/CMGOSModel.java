@@ -1,5 +1,12 @@
 package com.rapidminer.extension.anomalydetection.anomaly_models.clustering;
 
+import java.lang.reflect.Field;
+import java.util.Random;
+import java.util.concurrent.atomic.AtomicLong;
+
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.util.StdConverter;
 import com.rapidminer.adaption.belt.IOTable;
 import com.rapidminer.belt.buffer.Buffers;
 import com.rapidminer.belt.buffer.NumericBuffer;
@@ -27,9 +34,17 @@ public class CMGOSModel extends ClusterBasedAnomalyDetectionModel {
 	int numberOfSubsets;
 	int fastMCDPoints;
 	int inititeration;
+	@JsonDeserialize(converter = RandomGeneratorDeserializer.class)
+	@JsonSerialize(converter = RandomGeneratorSerializer.class)
 	RandomGenerator randomGenerator = RandomGenerator.getGlobalRandomGenerator();
+			//TODO: This is a problem on deserialization, but not sure how much sense it makes to store it anyway
+	//wouldn't it mean that there is a difference between retrieve and apply twice and retrieve apply plus retrieve apply??
 	NewCMGOSEvaluator evaluator;
 	boolean trained;
+
+	private CMGOSModel() {
+		super();
+	}
 
 	public CMGOSModel(IOTable ioTable, ClusterModel model, DistanceMeasure measure) throws OperatorException {
 		super(ioTable, model, measure);
@@ -113,5 +128,45 @@ public class CMGOSModel extends ClusterBasedAnomalyDetectionModel {
 
 	public void setRandomGenerator(RandomGenerator randomGenerator) {
 		this.randomGenerator = randomGenerator;
+	}
+
+//TODO: this might require to sign the extension
+	/**
+	 * Converter from random generator to its seed.
+	 */
+	public static class RandomGeneratorSerializer extends StdConverter<RandomGenerator, Long> {
+
+		@Override
+		public Long convert(RandomGenerator value) {
+			try {
+				Field seed = Random.class.getDeclaredField("seed");
+				seed.setAccessible(true);
+				AtomicLong atomicLong = (AtomicLong) seed.get(value);
+				return atomicLong.get();
+			} catch (NoSuchFieldException | IllegalAccessException e) {
+				// cannot happen, called with permissions and field is there
+				return 0L;
+			}
+		}
+	}
+
+	/**
+	 * Converter from long value to random generator with that value as seed.
+	 */
+	public static class RandomGeneratorDeserializer extends StdConverter<Long, RandomGenerator> {
+
+		@Override
+		public RandomGenerator convert(Long value) {
+			RandomGenerator generator = new RandomGenerator(value);
+			try {
+				Field seed = Random.class.getDeclaredField("seed");
+				seed.setAccessible(true);
+				AtomicLong atomicLong = (AtomicLong) seed.get(generator);
+				atomicLong.set(value);
+			} catch (NoSuchFieldException | IllegalAccessException e) {
+				// cannot happen, called with permissions and field is there
+			}
+			return generator;
+		}
 	}
 }
