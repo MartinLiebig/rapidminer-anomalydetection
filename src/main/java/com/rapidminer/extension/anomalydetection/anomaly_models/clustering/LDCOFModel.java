@@ -20,6 +20,10 @@ public class LDCOFModel extends ClusterBasedAnomalyDetectionModel {
 	private double gamma;
 	private boolean useGamma;
 
+	private LDCOFModel(){
+		super();
+	}
+
 	public LDCOFModel(IOTable ioTable, ClusterModel model, DistanceMeasure measure) throws OperatorException {
 		super(ioTable, model, measure);
 	}

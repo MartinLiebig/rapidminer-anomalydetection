@@ -34,6 +34,7 @@ Please be aware that this release is not backwards compatible, since attributes 
 * Normal Anomaly models are now IOTablePredictionModels, just like any other learner (except clustering)
 * Since Anomaly models are now IOTablePredictionModels their response is prediction, not a score
 * Univariate models are still Preprocessing models, but their main score is called prediction. all other scores are called prediction(attributeName)
+* Univariate models are now stating the correct covered attributes in their description
 
 
 

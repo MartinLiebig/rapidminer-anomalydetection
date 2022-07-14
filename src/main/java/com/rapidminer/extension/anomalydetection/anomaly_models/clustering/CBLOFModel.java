@@ -20,7 +20,9 @@ public class CBLOFModel extends ClusterBasedAnomalyDetectionModel {
 
 	private boolean useClusterWeights;
 
-	public CBLOFModel(){}
+	public CBLOFModel(){
+		super();
+	}
 
 	public CBLOFModel(IOTable ioTable, ClusterModel model, DistanceMeasure measure) throws OperatorException {
 		super(ioTable, model,measure);

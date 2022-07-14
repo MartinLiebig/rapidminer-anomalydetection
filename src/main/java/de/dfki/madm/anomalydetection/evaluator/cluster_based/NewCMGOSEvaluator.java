@@ -142,7 +142,12 @@ public class NewCMGOSEvaluator implements Evaluator   {
 	 * @param fastMCDPoints
 	 * @param subsetPoints
 	 */
-	public NewCMGOSEvaluator(DistanceMeasure measure, double[][] points, int[] belongsToCluster, double[][] centroids, int[] clusterSize, int threads, int removeRuns, double probability, int cov_sampling, RandomGenerator generator, double percentage, double lamda, int cov, int h, int numberOfSubsets, int fastMCDPoints, int initIteration) {
+	public NewCMGOSEvaluator(DistanceMeasure measure, double[][] points, int[] belongsToCluster,
+							 double[][] centroids, int[] clusterSize, int threads,
+							 int removeRuns, double probability, int cov_sampling,
+							 RandomGenerator random, double percentage, double lamda,
+							 int cov, int h, int numberOfSubsets, int fastMCDPoints,
+							 int initIteration) {
 
 		this.measure = measure;
 		this.points = points;
@@ -153,7 +158,7 @@ public class NewCMGOSEvaluator implements Evaluator   {
 		this.removeRuns = removeRuns;
 		this.probability = probability;
 		this.cov_sampling = cov_sampling;
-		this.generator = generator;
+		this.generator = random;
 		this.percentage = percentage;
 		this.regularizedLambda = lamda;
 		this.red = cov;
