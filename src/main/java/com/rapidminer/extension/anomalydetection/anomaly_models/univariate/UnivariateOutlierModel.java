@@ -30,6 +30,8 @@ import com.rapidminer.operator.Operator;
 import com.rapidminer.operator.OperatorException;
 import com.rapidminer.operator.preprocessing.IOTablePreprocessingModel;
 import com.rapidminer.studio.internal.Resources;
+import com.rapidminer.tools.Tools;
+import com.rapidminer.tools.belt.BeltTools;
 
 
 /**
@@ -159,6 +161,17 @@ public class UnivariateOutlierModel extends IOTablePreprocessingModel {
 
 	public List<String> getTrainingColumns() {
 		return trainingColumns;
+	}
+
+	@Override
+	public String toResultString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append(getName()).append(Tools.getLineSeparators(2));
+		builder.append("Model covering ").append(trainingColumns.size()).append(" attributes:").append(Tools.getLineSeparator());
+		for (String name : trainingColumns) {
+			builder.append(" - ").append(name).append(Tools.getLineSeparator());
+		}
+		return builder.toString();
 	}
 
 
