@@ -34,10 +34,11 @@ public class CMGOSModel extends ClusterBasedAnomalyDetectionModel {
 	int numberOfSubsets;
 	int fastMCDPoints;
 	int inititeration;
-	@JsonDeserialize(converter = RandomGeneratorDeserializer.class)
-	@JsonSerialize(converter = RandomGeneratorSerializer.class)
-	RandomGenerator randomGenerator = RandomGenerator.getGlobalRandomGenerator();
-			//TODO: This is a problem on deserialization, but not sure how much sense it makes to store it anyway
+	//@JsonDeserialize(converter = RandomGeneratorDeserializer.class)
+	//@JsonSerialize(converter = RandomGeneratorSerializer.class)
+	// rg is only used in training
+	transient RandomGenerator randomGenerator = RandomGenerator.getGlobalRandomGenerator();
+
 	//wouldn't it mean that there is a difference between retrieve and apply twice and retrieve apply plus retrieve apply??
 	NewCMGOSEvaluator evaluator;
 	boolean trained;
