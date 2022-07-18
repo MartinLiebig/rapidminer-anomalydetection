@@ -60,11 +60,17 @@ public class CBLOFEvaluator implements Evaluator {
 	protected  boolean [] largeCluster;
 
 	/**
-	 * Constructor for JSON serialization
+	 * builds a new evaluator with given parameters.
+	 *
+	 * @param measure the distance measure to be used
+	 * @param points data points
+	 * @param belongsToCluster an array with the associated cluster index
+	 * @param centroids centroids of the model
+	 * @param clusterSize sizes of the cluster
+	 * @param weighting wether to use weighting or not
+	 * @param largeCluster wether a cluster is large or not
 	 */
-	public CBLOFEvaluator(){}
-
-	public CBLOFEvaluator(double alpha, double beta, DistanceMeasure measure,
+	public CBLOFEvaluator(DistanceMeasure measure,
 			double[][] points, int[] belongsToCluster, double[][] centroids,
 			int clusterSize[], boolean weighting, boolean[] largeCluster) {
 		
@@ -77,6 +83,21 @@ public class CBLOFEvaluator implements Evaluator {
 		this.largeCluster= largeCluster;
 
 	}
+	/**
+	 *
+	 * builds a new evaluator with given parameters.
+	 *
+	 * WARNING: This method builds the largeCluster array which indicates if a cluster is to be used or merged
+	 * on the points you provide. So if you build an evaluator using this method
+	 * it give different results for a data point if you add more data points to it.
+	 *
+	 * @param measure the distance measure to be used
+	 * @param points data points
+	 * @param belongsToCluster an array with the associated cluster index
+	 * @param centroids centroids of the model
+	 * @param clusterSize sizes of the cluster
+	 * @param weighting wether to use weighting or not
+	 */
 	@Deprecated
 	public CBLOFEvaluator(double alpha, double beta, DistanceMeasure measure,
 						  double[][] points, int[] belongsToCluster, double[][] centroids,
