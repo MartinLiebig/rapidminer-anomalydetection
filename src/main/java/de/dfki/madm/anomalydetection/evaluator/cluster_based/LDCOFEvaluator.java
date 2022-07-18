@@ -57,7 +57,7 @@ public class LDCOFEvaluator implements Evaluator {
 	 * 
 	 */
 
-	public LDCOFEvaluator(double alpha, double beta, DistanceMeasure measure,
+	public LDCOFEvaluator(DistanceMeasure measure,
 			double[][] points, int[] belongsToCluster, double[][] centroids,
 			int[] clusterSize, boolean[] largeCluster) {
 		this.measure = measure;
@@ -67,6 +67,14 @@ public class LDCOFEvaluator implements Evaluator {
 		this.centroids = centroids;
 		this.largeCluster = largeCluster;
 	}
+	/**
+	 * Constructor used when the LDCOF uses the method defined in CBLOF to
+	 * divide the clusters into small and large clusters.
+	 *
+	 * WARNING: This method builds the largeCluster array which indicates if a cluster is to be used or merged
+	 * on the points you provide. So if you build an evaluator using this method
+	 * it give different results for a data point if you add more data points to it.
+	 */
 	@Deprecated
 	public LDCOFEvaluator(double alpha, double beta, DistanceMeasure measure,
 						  double[][] points, int[] belongsToCluster, double[][] centroids,
@@ -84,6 +92,9 @@ public class LDCOFEvaluator implements Evaluator {
 	 *Constructor used when the division into small and large clusters is based
 	 * on the minimum size of the large cluster
 	 *
+	 * WARNING: This method builds the largeCluster array which indicates if a cluster is to be used or merged
+	 * on the points you provide. So if you build an evaluator using this method
+	 * it give different results for a data point if you add more data points to it.
 	 */
 	@Deprecated
 	public LDCOFEvaluator(double gamma, DistanceMeasure measure,
@@ -97,21 +108,7 @@ public class LDCOFEvaluator implements Evaluator {
 		largeCluster = assignLargeClusters(clusterSize, gamma * points.length
 				/ centroids.length);
 	}
-	/**
-	 *Constructor used when the division into small and large clusters is based
-	 * on the minimum size of the large cluster
-	 * 
-	 */
-	public LDCOFEvaluator(double gamma, DistanceMeasure measure,
-			double[][] points, int[] belongsToCluster, double[][] centroids,
-			int[] clusterSize, boolean[] largeCluster) {
-		this.measure = measure;
-		this.points = points;
-		this.belongsToCluster = belongsToCluster;
-		this.clusterSize = clusterSize;
-		this.centroids = centroids;
-		this.largeCluster = largeCluster;
-	}
+
 
 	/**
 	 * The methods identifies each cluster as a small or large cluster based on

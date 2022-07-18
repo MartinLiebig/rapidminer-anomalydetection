@@ -39,11 +39,9 @@ public class LDCOFModel extends ClusterBasedAnomalyDetectionModel {
 
 		double[][] points = AnomalyUtilities.exampleSetToDoubleArray(testSet, getTrainingHeader().getAttributes(), true);
 		LDCOFEvaluator evaluator;
-		if(useGamma)
-			evaluator = new LDCOFEvaluator(gamma, distanceMeasure, points, getClusterIds(testSet), centroids, clusterSize,largeCluster);
-		else {
-		 evaluator =new LDCOFEvaluator(alpha, beta, distanceMeasure, points, getClusterIds(testSet), centroids, clusterSize,largeCluster);
-		}
+
+		evaluator = new LDCOFEvaluator(distanceMeasure, points, getClusterIds(testSet), centroids, clusterSize,largeCluster);
+
 		 double[] scores = evaluator.evaluate();
 		return scores;
 	}

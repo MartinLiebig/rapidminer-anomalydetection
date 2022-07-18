@@ -30,7 +30,7 @@ public class CBLOFModel extends ClusterBasedAnomalyDetectionModel {
 	public double[] evaluate(ExampleSet testSet) throws OperatorException {
 		double[][] points = AnomalyUtilities.exampleSetToDoubleArray(testSet,getTrainingHeader().getAttributes(),true);
 
-		evaluator = new CBLOFEvaluator(alpha, beta,distanceMeasure,points,getClusterIds(testSet),centroids,clusterSize,useClusterWeights, largeCluster);
+		evaluator = new CBLOFEvaluator(distanceMeasure,points,getClusterIds(testSet),centroids,clusterSize,useClusterWeights, largeCluster);
 		double[] scores = evaluator.evaluate();
 
 		return scores;
