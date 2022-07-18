@@ -59,35 +59,58 @@ public class LDCOFEvaluator implements Evaluator {
 
 	public LDCOFEvaluator(double alpha, double beta, DistanceMeasure measure,
 			double[][] points, int[] belongsToCluster, double[][] centroids,
-			int[] clusterSize) {
-
-		largeCluster = CBLOFEvaluator.assignLargeClusters(clusterSize, alpha,
-				beta, points.length);
+			int[] clusterSize, boolean[] largeCluster) {
 		this.measure = measure;
 		this.points = points;
 		this.belongsToCluster = belongsToCluster;
 		this.clusterSize = clusterSize;
 		this.centroids = centroids;
-
+		this.largeCluster = largeCluster;
+	}
+	@Deprecated
+	public LDCOFEvaluator(double alpha, double beta, DistanceMeasure measure,
+						  double[][] points, int[] belongsToCluster, double[][] centroids,
+						  int[] clusterSize) {
+		this.measure = measure;
+		this.points = points;
+		this.belongsToCluster = belongsToCluster;
+		this.clusterSize = clusterSize;
+		this.centroids = centroids;
+		this.largeCluster =CBLOFEvaluator.assignLargeClusters(clusterSize, alpha,
+				beta, points.length);
 	}
 
 	/**
 	 *Constructor used when the division into small and large clusters is based
 	 * on the minimum size of the large cluster
-	 * 
+	 *
 	 */
-	public LDCOFEvaluator(double alpha, DistanceMeasure measure,
-			double[][] points, int[] belongsToCluster, double[][] centroids,
-			int[] clusterSize) {
-
+	@Deprecated
+	public LDCOFEvaluator(double gamma, DistanceMeasure measure,
+						  double[][] points, int[] belongsToCluster, double[][] centroids,
+						  int[] clusterSize) {
 		this.measure = measure;
 		this.points = points;
 		this.belongsToCluster = belongsToCluster;
 		this.clusterSize = clusterSize;
 		this.centroids = centroids;
-		largeCluster = assignLargeClusters(clusterSize, alpha * points.length
+		largeCluster = assignLargeClusters(clusterSize, gamma * points.length
 				/ centroids.length);
-
+	}
+	/**
+	 *Constructor used when the division into small and large clusters is based
+	 * on the minimum size of the large cluster
+	 * 
+	 */
+	public LDCOFEvaluator(double gamma, DistanceMeasure measure,
+			double[][] points, int[] belongsToCluster, double[][] centroids,
+			int[] clusterSize, boolean[] largeCluster) {
+		this.measure = measure;
+		this.points = points;
+		this.belongsToCluster = belongsToCluster;
+		this.clusterSize = clusterSize;
+		this.centroids = centroids;
+		this.largeCluster = largeCluster;
 	}
 
 	/**

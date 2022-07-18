@@ -16,16 +16,21 @@ public class CBLOFModel extends ClusterBasedAnomalyDetectionModel {
 	private double beta;
 
 	private boolean useClusterWeights;
-
+	private boolean largeCluster[];
 	public CBLOFModel(ExampleSet exampleSet, ClusterModel model, DistanceMeasure measure) throws OperatorException {
 		super(exampleSet, model,measure);
 
+	}
+	public void train(ExampleSet trainSet) throws OperatorException {
+		double[][] points = AnomalyUtilities.exampleSetToDoubleArray(trainSet, getTrainingHeader().getAttributes(), true);
+		largeCluster = CBLOFEvaluator.assignLargeClusters(clusterSize, alpha,
+				beta, points.length);
 	}
 
 	public double[] evaluate(ExampleSet testSet) throws OperatorException {
 		double[][] points = AnomalyUtilities.exampleSetToDoubleArray(testSet,getTrainingHeader().getAttributes(),true);
 
-		evaluator = new CBLOFEvaluator(alpha, beta,distanceMeasure,points,getClusterIds(testSet),centroids,clusterSize,useClusterWeights);
+		evaluator = new CBLOFEvaluator(alpha, beta,distanceMeasure,points,getClusterIds(testSet),centroids,clusterSize,useClusterWeights, largeCluster);
 		double[] scores = evaluator.evaluate();
 
 		return scores;

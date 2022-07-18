@@ -26,11 +26,11 @@ public class CMGOSModel extends ClusterBasedAnomalyDetectionModel {
 	int inititeration;
 	RandomGenerator randomGenerator = RandomGenerator.getGlobalRandomGenerator();
 	NewCMGOSEvaluator evaluator;
-	boolean trained;
+
 
 	public CMGOSModel(ExampleSet exampleSet, ClusterModel model, DistanceMeasure measure) throws OperatorException {
 		super(exampleSet, model, measure);
-		trained = false;
+
 	}
 
 	@Override
