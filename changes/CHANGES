@@ -28,6 +28,7 @@
 * Fixed a bug in Detect Outlier (TS), were z-scores wouldn't work with a reference set.
 * Fixed a bug in Detect Outlier (TS), were algorithms won't work if the reference set is smaller than the test set
 
-
+=== 3.3.2 ===
+* Fixed a bug in Detect Outlier (Clustering) which caused results in LDCOF and CBLOF to differ depending on the data set being used.
 
 
