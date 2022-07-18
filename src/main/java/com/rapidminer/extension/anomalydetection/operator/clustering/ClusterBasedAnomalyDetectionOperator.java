@@ -6,20 +6,16 @@ import java.util.List;
 import com.rapidminer.adaption.belt.IOTable;
 import com.rapidminer.belt.table.BeltConverter;
 import com.rapidminer.example.ExampleSet;
-
-import com.rapidminer.extension.anomalydetection.anomaly_models.IOTableAnomalyModel;
 import com.rapidminer.extension.anomalydetection.anomaly_models.clustering.CBLOFModel;
 import com.rapidminer.extension.anomalydetection.anomaly_models.clustering.CMGOSModel;
 import com.rapidminer.extension.anomalydetection.anomaly_models.clustering.ClusterBasedAnomalyDetectionModel;
 import com.rapidminer.extension.anomalydetection.anomaly_models.clustering.LDCOFModel;
-import com.rapidminer.extension.anomalydetection.model.AnomalyDetectionModel;
 import com.rapidminer.extension.anomalydetection.operator.AbstractAnomalyOperator;
 import com.rapidminer.operator.OperatorDescription;
 import com.rapidminer.operator.OperatorException;
 import com.rapidminer.operator.clustering.ClusterModel;
 import com.rapidminer.operator.learner.CapabilityCheck;
 import com.rapidminer.operator.learner.CapabilityProvider;
-import com.rapidminer.operator.learner.IOTablePredictionModel;
 import com.rapidminer.operator.ports.InputPort;
 import com.rapidminer.operator.ports.OutputPort;
 import com.rapidminer.parameter.ParameterType;
@@ -162,7 +158,7 @@ public class ClusterBasedAnomalyDetectionOperator extends AbstractAnomalyOperato
 	public void doWork() throws OperatorException {
 		IOTable ioTable = exaInput.getData(IOTable.class);
 		SequentialConcurrencyContext context = new SequentialConcurrencyContext();
-		ExampleSet exampleSet = BeltConverter.convert(ioTable,context);
+		ExampleSet exampleSet = BeltConverter.convert(ioTable, context);
 
 		CapabilityCheck check = new CapabilityCheck(this, Tools.booleanValue(
 				ParameterService.getParameterValue(CapabilityProvider.PROPERTY_RAPIDMINER_GENERAL_CAPABILITIES_WARN), true));
@@ -173,19 +169,19 @@ public class ClusterBasedAnomalyDetectionOperator extends AbstractAnomalyOperato
 		DistanceMeasure measure = measureHelper.getInitializedMeasure(exampleSet);
 		switch (usedAlgorithm) {
 			case CBLOF:
-				model = buildCBLOF(ioTable, measure);
+				model = buildCBLOF(ioTable, measure, exampleSet);
 				break;
 			case LDCOF:
-				model = buildLDCOF(ioTable, measure);
+				model = buildLDCOF(ioTable, measure, exampleSet);
 				break;
 			case CMGOS:
-				model = buildCMGOS(ioTable, measure);
+				model = buildCMGOS(ioTable, measure,exampleSet);
 				break;
 			default:
 				throw new OperatorException("Unknown algorithm " + usedAlgorithm);
 		}
 
-		IOTable resultSet = model.apply(ioTable,this);
+		IOTable resultSet = model.apply(ioTable, this);
 
 		exaOutput.deliver(resultSet);
 		modOutput.deliver(model);
@@ -193,34 +189,32 @@ public class ClusterBasedAnomalyDetectionOperator extends AbstractAnomalyOperato
 
 	}
 
-	protected ClusterBasedAnomalyDetectionModel buildCBLOF(IOTable trainingSet, DistanceMeasure measure) throws OperatorException {
+	protected ClusterBasedAnomalyDetectionModel buildCBLOF(IOTable trainingSet, DistanceMeasure measure, ExampleSet trainingES) throws OperatorException {
 		ClusterModel mod = clusterInput.getData(ClusterModel.class);
 		CBLOFModel anomalyModel = new CBLOFModel(trainingSet, mod, measure);
-		anomalyModel.setAlpha(getParameterAsDouble(PARAMETER_ALPHA));
-		anomalyModel.setBeta(getParameterAsDouble(PARAMETER_BETA));
 		anomalyModel.setUseClusterWeights(getParameterAsBoolean(PARAMETER_WEIGHTING));
-		anomalyModel.train(trainingSet);
+		anomalyModel.train(trainingES,getParameterAsDouble(PARAMETER_ALPHA),getParameterAsDouble(PARAMETER_BETA));
+
 		return anomalyModel;
 	}
 
-	protected ClusterBasedAnomalyDetectionModel buildLDCOF(IOTable trainingSet, DistanceMeasure measure) throws OperatorException {
+	protected ClusterBasedAnomalyDetectionModel buildLDCOF(IOTable trainingSet, DistanceMeasure measure, ExampleSet trainingES) throws OperatorException {
 		ClusterModel mod = clusterInput.getData(ClusterModel.class);
 
 		LDCOFModel anomalyModel;
 		if (getParameterAsBoolean(PARAMETER_LIKE_CBLOF)) {
 			anomalyModel = new LDCOFModel(trainingSet, mod, measure);
-			anomalyModel.setUseGamma(true);
-			anomalyModel.setGamma(getParameterAsDouble(PARAMETER_GAMMA_LDCOF));
+			anomalyModel.train(trainingES, getParameterAsDouble(PARAMETER_GAMMA_LDCOF));
 		} else {
 			anomalyModel = new LDCOFModel(trainingSet, mod, new EuclideanDistance());
-			anomalyModel.setAlpha(getParameterAsDouble(PARAMETER_ALPHA));
-			anomalyModel.setBeta(getParameterAsDouble(PARAMETER_BETA));
+			anomalyModel.train(trainingES, getParameterAsDouble(PARAMETER_ALPHA),
+					getParameterAsDouble(PARAMETER_BETA));
 		}
-		anomalyModel.train(trainingSet);
+
 		return anomalyModel;
 	}
 
-	protected ClusterBasedAnomalyDetectionModel buildCMGOS(IOTable trainingSet, DistanceMeasure measure) throws OperatorException {
+	protected ClusterBasedAnomalyDetectionModel buildCMGOS(IOTable trainingSet, DistanceMeasure measure, ExampleSet trainingEs) throws OperatorException {
 		ClusterModel mod = clusterInput.getData(ClusterModel.class);
 		CMGOSModel anomalyModel = new CMGOSModel(trainingSet, mod, measure);
 		anomalyModel.setThreads(1);
@@ -245,7 +239,7 @@ public class ClusterBasedAnomalyDetectionOperator extends AbstractAnomalyOperato
 		anomalyModel.setInititeration(getParameterAsInt(PARAMETER_RUN));
 		RandomGenerator generator = RandomGenerator.getRandomGenerator(this);
 		anomalyModel.setRandomGenerator(generator);
-
+		anomalyModel.train(trainingEs);
 		return anomalyModel;
 	}
 
@@ -283,7 +277,7 @@ public class ClusterBasedAnomalyDetectionOperator extends AbstractAnomalyOperato
 				PARAMETER_LIKE_CBLOF,
 				"The division into large and small clusters will be implemented in a manner similar to CBLOF.",
 				false, false);
-		EqualStringCondition isLDCOF = new EqualStringCondition(this,PARAMETER_ALGORITHM,true,LDCOF);
+		EqualStringCondition isLDCOF = new EqualStringCondition(this, PARAMETER_ALGORITHM, true, LDCOF);
 		likeCBLOF.registerDependencyCondition(isLDCOF);
 		types.add(likeCBLOF);
 
@@ -365,7 +359,6 @@ public class ClusterBasedAnomalyDetectionOperator extends AbstractAnomalyOperato
 		types.addAll(RandomGenerator.getRandomGeneratorParameters(this));
 		return types;
 	}
-
 
 
 }
