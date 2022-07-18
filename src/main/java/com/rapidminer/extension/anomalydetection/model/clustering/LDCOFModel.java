@@ -18,6 +18,7 @@ public class LDCOFModel extends ClusterBasedAnomalyDetectionModel {
 	private double gamma;
 	private boolean useGamma;
 	private boolean[] largeCluster;
+	private double[] averageDistances;
 
 	public LDCOFModel(ExampleSet exampleSet, ClusterModel model, DistanceMeasure measure) throws OperatorException {
 		super(exampleSet, model, measure);
@@ -32,6 +33,9 @@ public class LDCOFModel extends ClusterBasedAnomalyDetectionModel {
 			largeCluster = CBLOFEvaluator.assignLargeClusters(clusterSize, alpha,
 					beta, points.length);
 		}
+		averageDistances= LDCOFEvaluator.calculateAverageDistancePerCluster(
+				distanceMeasure,points,centroids,
+				getClusterIds(testSet),clusterSize,largeCluster);
 	}
 
 	@Override
@@ -40,7 +44,7 @@ public class LDCOFModel extends ClusterBasedAnomalyDetectionModel {
 		double[][] points = AnomalyUtilities.exampleSetToDoubleArray(testSet, getTrainingHeader().getAttributes(), true);
 		LDCOFEvaluator evaluator;
 
-		evaluator = new LDCOFEvaluator(distanceMeasure, points, getClusterIds(testSet), centroids, clusterSize,largeCluster);
+		evaluator = new LDCOFEvaluator(distanceMeasure, points, getClusterIds(testSet), centroids, clusterSize,largeCluster,averageDistances);
 
 		 double[] scores = evaluator.evaluate();
 		return scores;
