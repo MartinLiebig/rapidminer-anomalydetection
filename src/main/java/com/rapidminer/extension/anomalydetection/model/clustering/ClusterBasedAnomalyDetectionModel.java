@@ -22,6 +22,7 @@ public abstract class ClusterBasedAnomalyDetectionModel extends AnomalyDetection
 	protected ClusterModel clusterModel;
 	protected double[][] centroids;
 	protected int[] clusterSize;
+	boolean trained = false;
 
 	private ClusterBasedAnomalyDetectionModel(ExampleSet exampleSet) {
 		super(exampleSet);

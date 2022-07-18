@@ -66,7 +66,7 @@ public class CBLOFEvaluator implements Evaluator {
 
 	public CBLOFEvaluator(double alpha, double beta, DistanceMeasure measure,
 			double[][] points, int[] belongsToCluster, double[][] centroids,
-			int clusterSize[], boolean weighting) {
+			int clusterSize[], boolean weighting, boolean[] largeCluster) {
 		
 		this.measure = measure;
 		this.points = points;
@@ -74,7 +74,22 @@ public class CBLOFEvaluator implements Evaluator {
 		this.centroids = centroids;
 		this.clusterSize = clusterSize;
 		this.weighting = weighting;
-		largeCluster= assignLargeClusters(clusterSize, alpha, beta, points.length);
+		this.largeCluster= largeCluster;
+
+	}
+	@Deprecated
+	public CBLOFEvaluator(double alpha, double beta, DistanceMeasure measure,
+						  double[][] points, int[] belongsToCluster, double[][] centroids,
+						  int clusterSize[], boolean weighting) {
+
+		this.measure = measure;
+		this.points = points;
+		this.belongsToCluster = belongsToCluster;
+		this.centroids = centroids;
+		this.clusterSize = clusterSize;
+		this.weighting = weighting;
+		this.largeCluster= CBLOFEvaluator.assignLargeClusters(clusterSize, alpha,
+				beta, points.length);
 
 	}
 

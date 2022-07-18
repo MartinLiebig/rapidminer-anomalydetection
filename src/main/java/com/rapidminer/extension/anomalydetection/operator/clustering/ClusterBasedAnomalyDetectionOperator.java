@@ -199,6 +199,7 @@ public class ClusterBasedAnomalyDetectionOperator extends AbstractAnomalyOperato
 		anomalyModel.setAlpha(getParameterAsDouble(PARAMETER_ALPHA));
 		anomalyModel.setBeta(getParameterAsDouble(PARAMETER_BETA));
 		anomalyModel.setUseClusterWeights(getParameterAsBoolean(PARAMETER_WEIGHTING));
+		anomalyModel.train(trainingSet);
 		return anomalyModel;
 	}
 
@@ -215,6 +216,7 @@ public class ClusterBasedAnomalyDetectionOperator extends AbstractAnomalyOperato
 			anomalyModel.setAlpha(getParameterAsDouble(PARAMETER_ALPHA));
 			anomalyModel.setBeta(getParameterAsDouble(PARAMETER_BETA));
 		}
+		anomalyModel.train(trainingSet);
 		return anomalyModel;
 	}
 
