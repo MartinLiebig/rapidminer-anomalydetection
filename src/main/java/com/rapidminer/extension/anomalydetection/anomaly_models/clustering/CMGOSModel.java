@@ -4,8 +4,6 @@ import java.lang.reflect.Field;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.util.StdConverter;
 import com.rapidminer.adaption.belt.IOTable;
 import com.rapidminer.belt.buffer.Buffers;
@@ -52,34 +50,32 @@ public class CMGOSModel extends ClusterBasedAnomalyDetectionModel {
 		trained = false;
 	}
 
+	public void train(ExampleSet trainingSet) throws OperatorException {
+		int[] belongsToCluster = getClusterIds(trainingSet);
+		double[][] points = AnomalyUtilities.exampleSetToDoubleArray(trainingSet, trainingHeader.getAttributes(), true);
+		clusterSize = getClusterSize(trainingSet);
+		evaluator = new NewCMGOSEvaluator(
+				distanceMeasure, points, belongsToCluster,
+				centroids, clusterSize, threads, removeRuns, probability, cov_sampling, randomGenerator,
+				percentage, lambda, cov, h, numberOfSubsets, fastMCDPoints, inititeration);
+		evaluator.evaluate(); // while this returns values, this is also fit.
+	}
+
 	@Override
 	public NumericBuffer evaluate(ExampleSet testSet) throws OperatorException {
 		// CMGOS uses clusterSize[] not just for normalization, so we need to recalculate it
 		// on the test set.
 		int[] belongsToCluster = getClusterIds(testSet);
 		double[][] points = AnomalyUtilities.exampleSetToDoubleArray(testSet, trainingHeader.getAttributes(), true);
-		if (!trained) {
-			clusterSize = getClusterSize(testSet);
-			evaluator = new NewCMGOSEvaluator(
-					distanceMeasure, points, belongsToCluster,
-					centroids, clusterSize, threads, removeRuns, probability, cov_sampling, randomGenerator,
-					percentage, lambda, cov, h, numberOfSubsets, fastMCDPoints, inititeration);
-			double original_score[] = evaluator.evaluate();
-			trained = true;
-			NumericBuffer buffer = Buffers.realBuffer(original_score.length);
-			for(int i = 0; i < original_score.length;++i){
-				buffer.set(i,original_score[i]);
-			}
-			return buffer;
-		} else {
 
-			double[] score = evaluator.score(points,belongsToCluster);
-			NumericBuffer buffer = Buffers.realBuffer(score.length);
-			for(int i = 0; i < score.length;++i){
-				buffer.set(i,score[i]);
-			}
-			return buffer;
+
+		double[] score = evaluator.score(points, belongsToCluster);
+		NumericBuffer buffer = Buffers.realBuffer(score.length);
+		for (int i = 0; i < score.length; ++i) {
+			buffer.set(i, score[i]);
 		}
+		return buffer;
+
 
 	}
 
@@ -132,6 +128,7 @@ public class CMGOSModel extends ClusterBasedAnomalyDetectionModel {
 	}
 
 //TODO: this might require to sign the extension
+
 	/**
 	 * Converter from random generator to its seed.
 	 */

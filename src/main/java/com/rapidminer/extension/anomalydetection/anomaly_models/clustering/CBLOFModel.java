@@ -13,12 +13,10 @@ import de.dfki.madm.anomalydetection.evaluator.cluster_based.CBLOFEvaluator;
 
 
 public class CBLOFModel extends ClusterBasedAnomalyDetectionModel {
-	private CBLOFEvaluator evaluator;
 
-	private double alpha;
-	private double beta;
 
 	private boolean useClusterWeights;
+	private boolean[] largeCluster;
 
 	public CBLOFModel(){
 		super();
@@ -29,10 +27,16 @@ public class CBLOFModel extends ClusterBasedAnomalyDetectionModel {
 
 	}
 
+	public void train(ExampleSet trainSet, double alpha, double beta) throws OperatorException {
+		double[][] points = AnomalyUtilities.exampleSetToDoubleArray(trainSet,trainingHeader.getAttributes(),true);
+		largeCluster = CBLOFEvaluator.assignLargeClusters(clusterSize, alpha,
+				beta, points.length);
+	}
+
 	public NumericBuffer evaluate(ExampleSet testSet) throws OperatorException {
 		double[][] points = AnomalyUtilities.exampleSetToDoubleArray(testSet,trainingHeader.getAttributes(),true);
 
-		evaluator = new CBLOFEvaluator(alpha, beta,distanceMeasure,points,getClusterIds(testSet),centroids,clusterSize,useClusterWeights);
+		CBLOFEvaluator evaluator = new CBLOFEvaluator(distanceMeasure,points,getClusterIds(testSet),centroids,clusterSize,useClusterWeights,largeCluster);
 		double[] scores = evaluator.evaluate();
 		NumericBuffer buffer = Buffers.realBuffer(scores.length);
 		for(int i = 0; i < scores.length;++i){
@@ -41,13 +45,6 @@ public class CBLOFModel extends ClusterBasedAnomalyDetectionModel {
 		return buffer;
 	}
 
-	public void setAlpha(double alpha) {
-		this.alpha = alpha;
-	}
-
-	public void setBeta(double beta) {
-		this.beta = beta;
-	}
 
 	public void setUseClusterWeights(boolean useClusterWeights) {
 		this.useClusterWeights = useClusterWeights;
