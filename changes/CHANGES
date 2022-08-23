@@ -37,8 +37,9 @@ Please be aware that this release is not backwards compatible, since attributes 
 * Univariate models are now stating the correct covered attributes in their description
 
 === 4.0.1 ===
-* Fixed a bug where cluster models may create wrong results in applications, since they don't take the cluster sizes from training
-
+* Fixed a bug where cluster models may create wrong results in applications, since they don't take the cluster sizes from training.
+* Fixed a bug where Isolation Forests were not able to run on values <0.
+* Fixed a bug where Isolation Forests were not storable if they were grouped.
 
 
 

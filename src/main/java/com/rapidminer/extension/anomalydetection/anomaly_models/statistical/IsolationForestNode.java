@@ -1,6 +1,7 @@
 package com.rapidminer.extension.anomalydetection.anomaly_models.statistical;
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.SplittableRandom;
@@ -19,7 +20,7 @@ import com.rapidminer.tools.belt.BeltTools;
  * @author mschmitz
  * @since 2.10.0
  */
-public class IsolationForestNode {
+public class IsolationForestNode implements Serializable {
 
 
 	private IsolationForestNode leftChild = null;
@@ -88,7 +89,7 @@ public class IsolationForestNode {
 		double min = table.transform(columnName)
 				.reduceNumeric(Double.MAX_VALUE, Double::min, context);
 		double max = table.transform(columnName)
-				.reduceNumeric(Double.MIN_VALUE, Double::max, context);
+				.reduceNumeric(-1*Double.MAX_VALUE, Double::max, context);
 
 		// We got a constant. We stop to grow here.
 		if (min != max) {
