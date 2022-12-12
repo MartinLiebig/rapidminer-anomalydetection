@@ -52,7 +52,11 @@
             <class>com.rapidminer.extension.anomalydetection.operator.statistical.IsolationForestOperator
             </class>
         </operator>
-
+        <operator>
+            <key>mass</key>
+            <class>com.rapidminer.extension.anomalydetection.operator.time_series.MASSOperator
+            </class>
+        </operator>
         <group key="utility">
             <operator>
                 <key>generate_anomaly_flag</key>
