@@ -19,7 +19,8 @@ import com.rapidminer.belt.execution.Context;
 @JsonSubTypes({
 		@JsonSubTypes.Type(value = ZScorer.class, name = "zscorer"),
 		@JsonSubTypes.Type(value = QuartileScorer.class, name = "quartilescorer"),
-		@JsonSubTypes.Type(value = HistogramBasedScorer.class, name = "histogramscorer")
+		@JsonSubTypes.Type(value = HistogramBasedScorer.class, name = "histogramscorer"),
+		@JsonSubTypes.Type(value = PercentileThresholdScorer.class, name = "percentilethreshold")
 })
 public interface UnivariateScorer {
 

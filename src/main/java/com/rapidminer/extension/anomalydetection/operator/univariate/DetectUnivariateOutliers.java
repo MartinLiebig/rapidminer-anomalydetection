@@ -15,6 +15,7 @@ import com.rapidminer.core.concurrency.ConcurrencyContext;
 import com.rapidminer.example.ExampleSet;
 import com.rapidminer.extension.anomalydetection.anomaly_models.univariate.UnivariateOutlierModel;
 import com.rapidminer.extension.anomalydetection.metadata.UnivariateOutlierModelMetaData;
+import com.rapidminer.extension.anomalydetection.utility.AnomalyUtilities;
 import com.rapidminer.operator.Operator;
 import com.rapidminer.operator.OperatorDescription;
 import com.rapidminer.operator.OperatorException;
@@ -27,6 +28,8 @@ import com.rapidminer.operator.tools.TableSubsetSelector;
 import com.rapidminer.parameter.ParameterType;
 import com.rapidminer.parameter.ParameterTypeBoolean;
 import com.rapidminer.parameter.ParameterTypeCategory;
+import com.rapidminer.parameter.ParameterTypeDouble;
+import com.rapidminer.parameter.conditions.EqualStringCondition;
 import com.rapidminer.studio.internal.Resources;
 
 
@@ -43,9 +46,17 @@ public class DetectUnivariateOutliers extends Operator {
 	public static final String PARAMETER_METHOD = "method";
 	public static final String PARAMETER_AGGREGATION_METHOD = "aggregation_method";
 	public static final String PARAMETER_CREATE_INDIVIDUAL_SCORES = "show_individual_scores";
+	public static final String PARAMETER_THRESHOLD = "percentile_threshold";
+	public static final String PARAMETER_SCORING_TYPE = "scoring_type";
 
-	public static String[] supportedAlgorithms = {"Quartiles", "Histogram", "z-Score"};
+	public static final String PERCENTILE_DISTANCE = "Percentile Distance";
+	public static final String QUARTILES = "Quartiles";
+	public static final String HISTOGRAM = "Histgoram";
+	public static final String ZSCORE = "z-Score";
+	public static String[] supportedAlgorithms = {PERCENTILE_DISTANCE,QUARTILES, HISTOGRAM, ZSCORE};
 	public static String[] supportedAggregations = {"Average", "Maximum", "Product"};
+	// only used in percentile threshold
+	public static String[] scoringModes = new String[]{AnomalyUtilities.SCORING_MODE_BOTH,AnomalyUtilities.SCORING_MODE_ONLY_BOTTOM,AnomalyUtilities.SCORING_MODE_ONLY_TOP};
 
 	private final TableSubsetSelector attributeSelector = new TableSubsetSelector(this, exaInput, ValueTypeColumnFilter.TYPE_REAL, ValueTypeColumnFilter.TYPE_INTEGER);
 
@@ -103,7 +114,9 @@ public class DetectUnivariateOutliers extends Operator {
 				inputTable,
 				getParameterAsString(PARAMETER_METHOD),
 				getParameterAsString(PARAMETER_AGGREGATION_METHOD),
-				getParameterAsBoolean(PARAMETER_CREATE_INDIVIDUAL_SCORES)
+				getParameterAsBoolean(PARAMETER_CREATE_INDIVIDUAL_SCORES),
+				getParameterAsDouble(PARAMETER_THRESHOLD),
+				getParameterAsString(PARAMETER_SCORING_TYPE)
 		);
 
 		List<String> trainingColumns = new ArrayList<>();
@@ -128,7 +141,16 @@ public class DetectUnivariateOutliers extends Operator {
 		List<ParameterType> types = super.getParameterTypes();
 		types.addAll(attributeSelector.getParameterTypes());
 		types.add(new ParameterTypeCategory(PARAMETER_METHOD,
-				"Outlier detection method to use", supportedAlgorithms, 0));
+				"Outlier detection method to use", supportedAlgorithms, 1));
+		// Percentile Distance
+		ParameterTypeDouble threshold = new ParameterTypeDouble(PARAMETER_THRESHOLD,"Percentile Threshold",0,0.5,0.05);
+		threshold.registerDependencyCondition(new EqualStringCondition(this,PARAMETER_METHOD,true, PERCENTILE_DISTANCE));
+		types.add(threshold);
+		ParameterTypeCategory scoringModeParameter = new ParameterTypeCategory(
+				PARAMETER_SCORING_TYPE,"defines what kind of anomalies can be found",scoringModes,0,true);
+		scoringModeParameter.registerDependencyCondition(new EqualStringCondition(this,PARAMETER_METHOD,true, PERCENTILE_DISTANCE));
+		types.add(scoringModeParameter);
+		//
 		types.add(new ParameterTypeCategory(PARAMETER_AGGREGATION_METHOD,
 				"What method to use to create a single outlier score", supportedAggregations, 0));
 		types.add(new ParameterTypeBoolean(PARAMETER_CREATE_INDIVIDUAL_SCORES, "if set to true the operator will create" +

@@ -18,10 +18,13 @@ import com.rapidminer.belt.table.Table;
 import com.rapidminer.belt.table.TableBuilder;
 import com.rapidminer.belt.util.ColumnRole;
 import com.rapidminer.example.Attributes;
+import com.rapidminer.extension.anomalydetection.operator.univariate.DetectUnivariateOutliers;
 import com.rapidminer.extension.anomalydetection.operator.univariate.HistogramBasedScorer;
+import com.rapidminer.extension.anomalydetection.operator.univariate.PercentileThresholdScorer;
 import com.rapidminer.extension.anomalydetection.operator.univariate.QuartileScorer;
 import com.rapidminer.extension.anomalydetection.operator.univariate.UnivariateScorer;
 import com.rapidminer.extension.anomalydetection.operator.univariate.ZScorer;
+import com.rapidminer.extension.anomalydetection.utility.AnomalyUtilities;
 import com.rapidminer.extension.anomalydetection.utility.algorithms.score_aggregations.AverageScoreAggregation;
 import com.rapidminer.extension.anomalydetection.utility.algorithms.score_aggregations.MaxScoreAggregation;
 import com.rapidminer.extension.anomalydetection.utility.algorithms.score_aggregations.ProductScoreAggregation;
@@ -50,9 +53,10 @@ public class UnivariateOutlierModel extends IOTablePreprocessingModel {
 
 	private final String usedMethod;
 	private final String usedAggregationMethod;
-
-
+	private double threshold = 0.05;
+	private String scoringMode = AnomalyUtilities.SCORING_MODE_BOTH;
 	private Boolean showScores;
+
 
 	public UnivariateOutlierModel() {
 		super(null);
@@ -69,11 +73,13 @@ public class UnivariateOutlierModel extends IOTablePreprocessingModel {
 	 * @param aggregationMethod the desired aggregation methods
 	 * @param showScores        if set to true one column will be created with the anomaly score for the given column.
 	 */
-	public UnivariateOutlierModel(IOTable table, String method, String aggregationMethod, Boolean showScores) {
+	public UnivariateOutlierModel(IOTable table, String method, String aggregationMethod, Boolean showScores,double threshold, String scoringMode) {
 		super(table);
 		usedMethod = method;
 		usedAggregationMethod = aggregationMethod;
 		this.showScores = showScores;
+		this.threshold = threshold;
+		this.scoringMode = scoringMode;
 	}
 
 	@Override
@@ -145,6 +151,13 @@ public class UnivariateOutlierModel extends IOTablePreprocessingModel {
 					break;
 				case "Quartiles":
 					scorer = new QuartileScorer();
+					break;
+				case DetectUnivariateOutliers.PERCENTILE_DISTANCE:
+					PercentileThresholdScorer thresholdScorer = new PercentileThresholdScorer();
+
+					thresholdScorer.setPercentileThreshold(threshold);
+					thresholdScorer.setScoringMode(scoringMode);
+					scorer = thresholdScorer;
 					break;
 				default:
 					throw new OperatorException("Cannot find method " + usedMethod);
