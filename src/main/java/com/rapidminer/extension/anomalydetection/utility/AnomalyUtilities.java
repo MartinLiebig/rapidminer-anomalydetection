@@ -31,6 +31,10 @@ public class AnomalyUtilities {
 	public static final String ANOMALY_NAME = "Outlier";
 	public static final String NO_ANOMALY_NAME = "No Outlier";
 
+	public static final String SCORING_MODE_ONLY_BOTTOM = "only_bottom";
+	public static final String SCORING_MODE_ONLY_TOP = "only_top";
+	public static final String SCORING_MODE_BOTH = "both";
+
 	private static Pair<double[][], double[]> convertExampleSetToDoubleArrays(ExampleSet exaSet,
 																			  List<Attribute> attributeList, com.rapidminer.example.Attribute labelAttribute,
 																			  boolean failOnMissing) throws OperatorException {

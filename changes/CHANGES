@@ -41,6 +41,7 @@ Please be aware that this release is not backwards compatible, since attributes 
 * Fixed a bug where Isolation Forests were not able to run on values <0.
 * Fixed a bug where Isolation Forests were not storable if they were grouped.
 
-
+=== 4.1.0 ===
+* Added a new method "Percentile Threshold" to Detect Outliers Univariate, which gives you the distance to the kth and 1-kth percentile.
 
 

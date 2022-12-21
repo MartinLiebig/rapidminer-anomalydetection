@@ -37,6 +37,13 @@
           This parameter allows you to select the method you want to use to calculate univariate outlier scores.
         </paragraph>
         <values>
+          <value value="Percentile Distance">
+            The Percentile Distance method calculates the distance to the closest percentile.
+            If percentile distance is chosen, the user has to provide a threshold. This defines the percentile to be chosen.
+            A threshold of 0.05 means, that the percentiles to compare against are the 5th and 95th.
+            The score is then the distance to the threshold if the value is above the upper or below the lower percentile and zero otherwise.
+            The option scoring_type can be chosen to only take the upper or lower percentile into account, which means you only search for top or bottom outliers.
+          </value>
           <value value = "Quartiles">
             The Quartiles method calculates the anomaly score as: score = (value - median)/IQR, where IQR is the interquartile range (difference between the 25th and the 75th percentile). The Quartiles method can be seen as a more robust version of the z-Score method (see below).
           </value>
@@ -49,6 +56,23 @@
             The z-Score method calculates the anomaly score as: score = (value - mean)/standard deviation. This can be interpreted as the distance of the current value to the mean, measured in z standard deviations.
           </value>
         </values>
+      </parameter>
+      <parameter key="percentile_threshold">
+        Only available if the method is percentile distance. Defines the upper and lower percentiles to check against.
+        A threshold of 0.05 means, that the percentiles to compare against are the 5th and 95th.
+      </parameter>
+      <parameter key="scoring_type">Only available if the method is percentile distance.
+      <values>
+        <value value="both">
+          Both bottom and top outliers are considered.
+        </value>
+        <value value="only_top">
+          Only top outliers are considered.
+        </value>
+        <value value="only_bottom">
+          Only bottom outliers are considered.
+        </value>
+      </values>
       </parameter>
       <parameter key = "aggregation_method" >
         <paragraph>
@@ -150,6 +174,64 @@
         </operator>
       </process>
 
+
+      </tutorialProcess>
+      <tutorialProcess key="process.operator_toolbox.outlier.filter_top_2_percent" title="Filter Top 2% of Titanic">
+      <description>
+        In this process we filter the titanic data set for all rows where either age or passenger fare are in the top 2% of the values
+
+        We choose only Age and Passenger Fare as attributes. We use percentile distance as a method and only consider top outliers with a threshold of 0.02. The scores are thus the distance to the 98-th percentile.
+        We choose maximum as an aggregation method for the final score. So any value above 0 in prediction as at least one value in the top 2% of the values. We use score in filter examples to remove them from the data set.
+      </description>
+        <process>
+        <context>
+          <input/>
+          <output/>
+          <macros/>
+        </context>
+        <operator activated="true" class="process" compatibility="9.10.011" expanded="true" name="Process">
+          <parameter key="logverbosity" value="init"/>
+          <parameter key="random_seed" value="2001"/>
+          <parameter key="send_mail" value="never"/>
+          <parameter key="notification_email" value=""/>
+          <parameter key="process_duration_for_mail" value="30"/>
+          <parameter key="encoding" value="SYSTEM"/>
+          <process expanded="true">
+            <operator activated="true" class="retrieve" compatibility="9.10.011" expanded="true" height="68" name="Retrieve Titanic Training" width="90" x="179" y="34">
+              <parameter key="repository_entry" value="//Samples/data/Titanic Training"/>
+            </operator>
+            <operator activated="true" class="anomalydetection:univariate_anomaly_detection" compatibility="4.0.001" expanded="true" height="82" name="Detect Outlier (Univariate)" width="90" x="313" y="34">
+              <parameter key="type" value="include attributes"/>
+              <parameter key="attribute_filter_type" value="a subset"/>
+              <parameter key="select_attribute" value=""/>
+              <parameter key="select_subset" value="Age␞Passenger Fare"/>
+              <parameter key="also_apply_to_special_attributes_(id,_label..)" value="false"/>
+              <parameter key="method" value="Percentile Distance"/>
+              <parameter key="percentile_threshold" value="0.02"/>
+              <parameter key="scoring_type" value="only_top"/>
+              <parameter key="aggregation_method" value="Maximum"/>
+              <parameter key="show_individual_scores" value="true"/>
+            </operator>
+            <operator activated="true" class="filter_examples" compatibility="9.10.011" expanded="true" height="103" name="Filter Examples" width="90" x="514" y="34">
+              <parameter key="parameter_expression" value=""/>
+              <parameter key="condition_class" value="custom_filters"/>
+              <parameter key="invert_filter" value="false"/>
+              <list key="filters_list">
+                <parameter key="filters_entry_key" value="prediction.eq.0"/>
+              </list>
+              <parameter key="filters_logic_and" value="true"/>
+              <parameter key="filters_check_metadata" value="true"/>
+            </operator>
+            <connect from_op="Retrieve Titanic Training" from_port="output" to_op="Detect Outlier (Univariate)" to_port="exa"/>
+            <connect from_op="Detect Outlier (Univariate)" from_port="outlier" to_op="Filter Examples" to_port="example set input"/>
+            <connect from_op="Filter Examples" from_port="example set output" to_port="result 1"/>
+            <portSpacing port="source_input 1" spacing="0"/>
+            <portSpacing port="sink_result 1" spacing="0"/>
+            <portSpacing port="sink_result 2" spacing="0"/>
+            <description align="center" color="yellow" colored="false" height="260" resized="true" width="627" x="168" y="212">In this process we filter the titanic data set for all rows where either age or passenger fare are in the top 2% of the values&lt;br&gt;&lt;br&gt;We choose only Age and Passenger Fare as attributes. We use percentile distance as a method and only consider top outliers with a threshold of 0.02. The scores are thus the distance to the 98-th percentile.&lt;br&gt;We choose maximum as an aggregation method for the final score. So any value above 0 in prediction as at least one value in the top 2% of the values. We use score in filter examples to remove them from the data set.</description>
+          </process>
+        </operator>
+      </process>
 
       </tutorialProcess>
     </tutorialProcesses>
