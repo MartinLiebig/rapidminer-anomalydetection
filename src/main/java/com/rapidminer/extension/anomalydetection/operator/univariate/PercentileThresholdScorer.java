@@ -1,11 +1,10 @@
 package com.rapidminer.extension.anomalydetection.operator.univariate;
 
-import static java.lang.Math.abs;
+
 
 import org.apache.commons.math3.stat.descriptive.rank.Percentile;
 
 import com.rapidminer.belt.column.Column;
-import com.rapidminer.belt.column.Statistics;
 import com.rapidminer.belt.execution.Context;
 import com.rapidminer.extension.anomalydetection.utility.AnomalyUtilities;
 
@@ -42,7 +41,7 @@ public class PercentileThresholdScorer implements UnivariateScorer {
 	@Override
 	public double score(double value) {
 		if (value > upperPercentile && (scoringMode.equals(AnomalyUtilities.SCORING_MODE_BOTH) || scoringMode.equals(AnomalyUtilities.SCORING_MODE_ONLY_TOP))) {
-			return abs(value - upperPercentile);
+			return Math.abs(value - upperPercentile);
 		} else if (value < lowerPercentile && (scoringMode.equals(AnomalyUtilities.SCORING_MODE_BOTH) || scoringMode.equals(AnomalyUtilities.SCORING_MODE_ONLY_BOTTOM))) {
 			return Math.abs(value - lowerPercentile);
 		} else {

@@ -178,10 +178,10 @@
       </tutorialProcess>
       <tutorialProcess key="process.operator_toolbox.outlier.filter_top_2_percent" title="Filter Top 2% of Titanic">
       <description>
-        In this process we filter the titanic data set for all rows where either age or passenger fare are in the top 2% of the values
+        In this process we filter the Titanic data set for all rows where either age or passenger fare are in the top 2% of the values
 
         We choose only Age and Passenger Fare as attributes. We use percentile distance as a method and only consider top outliers with a threshold of 0.02. The scores are thus the distance to the 98-th percentile.
-        We choose maximum as an aggregation method for the final score. So any value above 0 in prediction as at least one value in the top 2% of the values. We use score in filter examples to remove them from the data set.
+        We choose maximum as an aggregation method for the final score. SSo any value above 0 in the prediction belongs to the top 2% in at least one column. We use score in filter examples to remove them from the data set.
       </description>
         <process>
         <context>
