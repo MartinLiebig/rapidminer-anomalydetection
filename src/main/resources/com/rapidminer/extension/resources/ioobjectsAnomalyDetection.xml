@@ -1,12 +1,17 @@
 <ioobjects>
     <!-- This file is used to define new IOObjects, how they are called, their implementation class and
             with what renderer they are displayed in the Results perspective  -->
-	<!--
+
 	<ioobject
-		name="Example IOObject"
-		class="com.rapidminer.extension.ioobjects.ExampleIOObject"
+		name="Outlier"
+		class="de.dfki.madm.anomalydetection.operator.statistical_based.OutlierExampleSet"
 		reportable="true">
-	  <renderer>com.rapidminer.extension.ioobjects.renderer.ExampleIOObjectRenderer</renderer>
+        <renderer>de.dfki.madm.anomalydetection.operator.statistical_based.OutlierExampleSetDataRenderer</renderer>
+        <renderer>com.rapidminer.gui.renderer.data.ExampleSetDataRenderer</renderer>
+        <renderer>com.rapidminer.gui.renderer.data.ExampleSetMetaDataRenderer</renderer>
+
+        <renderer>com.rapidminer.gui.renderer.DefaultTextRenderer</renderer>
+        <renderer>com.rapidminer.gui.renderer.AnnotationsRenderer</renderer>
 	</ioobject>
-    -->
+
 </ioobjects>

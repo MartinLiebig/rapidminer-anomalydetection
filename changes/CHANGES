@@ -46,4 +46,6 @@ Please be aware that this release is not backwards compatible, since attributes 
 * Added a new method "Percentile Threshold" to Detect Outliers Univariate, which gives you the distance to the kth and 1-kth percentile.
 * Adapted Detect Outlier (rPCA) so that it works with java11 and RM X
 
+=== 4.1.1 ===
+* Histogram based Outlier Score is now returning the colored table again (as in prior versions).
 
