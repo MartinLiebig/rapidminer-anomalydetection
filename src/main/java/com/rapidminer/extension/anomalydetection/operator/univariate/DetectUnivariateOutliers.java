@@ -51,7 +51,7 @@ public class DetectUnivariateOutliers extends Operator {
 
 	public static final String PERCENTILE_DISTANCE = "Percentile Distance";
 	public static final String QUARTILES = "Quartiles";
-	public static final String HISTOGRAM = "Histgoram";
+	public static final String HISTOGRAM = "Histogram";
 	public static final String ZSCORE = "z-Score";
 	public static String[] supportedAlgorithms = {PERCENTILE_DISTANCE,QUARTILES, HISTOGRAM, ZSCORE};
 	public static String[] supportedAggregations = {"Average", "Maximum", "Product"};
