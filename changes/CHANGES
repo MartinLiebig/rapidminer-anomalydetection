@@ -49,3 +49,6 @@ Please be aware that this release is not backwards compatible, since attributes 
 === 4.1.1 ===
 * Histogram based Outlier Score is now returning the colored table again (as in prior versions).
 
+=== 4.1.2 ===
+* Fixed spelling for Local Correlation Integral (LOCI)
+

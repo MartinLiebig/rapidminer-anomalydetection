@@ -166,7 +166,7 @@
     </operator>
 
     <operator>
-        <name>Local Correlation Integeral (LOCI)</name>
+        <name>Local Correlation Integral (LOCI)</name>
         <synopsis>Calculates the outlier score based on the Local Correlation
             Integral, proposed by  Papadimitriou et al [2003].</synopsis>
         <help> <p>
